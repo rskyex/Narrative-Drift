@@ -35,17 +35,19 @@ export function computeCumulativeDrift(
 
 /** Rebuild profile state after each choice, for timeline visualization */
 export function getProfileSnapshots(
-  choices: ChoiceRecord[]
-): { profile: DriftProfile; choiceLabel: string; scenarioId: string }[] {
-  const snapshots: { profile: DriftProfile; choiceLabel: string; scenarioId: string }[] = [];
-  let current = createInitialProfile();
+  choices: ChoiceRecord[],
+  baselineProfile?: DriftProfile
+): { profile: DriftProfile; choiceLabel: string; encounterId: string; zoneId: number }[] {
+  const snapshots: { profile: DriftProfile; choiceLabel: string; encounterId: string; zoneId: number }[] = [];
+  let current = baselineProfile ? { ...baselineProfile } : createInitialProfile();
 
   for (const choice of choices) {
     current = applyDrift(current, choice.driftVectors);
     snapshots.push({
       profile: { ...current },
       choiceLabel: choice.choiceLabel,
-      scenarioId: choice.scenarioId,
+      encounterId: choice.encounterId,
+      zoneId: choice.zoneId,
     });
   }
 

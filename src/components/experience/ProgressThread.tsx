@@ -2,12 +2,12 @@
 
 import { motion } from "framer-motion";
 import { useSessionStore } from "@/store/session-store";
-import { getTotalScenarios } from "@/engine/narrative-engine";
+import { getTotalEncounters } from "@/engine/narrative-engine";
 
 export function ProgressThread() {
-  const currentScenarioIndex = useSessionStore((s) => s.currentScenarioIndex);
-  const total = getTotalScenarios();
-  const progress = (currentScenarioIndex / total) * 100;
+  const choiceCount = useSessionStore((s) => s.choiceHistory.length);
+  const total = getTotalEncounters();
+  const progress = (choiceCount / total) * 100;
 
   return (
     <div className="fixed top-0 left-0 right-0 z-40 h-[2px] bg-drift-border/30">

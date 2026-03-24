@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSessionStore } from "@/store/session-store";
@@ -14,11 +14,24 @@ import { ClosingStatement } from "@/components/reflection/ClosingStatement";
 
 type RevealStage = "intro-1" | "intro-2" | "diagnostic" | "pathlog" | "closing";
 
-export default function ReflectionPage() {
+export default function DiagnosticPage() {
   const router = useRouter();
-  const { initialProfile, currentProfile, choiceHistory, userName, reset } =
-    useSessionStore();
+  const {
+    baselineProfile,
+    currentProfile,
+    profileSnapshots,
+    choiceHistory,
+    userName,
+    phase,
+    reset,
+  } = useSessionStore();
   const [stage, setStage] = useState<RevealStage>("intro-1");
+
+  useEffect(() => {
+    if (phase !== "diagnostic") {
+      router.push("/");
+    }
+  }, [phase, router]);
 
   const advance = useCallback((to: RevealStage) => {
     setStage(to);
@@ -28,6 +41,8 @@ export default function ReflectionPage() {
     reset();
     router.push("/");
   };
+
+  if (phase !== "diagnostic") return null;
 
   return (
     <main className="relative min-h-screen py-24 px-6">
@@ -40,8 +55,8 @@ export default function ReflectionPage() {
             <FadeIn key="intro-1" className="min-h-[30vh] flex items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/70 text-center font-serif">
                 <TypeWriter
-                  text="Seven encounters. Seven concessions — or refusals."
-                  speed={45}
+                  text="Nine encounters. Three zones. Each one a chapter in a transformation you may not have noticed."
+                  speed={40}
                   onComplete={() => setTimeout(() => advance("intro-2"), 1200)}
                 />
               </p>
@@ -53,23 +68,24 @@ export default function ReflectionPage() {
             <FadeIn key="intro-2" className="min-h-[30vh] flex items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/70 text-center font-serif">
                 <TypeWriter
-                  text="Here is what the week revealed."
-                  speed={50}
+                  text="Here is what the experience revealed — and how AI participated in the change."
+                  speed={40}
                   onComplete={() => setTimeout(() => advance("diagnostic"), 1500)}
                 />
               </p>
             </FadeIn>
           )}
 
-          {/* Stage: Final Diagnostic — the core RPG output */}
+          {/* Stage: Final Diagnostic */}
           {stage === "diagnostic" && (
             <FadeIn key="diagnostic">
               <div className="space-y-12">
                 <FinalDiagnostic
                   userName={userName}
-                  initialProfile={initialProfile}
+                  initialProfile={baselineProfile}
                   currentProfile={currentProfile}
                   choices={choiceHistory}
+                  snapshots={profileSnapshots}
                 />
 
                 <motion.button
@@ -101,7 +117,7 @@ export default function ReflectionPage() {
                 {/* Drift visualization */}
                 <div className="pt-8">
                   <DriftReveal
-                    initialProfile={initialProfile}
+                    initialProfile={baselineProfile}
                     currentProfile={currentProfile}
                   />
                 </div>

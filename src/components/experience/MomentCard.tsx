@@ -1,16 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Scenario, Choice } from "@/engine/types";
+import { Encounter, Choice } from "@/engine/types";
 import { ChoiceOption } from "./ChoiceOption";
 import { useState } from "react";
 
 interface MomentCardProps {
-  scenario: Scenario;
+  encounter: Encounter;
+  globalIndex: number;
+  totalEncounters: number;
   onChoice: (choice: Choice) => void;
 }
 
-export function MomentCard({ scenario, onChoice }: MomentCardProps) {
+export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }: MomentCardProps) {
   const [showChoices, setShowChoices] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -36,7 +38,7 @@ export function MomentCard({ scenario, onChoice }: MomentCardProps) {
       >
         <div className="w-8 h-[1px] bg-drift-border" />
         <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/40">
-          Encounter {scenario.chapter.number} of 7
+          Encounter {globalIndex} of {totalEncounters}
         </span>
         <div className="flex-1 h-[1px] bg-drift-border/30" />
       </motion.div>
@@ -49,10 +51,10 @@ export function MomentCard({ scenario, onChoice }: MomentCardProps) {
         transition={{ duration: 0.8 }}
         onAnimationComplete={() => setShowChoices(true)}
       >
-        {scenario.context}
+        {encounter.context}
       </motion.p>
 
-      {/* AI Framing */}
+      {/* System Framing */}
       {showChoices && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -60,12 +62,12 @@ export function MomentCard({ scenario, onChoice }: MomentCardProps) {
           transition={{ duration: 0.5 }}
         >
           <p className="text-sm text-drift-muted mb-6 tracking-wide uppercase">
-            {scenario.aiFraming}
+            {encounter.systemFraming}
           </p>
 
           {/* Choices */}
           <div className="space-y-3">
-            {scenario.choices.map((choice, i) => (
+            {encounter.choices.map((choice, i) => (
               <ChoiceOption
                 key={choice.id}
                 choice={choice}

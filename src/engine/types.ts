@@ -21,7 +21,7 @@ export interface DriftVector {
   description: string;
 }
 
-/** One option the AI "suggests" to the user */
+/** One option the subject selects during an encounter or calibration */
 export interface Choice {
   id: string;
   label: string;
@@ -29,36 +29,58 @@ export interface Choice {
   driftVectors: DriftVector[];
 }
 
-/** Chapter / zone metadata for RPG progression */
-export interface Chapter {
-  number: number;
-  title: string;
-  zone: string;
-  zoneDescription: string;
-  epigraph: string;
-}
-
-/** A single scenario / moment in the week */
-export interface Scenario {
+/** A calibration prompt — establishes baseline self */
+export interface CalibrationPrompt {
   id: string;
-  day: number;
-  dayName: string;
-  timeOfDay: "morning" | "afternoon" | "evening" | "night";
+  axis: DriftAxis;
+  prompt: string;
   context: string;
-  aiFraming: string;
   choices: Choice[];
-  chapter: Chapter;
 }
 
-/** A record of what the user chose */
+/** Thematic zone containing a sequence of encounters */
+export interface Zone {
+  id: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  epigraph: string;
+  epigraphAttribution?: string;
+  encounters: Encounter[];
+}
+
+/** A single encounter within a zone */
+export interface Encounter {
+  id: string;
+  zoneId: number;
+  position: number;
+  context: string;
+  systemFraming: string;
+  choices: Choice[];
+}
+
+/** A record of what the subject chose */
 export interface ChoiceRecord {
-  scenarioId: string;
+  encounterId: string;
   choiceId: string;
   choiceLabel: string;
   driftVectors: DriftVector[];
-  day: number;
-  dayName: string;
-  chapter: Chapter;
+  zoneId: number;
+  zoneTitle: string;
 }
 
-export type Phase = "landing" | "experience" | "reflection";
+/** Snapshot of the drift profile at a point in time */
+export interface ProfileSnapshot {
+  profile: DriftProfile;
+  label: string;
+  zoneId: number;
+}
+
+/** The 10-step user flow */
+export type Phase =
+  | "landing"
+  | "calibration"
+  | "baseline"
+  | "zone"
+  | "interlude"
+  | "diagnostic";

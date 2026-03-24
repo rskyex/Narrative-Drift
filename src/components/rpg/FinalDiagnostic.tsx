@@ -1,15 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { DriftProfile, DriftAxis, ChoiceRecord } from "@/engine/types";
+import { DriftProfile, DriftAxis, ChoiceRecord, ProfileSnapshot } from "@/engine/types";
 import { computeCumulativeDrift } from "@/engine/drift-model";
 import { SubjectPortrait } from "./SubjectPortrait";
+import { zones } from "@/engine/zones";
 
 interface FinalDiagnosticProps {
   userName: string | null;
   initialProfile: DriftProfile;
   currentProfile: DriftProfile;
   choices: ChoiceRecord[];
+  snapshots?: ProfileSnapshot[];
 }
 
 const AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"];
@@ -24,14 +26,9 @@ function deriveArchetype(profile: DriftProfile): ArchetypeResult {
   const dominant = AXES.reduce((a, b) =>
     Math.abs(profile[a]) > Math.abs(profile[b]) ? a : b
   );
-  const secondary = AXES.filter((a) => a !== dominant).reduce((a, b) =>
-    Math.abs(profile[a]) > Math.abs(profile[b]) ? a : b
-  );
 
   const dominantDir = profile[dominant] > 0 ? "positive" : "negative";
-  const secondaryDir = profile[secondary] > 0 ? "positive" : "negative";
 
-  // Archetype designation based on dominant+secondary axis combination
   const archetypeMap: Record<string, Record<string, ArchetypeResult>> = {
     autonomy: {
       positive: {
@@ -98,11 +95,10 @@ function deriveArchetype(profile: DriftProfile): ArchetypeResult {
   const result = archetypeMap[dominant]?.[dominantDir];
   if (result) return result;
 
-  // Fallback
   return {
     designation: "The Composite",
     description: "One whose pattern resists simple classification",
-    analysis: "Your choices did not converge on a single pattern. This is perhaps the most honest result — the self is not a vector but a field, and your week reflected the genuine complexity of navigating mediated experience without a predetermined stance.",
+    analysis: "Your choices did not converge on a single pattern. This is perhaps the most honest result — the self is not a vector but a field, and your journey through the three zones reflected the genuine complexity of navigating mediated experience without a predetermined stance.",
   };
 }
 
@@ -139,15 +135,34 @@ function generateAxisReading(axis: DriftAxis, value: number): string {
   return readings[axis][level];
 }
 
+/** Generate a zone-by-zone transformation summary */
+function generateZoneSummary(choices: ChoiceRecord[]): { zoneId: number; title: string; subtitle: string; choiceCount: number }[] {
+  const summaries: { zoneId: number; title: string; subtitle: string; choiceCount: number }[] = [];
+  for (const zone of zones) {
+    const zoneChoices = choices.filter((c) => c.zoneId === zone.id);
+    if (zoneChoices.length > 0) {
+      summaries.push({
+        zoneId: zone.id,
+        title: zone.title,
+        subtitle: zone.subtitle,
+        choiceCount: zoneChoices.length,
+      });
+    }
+  }
+  return summaries;
+}
+
 export function FinalDiagnostic({
   userName,
   initialProfile,
   currentProfile,
   choices,
+  snapshots,
 }: FinalDiagnosticProps) {
   const archetype = deriveArchetype(currentProfile);
   const cumulativeDrift = computeCumulativeDrift(initialProfile, currentProfile);
   const driftPercentage = Math.round(cumulativeDrift * 100);
+  const zoneSummaries = generateZoneSummary(choices);
 
   return (
     <motion.div
@@ -174,14 +189,33 @@ export function FinalDiagnostic({
         />
       </div>
 
-      {/* Portrait — full size */}
+      {/* Transformation portraits — baseline vs final */}
       <motion.div
-        className="flex justify-center"
+        className="flex items-center justify-center gap-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 1 }}
       >
-        <SubjectPortrait profile={currentProfile} size={220} />
+        <div className="text-center">
+          <SubjectPortrait profile={initialProfile} size={140} />
+          <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
+            Baseline
+          </p>
+        </div>
+        <motion.div
+          className="text-drift-muted/20 text-2xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          →
+        </motion.div>
+        <div className="text-center">
+          <SubjectPortrait profile={currentProfile} size={140} />
+          <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
+            Final
+          </p>
+        </div>
       </motion.div>
 
       {/* Archetype designation */}
@@ -221,8 +255,43 @@ export function FinalDiagnostic({
           {driftPercentage}%
         </p>
         <p className="text-xs text-drift-muted/40 mt-1">
-          from origin across {choices.length} encounters
+          from baseline across {choices.length} encounters in {zoneSummaries.length} zones
         </p>
+      </motion.div>
+
+      {/* Zone journey */}
+      <motion.div
+        className="space-y-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.0, duration: 0.8 }}
+      >
+        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50 text-center mb-4">
+          Transformation Journey
+        </p>
+        {zoneSummaries.map((summary, i) => (
+          <motion.div
+            key={summary.zoneId}
+            className="flex items-center gap-4 border-l border-drift-border/30 pl-4"
+            initial={{ opacity: 0, x: -8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 2.2 + i * 0.15 }}
+          >
+            <div className="w-6 h-6 rounded-full border border-drift-accent/30 flex items-center justify-center flex-shrink-0">
+              <span className="text-[9px] font-mono text-drift-accent/60">
+                {summary.zoneId}
+              </span>
+            </div>
+            <div>
+              <p className="text-sm text-drift-text/70">
+                {summary.title}
+              </p>
+              <p className="text-[10px] text-drift-muted/40">
+                {summary.subtitle} — {summary.choiceCount} encounters
+              </p>
+            </div>
+          </motion.div>
+        ))}
       </motion.div>
 
       {/* Axis readings */}
@@ -230,7 +299,7 @@ export function FinalDiagnostic({
         className="space-y-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.2, duration: 0.8 }}
+        transition={{ delay: 2.8, duration: 0.8 }}
       >
         <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50 text-center">
           Axis Readings
@@ -241,15 +310,21 @@ export function FinalDiagnostic({
             className="border-l border-drift-border/30 pl-4"
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 2.4 + i * 0.15, duration: 0.5 }}
+            transition={{ delay: 3 + i * 0.15, duration: 0.5 }}
           >
             <div className="flex items-baseline justify-between mb-1">
               <span className="text-[10px] uppercase tracking-wider text-drift-muted/50">
                 {axis}
               </span>
-              <span className="text-[11px] font-mono text-drift-accent/50">
-                {currentProfile[axis] > 0 ? "+" : ""}{(currentProfile[axis] * 100).toFixed(0)}
-              </span>
+              <div className="flex items-baseline gap-2">
+                <span className="text-[9px] font-mono text-drift-muted/30">
+                  {initialProfile[axis] > 0 ? "+" : ""}{(initialProfile[axis] * 100).toFixed(0)}
+                </span>
+                <span className="text-drift-muted/20">→</span>
+                <span className="text-[11px] font-mono text-drift-accent/50">
+                  {currentProfile[axis] > 0 ? "+" : ""}{(currentProfile[axis] * 100).toFixed(0)}
+                </span>
+              </div>
             </div>
             <p className="text-xs text-drift-text/50 leading-relaxed">
               {generateAxisReading(axis, currentProfile[axis])}
@@ -263,7 +338,7 @@ export function FinalDiagnostic({
         className="bg-drift-surface/40 border border-drift-border/20 rounded-lg p-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3.5, duration: 1 }}
+        transition={{ delay: 4, duration: 1 }}
       >
         <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/40 mb-4">
           Interpretive Analysis

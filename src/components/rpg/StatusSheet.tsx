@@ -8,8 +8,8 @@ import { SubjectPortrait } from "./SubjectPortrait";
 interface StatusSheetProps {
   profile: DriftProfile;
   userName: string | null;
-  currentChapter?: number;
-  totalChapters: number;
+  currentZone?: number;
+  totalZones: number;
   compact?: boolean;
 }
 
@@ -31,7 +31,7 @@ const axisDescriptors: Record<DriftAxis, (v: number) => string> = {
 function AxisBar({ axis, value, index }: { axis: DriftAxis; value: number; index: number }) {
   const [leftLabel, rightLabel] = getAxisLabels(axis);
   const descriptor = axisDescriptors[axis](value);
-  const percentage = 50 + value * 50; // 0-100 where 50 is center
+  const percentage = 50 + value * 50;
 
   return (
     <motion.div
@@ -68,8 +68,8 @@ function AxisBar({ axis, value, index }: { axis: DriftAxis; value: number; index
 export function StatusSheet({
   profile,
   userName,
-  currentChapter,
-  totalChapters,
+  currentZone,
+  totalZones,
   compact = false,
 }: StatusSheetProps) {
   return (
@@ -85,9 +85,9 @@ export function StatusSheet({
           <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50">
             Subject Dossier
           </span>
-          {currentChapter && (
+          {currentZone && (
             <span className="text-[10px] font-mono text-drift-accent/50">
-              {currentChapter}/{totalChapters}
+              Zone {currentZone}/{totalZones}
             </span>
           )}
         </div>

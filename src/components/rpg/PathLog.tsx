@@ -2,10 +2,15 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ChoiceRecord } from "@/engine/types";
+import { zones } from "@/engine/zones";
 
 interface PathLogProps {
   choices: ChoiceRecord[];
   compact?: boolean;
+}
+
+function getZoneTitle(zoneId: number): string {
+  return zones.find((z) => z.id === zoneId)?.title ?? `Zone ${zoneId}`;
 }
 
 export function PathLog({ choices, compact = false }: PathLogProps) {
@@ -56,11 +61,11 @@ export function PathLog({ choices, compact = false }: PathLogProps) {
               transition={{ delay: i * 0.05 }}
             >
               <div className="flex items-start gap-3">
-                {/* Chapter indicator */}
+                {/* Zone indicator */}
                 <div className="flex-shrink-0 mt-0.5">
                   <div className="w-5 h-5 rounded-full border border-drift-accent/30 flex items-center justify-center">
                     <span className="text-[9px] font-mono text-drift-accent/60">
-                      {choice.chapter?.number ?? choice.day}
+                      {choice.zoneId}
                     </span>
                   </div>
                 </div>
@@ -68,7 +73,7 @@ export function PathLog({ choices, compact = false }: PathLogProps) {
                 <div className="flex-1 min-w-0">
                   {/* Zone label */}
                   <p className="text-[9px] uppercase tracking-wider text-drift-muted/40 mb-0.5">
-                    {choice.chapter?.zone ?? `Day ${choice.day}`}
+                    {getZoneTitle(choice.zoneId)}
                   </p>
 
                   {/* Choice made */}
