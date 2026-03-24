@@ -29,6 +29,15 @@ export interface Choice {
   driftVectors: DriftVector[];
 }
 
+/** Chapter / zone metadata for RPG progression */
+export interface Chapter {
+  number: number;
+  title: string;
+  zone: string;
+  zoneDescription: string;
+  epigraph: string;
+}
+
 /** A single scenario / moment in the week */
 export interface Scenario {
   id: string;
@@ -38,6 +47,7 @@ export interface Scenario {
   context: string;
   aiFraming: string;
   choices: Choice[];
+  chapter: Chapter;
 }
 
 /** A record of what the user chose */
@@ -46,6 +56,9 @@ export interface ChoiceRecord {
   choiceId: string;
   choiceLabel: string;
   driftVectors: DriftVector[];
+  day: number;
+  dayName: string;
+  chapter: Chapter;
 }
 
 export type Phase = "landing" | "experience" | "reflection";

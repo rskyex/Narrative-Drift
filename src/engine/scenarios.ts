@@ -1,4 +1,56 @@
-import { Scenario } from "./types";
+import { Scenario, Chapter } from "./types";
+
+const chapters: Record<number, Chapter> = {
+  1: {
+    number: 1,
+    title: "The Morning Algorithm",
+    zone: "Commute Corridor",
+    zoneDescription: "The space between waking and arrival — where habit meets curation.",
+    epigraph: "What you listen to shapes what you think before you begin to think.",
+  },
+  2: {
+    number: 2,
+    title: "The Suggested Response",
+    zone: "Signal & Noise",
+    zoneDescription: "The narrow channel between intention and expression.",
+    epigraph: "A message composed by someone else, sent in your name, still bears your signature.",
+  },
+  3: {
+    number: 3,
+    title: "The Curated Lens",
+    zone: "Information Architecture",
+    zoneDescription: "The constructed view of the world you did not construct.",
+    epigraph: "To see only what is relevant is to lose the capacity for surprise.",
+  },
+  4: {
+    number: 4,
+    title: "The Taste Profile",
+    zone: "Domestic Threshold",
+    zoneDescription: "The kitchen — where sustenance meets automation.",
+    epigraph: "When the recipe is chosen for you, nourishment becomes consumption.",
+  },
+  5: {
+    number: 5,
+    title: "The Optimized Path",
+    zone: "Navigation Grid",
+    zoneDescription: "Every route is a choice between efficiency and encounter.",
+    epigraph: "The fastest way between two points passes through nothing.",
+  },
+  6: {
+    number: 6,
+    title: "The Preference Engine",
+    zone: "Marketplace of Selves",
+    zoneDescription: "Where identity is inferred from purchase history.",
+    epigraph: "A 95% match is a 5% erasure.",
+  },
+  7: {
+    number: 7,
+    title: "The Infinite Feed",
+    zone: "Terminal Loop",
+    zoneDescription: "The end of the week. The scroll that has no bottom.",
+    epigraph: "The last hour of the day belongs to whoever designed the last screen you see.",
+  },
+};
 
 export const scenarios: Scenario[] = [
   {
@@ -6,6 +58,7 @@ export const scenarios: Scenario[] = [
     day: 1,
     dayName: "Monday",
     timeOfDay: "morning",
+    chapter: chapters[1],
     context:
       "You're getting ready for your commute. Your music app has generated a new playlist titled \"Your Monday Mix\" — thirty tracks it selected based on your recent listening.",
     aiFraming: "Your music assistant suggests:",
@@ -44,6 +97,7 @@ export const scenarios: Scenario[] = [
     day: 2,
     dayName: "Tuesday",
     timeOfDay: "evening",
+    chapter: chapters[2],
     context:
       "A friend you haven't spoken to in months texts: \"Hey, been thinking about you. How's everything going?\" Your phone offers three suggested replies.",
     aiFraming: "Smart Reply suggests:",
@@ -84,6 +138,7 @@ export const scenarios: Scenario[] = [
     day: 3,
     dayName: "Wednesday",
     timeOfDay: "morning",
+    chapter: chapters[3],
     context:
       "Over breakfast, you open your news app. The feed is arranged by an algorithm that has learned your reading patterns over two years. Today's top story is about a policy issue you've read about before. Below it, three stories you'd never have sought out.",
     aiFraming: "Your personalized feed presents:",
@@ -122,6 +177,7 @@ export const scenarios: Scenario[] = [
     day: 4,
     dayName: "Thursday",
     timeOfDay: "evening",
+    chapter: chapters[4],
     context:
       "You're deciding what to cook for dinner. A recipe app sends a push notification: \"Based on what's in season and your dietary preferences, try this: Miso-glazed salmon with roasted vegetables.\" You have the ingredients.",
     aiFraming: "Your recipe assistant recommends:",
@@ -162,6 +218,7 @@ export const scenarios: Scenario[] = [
     day: 5,
     dayName: "Friday",
     timeOfDay: "afternoon",
+    chapter: chapters[5],
     context:
       "You're driving to meet a friend across town. Your navigation app recalculates: \"A faster route has been found. Save 8 minutes.\" The faster route takes the highway. Your usual route goes through the neighborhood with the old bookstore.",
     aiFraming: "Navigation suggests:",
@@ -202,6 +259,7 @@ export const scenarios: Scenario[] = [
     day: 6,
     dayName: "Saturday",
     timeOfDay: "afternoon",
+    chapter: chapters[6],
     context:
       "You need a new pair of running shoes. An online store shows you \"Recommended for you\" — three options ranked by an algorithm that tracks your browsing history, past purchases, and what people with similar profiles bought.",
     aiFraming: "Personalized recommendations:",
@@ -243,6 +301,7 @@ export const scenarios: Scenario[] = [
     day: 7,
     dayName: "Sunday",
     timeOfDay: "night",
+    chapter: chapters[7],
     context:
       "It's late Sunday night. You're in bed, scrolling. The app shows you content it thinks you'll engage with — a mix of things you've liked before and things that are trending among people like you. You notice thirty minutes have passed.",
     aiFraming: "Your feed continues:",

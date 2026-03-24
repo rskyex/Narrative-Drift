@@ -7,12 +7,12 @@ import { useSessionStore } from "@/store/session-store";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
+import { FinalDiagnostic } from "@/components/rpg/FinalDiagnostic";
+import { PathLog } from "@/components/rpg/PathLog";
 import { DriftReveal } from "@/components/reflection/DriftReveal";
-import { DriftTimeline } from "@/components/reflection/DriftTimeline";
-import { ChoiceReplay } from "@/components/reflection/ChoiceReplay";
 import { ClosingStatement } from "@/components/reflection/ClosingStatement";
 
-type RevealStage = "intro-1" | "intro-2" | "reveal" | "timeline" | "replay" | "closing";
+type RevealStage = "intro-1" | "intro-2" | "diagnostic" | "pathlog" | "closing";
 
 export default function ReflectionPage() {
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function ReflectionPage() {
             <FadeIn key="intro-1" className="min-h-[30vh] flex items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/70 text-center font-serif">
                 <TypeWriter
-                  text="Over seven days, you made seven choices."
+                  text="Seven encounters. Seven concessions — or refusals."
                   speed={45}
                   onComplete={() => setTimeout(() => advance("intro-2"), 1200)}
                 />
@@ -53,74 +53,64 @@ export default function ReflectionPage() {
             <FadeIn key="intro-2" className="min-h-[30vh] flex items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/70 text-center font-serif">
                 <TypeWriter
-                  text="Here is what changed."
+                  text="Here is what the week revealed."
                   speed={50}
-                  onComplete={() => setTimeout(() => advance("reveal"), 1500)}
+                  onComplete={() => setTimeout(() => advance("diagnostic"), 1500)}
                 />
               </p>
             </FadeIn>
           )}
 
-          {/* Stage: Drift visualization */}
-          {stage === "reveal" && (
-            <FadeIn key="reveal">
-              <div className="space-y-16">
-                <DriftReveal
+          {/* Stage: Final Diagnostic — the core RPG output */}
+          {stage === "diagnostic" && (
+            <FadeIn key="diagnostic">
+              <div className="space-y-12">
+                <FinalDiagnostic
+                  userName={userName}
                   initialProfile={initialProfile}
                   currentProfile={currentProfile}
+                  choices={choiceHistory}
                 />
 
                 <motion.button
                   className="block mx-auto text-drift-muted/50 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 2.5 }}
-                  onClick={() => advance("timeline")}
+                  transition={{ delay: 5 }}
+                  onClick={() => advance("pathlog")}
                 >
-                  How it happened
+                  Review the path
                 </motion.button>
               </div>
             </FadeIn>
           )}
 
-          {/* Stage: Timeline */}
-          {stage === "timeline" && (
-            <FadeIn key="timeline">
-              <div className="space-y-12">
-                <h2 className="text-sm text-drift-muted uppercase tracking-widest text-center">
-                  The week
-                </h2>
+          {/* Stage: Full path log */}
+          {stage === "pathlog" && (
+            <FadeIn key="pathlog">
+              <div className="space-y-8">
+                <div className="text-center">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-2">
+                    Complete Path Record
+                  </p>
+                  <div className="w-12 h-[1px] bg-drift-border mx-auto" />
+                </div>
 
-                <DriftTimeline choices={choiceHistory} />
+                <PathLog choices={choiceHistory} />
+
+                {/* Drift visualization */}
+                <div className="pt-8">
+                  <DriftReveal
+                    initialProfile={initialProfile}
+                    currentProfile={currentProfile}
+                  />
+                </div>
 
                 <motion.button
                   className="block mx-auto text-drift-muted/50 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
-                  onClick={() => advance("replay")}
-                >
-                  Review each choice
-                </motion.button>
-              </div>
-            </FadeIn>
-          )}
-
-          {/* Stage: Choice replay */}
-          {stage === "replay" && (
-            <FadeIn key="replay">
-              <div className="space-y-12">
-                <h2 className="text-sm text-drift-muted uppercase tracking-widest text-center">
-                  Your choices and their effects
-                </h2>
-
-                <ChoiceReplay choices={choiceHistory} />
-
-                <motion.button
-                  className="block mx-auto text-drift-muted/50 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.8 }}
                   onClick={() => advance("closing")}
                 >
                   Continue

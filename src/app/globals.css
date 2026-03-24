@@ -47,3 +47,32 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #2a2a2a;
 }
+
+/* Vertical text for zone labels */
+.writing-mode-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Subtle border glow for RPG panels */
+.rpg-panel-glow {
+  box-shadow: 0 0 20px rgba(196, 181, 160, 0.03), inset 0 0 20px rgba(196, 181, 160, 0.02);
+}
+
+/* Scanline effect for diagnostic sections */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.diagnostic-scanline::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196, 181, 160, 0.08), transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+}

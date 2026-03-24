@@ -27,6 +27,20 @@ export function MomentCard({ scenario, onChoice }: MomentCardProps) {
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.6 }}
     >
+      {/* Encounter header */}
+      <motion.div
+        className="mb-8 flex items-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="w-8 h-[1px] bg-drift-border" />
+        <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/40">
+          Encounter {scenario.chapter.number} of 7
+        </span>
+        <div className="flex-1 h-[1px] bg-drift-border/30" />
+      </motion.div>
+
       {/* Context */}
       <motion.p
         className="text-lg sm:text-xl leading-relaxed text-drift-text/90 mb-10"
