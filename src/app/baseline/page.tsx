@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
+import { HeroBackground } from "@/components/shared/HeroBackground";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { SubjectPortrait } from "@/components/rpg/SubjectPortrait";
@@ -84,13 +85,14 @@ export default function BaselinePage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
+      <HeroBackground />
       <GrainOverlay />
 
       {/* Fixed header */}
       <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
         <div className="flex items-center justify-between max-w-5xl mx-auto">
           <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/50">
-            <LogoMark size={20} className="text-drift-accent/50" />
+            <LogoMark size={36} className="text-drift-accent/50" />
             Baseline Self
           </span>
           <span className="text-[10px] font-mono text-drift-accent/50">
@@ -257,24 +259,24 @@ export default function BaselinePage() {
                         >
                           <div className="flex items-baseline justify-between mb-2">
                             <div className="flex items-center gap-3">
-                              <span className="text-[10px] uppercase tracking-[0.2em] text-drift-text/75">
+                              <span className="text-sm uppercase tracking-[0.2em] text-drift-text/85 font-medium">
                                 {axis}
                               </span>
-                              <span className="text-[9px] font-mono text-drift-accent/65">
+                              <span className="text-xs font-mono text-drift-accent/75">
                                 {descriptor}
                               </span>
                             </div>
-                            <span className="text-[10px] font-mono text-drift-muted/60">
+                            <span className="text-xs font-mono text-drift-muted/70">
                               {value > 0 ? "+" : ""}
                               {(value * 100).toFixed(0)}
                             </span>
                           </div>
 
                           {/* Bar */}
-                          <div className="relative h-[2px] bg-drift-border/25 rounded-full mb-2">
-                            <div className="absolute left-1/2 top-1/2 w-[1px] h-3 bg-drift-muted/10 -translate-x-1/2 -translate-y-1/2" />
+                          <div className="relative h-[2px] bg-drift-border/30 rounded-full mb-2">
+                            <div className="absolute left-1/2 top-1/2 w-[1px] h-3 bg-drift-muted/15 -translate-x-1/2 -translate-y-1/2" />
                             <motion.div
-                              className="absolute top-1/2 w-1.5 h-1.5 bg-drift-accent/70 rounded-full -translate-y-1/2 -translate-x-1/2"
+                              className="absolute top-1/2 w-2 h-2 bg-drift-accent/80 rounded-full -translate-y-1/2 -translate-x-1/2"
                               initial={{ left: "50%" }}
                               animate={{ left: `${pct}%` }}
                               transition={{ duration: 0.8, delay: 0.5 + i * 0.12, ease: "easeOut" }}
@@ -282,12 +284,12 @@ export default function BaselinePage() {
                           </div>
 
                           <div className="flex justify-between mb-2">
-                            <span className="text-[8px] text-drift-muted/45">{leftLabel}</span>
-                            <span className="text-[8px] text-drift-muted/45">{rightLabel}</span>
+                            <span className="text-[11px] text-drift-muted/70">{leftLabel}</span>
+                            <span className="text-[11px] text-drift-muted/70">{rightLabel}</span>
                           </div>
 
                           {/* Reading description */}
-                          <p className="text-xs text-drift-text/55 leading-[1.7]">
+                          <p className="text-sm text-drift-text/70 leading-[1.7]">
                             {reading}
                           </p>
                         </motion.div>

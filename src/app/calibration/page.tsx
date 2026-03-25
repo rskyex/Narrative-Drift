@@ -8,6 +8,7 @@ import { calibrationPrompts } from "@/engine/calibration";
 import { applyDrift, getAxisLabels } from "@/engine/drift-model";
 import { Choice, DriftAxis, DriftProfile } from "@/engine/types";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
+import { HeroBackground } from "@/components/shared/HeroBackground";
 import { LogoMark } from "@/components/shared/LogoMark";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
@@ -90,6 +91,7 @@ export default function CalibrationPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
+      <HeroBackground />
       <GrainOverlay />
 
       {/* Top progress rail */}
@@ -105,7 +107,7 @@ export default function CalibrationPage() {
       <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/50">
-            <LogoMark size={20} className="text-drift-accent/50" />
+            <LogoMark size={36} className="text-drift-accent/50" />
             Subject Calibration
           </span>
           <span className="text-[10px] font-mono text-drift-accent/50">
@@ -192,18 +194,18 @@ export default function CalibrationPage() {
                         )}
                         layout
                       >
-                        <div className="flex items-baseline justify-between mb-0.5">
+                        <div className="flex items-baseline justify-between mb-1">
                           <span
                             className={cn(
-                              "text-[9px] uppercase tracking-wider",
-                              isActive ? "text-drift-accent/80" : "text-drift-muted/60"
+                              "text-xs uppercase tracking-wider font-medium",
+                              isActive ? "text-drift-accent" : "text-drift-muted/80"
                             )}
                           >
                             {axis}
                           </span>
                           {(isCalibrated || isActive) && (
                             <motion.span
-                              className="text-[9px] font-mono text-drift-accent/60"
+                              className="text-xs font-mono text-drift-accent/80"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                             >
@@ -212,15 +214,15 @@ export default function CalibrationPage() {
                             </motion.span>
                           )}
                         </div>
-                        <div className="relative h-[1px] bg-drift-border/30">
-                          <div className="absolute left-1/2 top-1/2 w-[1px] h-2 bg-drift-muted/15 -translate-x-1/2 -translate-y-1/2" />
+                        <div className="relative h-[2px] bg-drift-border/40 rounded-full">
+                          <div className="absolute left-1/2 top-1/2 w-[1px] h-2 bg-drift-muted/20 -translate-x-1/2 -translate-y-1/2" />
                           {(isCalibrated || (isActive && previewProfile)) && (
                             <motion.div
                               className={cn(
-                                "absolute top-1/2 w-1 h-1 rounded-full -translate-y-1/2 -translate-x-1/2",
+                                "absolute top-1/2 w-2 h-2 rounded-full -translate-y-1/2 -translate-x-1/2",
                                 isActive && previewProfile
-                                  ? "bg-drift-accent/50"
-                                  : "bg-drift-accent/70"
+                                  ? "bg-drift-accent/60"
+                                  : "bg-drift-accent/80"
                               )}
                               initial={{ left: "50%" }}
                               animate={{ left: `${pct}%` }}
@@ -228,9 +230,9 @@ export default function CalibrationPage() {
                             />
                           )}
                         </div>
-                        <div className="flex justify-between mt-0.5">
-                          <span className="text-[7px] text-drift-muted/45">{leftLabel}</span>
-                          <span className="text-[7px] text-drift-muted/45">{rightLabel}</span>
+                        <div className="flex justify-between mt-1">
+                          <span className="text-[11px] text-drift-muted/70">{leftLabel}</span>
+                          <span className="text-[11px] text-drift-muted/70">{rightLabel}</span>
                         </div>
                       </motion.div>
                     );

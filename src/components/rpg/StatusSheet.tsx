@@ -16,9 +16,9 @@ interface StatusSheetProps {
 const AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"];
 
 const ZONE_AVATAR: Record<number, string> = {
-  1: "/transition-1.png",
-  2: "/transition-2.png",
-  3: "/transition-4.png",
+  1: "/baseline.png",
+  2: "/interlude.png",
+  3: "/interlude.png",
 };
 
 const axisDescriptors: Record<DriftAxis, (v: number) => string> = {
@@ -47,25 +47,25 @@ function AxisBar({ axis, value, index }: { axis: DriftAxis; value: number; index
       transition={{ delay: index * 0.08, duration: 0.4 }}
     >
       <div className="flex justify-between items-baseline">
-        <span className="text-[10px] uppercase tracking-wider text-drift-muted/70">
+        <span className="text-xs uppercase tracking-wider text-drift-text/80 font-medium">
           {axis}
         </span>
-        <span className="text-[10px] text-drift-accent/70 font-mono">
+        <span className="text-xs text-drift-accent/80 font-mono">
           {descriptor}
         </span>
       </div>
       <div className="relative h-[2px] bg-drift-border/40 rounded-full">
         <div className="absolute left-1/2 top-0 w-[1px] h-full bg-drift-muted/20 -translate-x-1/2" />
         <motion.div
-          className="absolute top-1/2 w-1.5 h-1.5 bg-drift-accent/80 rounded-full -translate-y-1/2 -translate-x-1/2"
+          className="absolute top-1/2 w-2 h-2 bg-drift-accent/80 rounded-full -translate-y-1/2 -translate-x-1/2"
           initial={{ left: "50%" }}
           animate={{ left: `${percentage}%` }}
           transition={{ duration: 0.8, delay: index * 0.08 + 0.2 }}
         />
       </div>
       <div className="flex justify-between">
-        <span className="text-[8px] text-drift-muted/50">{leftLabel}</span>
-        <span className="text-[8px] text-drift-muted/50">{rightLabel}</span>
+        <span className="text-[11px] text-drift-muted/70">{leftLabel}</span>
+        <span className="text-[11px] text-drift-muted/70">{rightLabel}</span>
       </div>
     </motion.div>
   );
@@ -88,11 +88,11 @@ export function StatusSheet({
       {/* Header */}
       <div className="px-4 py-3 border-b border-drift-border/20">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/65">
+          <span className="text-sm uppercase tracking-[0.2em] text-drift-text/75 font-medium">
             Subject Dossier
           </span>
           {currentZone && (
-            <span className="text-[10px] font-mono text-drift-accent/50">
+            <span className="text-sm font-mono text-drift-accent/70">
               Zone {currentZone}/{totalZones}
             </span>
           )}
@@ -108,8 +108,8 @@ export function StatusSheet({
           <Image
             src={ZONE_AVATAR[currentZone] ?? "/baseline.png"}
             alt="Zone avatar"
-            width={140}
-            height={140}
+            width={180}
+            height={180}
             className="rounded-sm object-cover"
           />
         </div>

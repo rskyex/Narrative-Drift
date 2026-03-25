@@ -45,7 +45,7 @@ export default function LandingPage() {
         {!exiting && (
           <FadeIn key="landing" className="relative z-10 text-center max-w-2xl mx-auto">
             <div className="flex justify-center mb-10">
-              <LogoMark size={120} className="text-drift-accent/60" />
+              <LogoMark size="20vw" className="text-drift-accent/60" />
             </div>
 
             <h1 className="wordmark text-5xl sm:text-7xl md:text-8xl mb-14">
@@ -54,7 +54,7 @@ export default function LandingPage() {
 
             <div className="text-lg sm:text-xl leading-[1.7] text-drift-muted/80 mb-20 max-w-prose mx-auto">
               <TypeWriter
-                text="You are about to enter three zones of mediated experience. In each, an AI system will shape what you see, what you choose, and who you become. The changes will be imperceptible. None will feel consequential. That is precisely the point."
+                text="Three zones. Three AI systems. Each will reshape your choices in ways you won't notice — until it's too late."
                 speed={30}
                 onComplete={handlePremiseComplete}
               />

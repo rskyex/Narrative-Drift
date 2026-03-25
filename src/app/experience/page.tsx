@@ -17,6 +17,7 @@ import { InterludeReveal } from "@/components/interlude/InterludeReveal";
 import { StatusSheet } from "@/components/rpg/StatusSheet";
 import { PathLog } from "@/components/rpg/PathLog";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
+import { HeroBackground } from "@/components/shared/HeroBackground";
 import { LogoMark } from "@/components/shared/LogoMark";
 
 type ViewState = "zone-intro" | "encounter" | "interlude";
@@ -97,6 +98,7 @@ export default function ExperiencePage() {
 
   return (
     <main className="relative min-h-screen">
+      <HeroBackground />
       <GrainOverlay />
 
       <div className="relative z-10 flex min-h-screen">
@@ -160,7 +162,7 @@ export default function ExperiencePage() {
 
       {/* Fixed logo */}
       <div className="fixed top-4 left-6 z-50">
-        <LogoMark size={20} className="text-drift-accent/50" />
+        <LogoMark size={36} className="text-drift-accent/50" />
       </div>
 
       {/* Progress thread */}
