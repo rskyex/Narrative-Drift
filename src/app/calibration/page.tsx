@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSessionStore } from "@/store/session-store";
+import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import { calibrationPrompts } from "@/engine/calibration";
 import { applyDrift, getAxisLabels } from "@/engine/drift-model";
 import { Choice, DriftAxis, DriftProfile } from "@/engine/types";
@@ -25,15 +25,17 @@ export default function CalibrationPage() {
     phase,
   } = useSessionStore();
 
+  const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<"intro" | "active">("intro");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [previewProfile, setPreviewProfile] = useState<DriftProfile | null>(null);
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (phase !== "calibration") {
       router.push("/");
     }
-  }, [phase, router]);
+  }, [phase, router, hasHydrated]);
 
   // Reset selection state when calibration index changes
   useEffect(() => {
@@ -78,7 +80,7 @@ export default function CalibrationPage() {
     [calibrationIndex, makeCalibrationChoice, completeCalibration, router]
   );
 
-  if (!currentPrompt || phase !== "calibration") return null;
+  if (!hasHydrated || !currentPrompt || phase !== "calibration") return null;
 
   const displayProfile = previewProfile ?? currentProfile;
 

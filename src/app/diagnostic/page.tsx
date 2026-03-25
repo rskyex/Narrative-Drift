@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSessionStore } from "@/store/session-store";
+import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
@@ -25,13 +25,15 @@ export default function DiagnosticPage() {
     phase,
     reset,
   } = useSessionStore();
+  const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<RevealStage>("intro-1");
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (phase !== "diagnostic") {
       router.push("/");
     }
-  }, [phase, router]);
+  }, [phase, router, hasHydrated]);
 
   const advance = useCallback((to: RevealStage) => {
     setStage(to);
@@ -42,7 +44,7 @@ export default function DiagnosticPage() {
     router.push("/");
   };
 
-  if (phase !== "diagnostic") return null;
+  if (!hasHydrated || phase !== "diagnostic") return null;
 
   return (
     <main className="relative min-h-screen py-28 px-6">

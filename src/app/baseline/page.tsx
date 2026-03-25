@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSessionStore } from "@/store/session-store";
+import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
@@ -60,20 +60,22 @@ function getDescriptor(axis: DriftAxis, value: number): string {
 export default function BaselinePage() {
   const router = useRouter();
   const { baselineProfile, phase, enterZone } = useSessionStore();
+  const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<"intro" | "portrait" | "sheet" | "ready">("intro");
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (phase !== "baseline") {
       router.push("/");
     }
-  }, [phase, router]);
+  }, [phase, router, hasHydrated]);
 
   const handleProceed = useCallback(() => {
     enterZone(1);
     router.push("/experience");
   }, [enterZone, router]);
 
-  if (phase !== "baseline") return null;
+  if (!hasHydrated || phase !== "baseline") return null;
 
   return (
     <main className="relative min-h-screen overflow-hidden">

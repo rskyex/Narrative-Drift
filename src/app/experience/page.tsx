@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
-import { useSessionStore } from "@/store/session-store";
+import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import {
   getZone,
   getEncounter,
@@ -37,6 +37,7 @@ export default function ExperiencePage() {
     enterZone,
   } = useSessionStore();
 
+  const hasHydrated = useHasHydrated();
   const [viewState, setViewState] = useState<ViewState>("zone-intro");
 
   const zone = getZone(currentZone);
@@ -45,6 +46,7 @@ export default function ExperiencePage() {
 
   // Handle phase-based routing
   useEffect(() => {
+    if (!hasHydrated) return;
     switch (phase) {
       case "interlude":
         setViewState("interlude");
@@ -60,7 +62,7 @@ export default function ExperiencePage() {
         router.push("/");
         break;
     }
-  }, [phase, router, currentZone]);
+  }, [phase, router, currentZone, hasHydrated]);
 
   const handleZoneIntroComplete = useCallback(() => {
     setViewState("encounter");
@@ -90,7 +92,7 @@ export default function ExperiencePage() {
     enterZone(nextZone);
   }, [currentInterlude, enterZone]);
 
-  if (!zone) return null;
+  if (!hasHydrated || !zone) return null;
 
   return (
     <main className="relative min-h-screen">
