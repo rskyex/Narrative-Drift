@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
+import { HeroBackground } from "@/components/shared/HeroBackground";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { LogoMark } from "@/components/shared/LogoMark";
@@ -58,11 +59,12 @@ export default function DiagnosticPage() {
 
   return (
     <main className="relative min-h-screen py-28 px-6">
+      <HeroBackground />
       <GrainOverlay />
 
       {/* Fixed logo */}
       <div className="fixed top-4 left-6 z-50">
-        <LogoMark size={20} className="text-drift-accent/50" />
+        <LogoMark size={36} className="text-drift-accent/50" />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto">

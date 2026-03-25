@@ -11,9 +11,6 @@ interface ZoneIntroProps {
 
 /**
  * Map zone IDs to their transition images.
- * transition-1 = entering Zone 1 (after baseline)
- * transition-2 = entering Zone 2
- * transition-4 = entering Zone 3 (transition-3 not present; transition-4 used)
  */
 const ZONE_TRANSITION_IMAGE: Record<number, string> = {
   1: "/transition-1.png",
@@ -38,9 +35,6 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
-      onAnimationComplete={() => {
-        setTimeout(onComplete, 4500);
-      }}
     >
       {/* Transition image — atmospheric backdrop */}
       {transitionImage && (
@@ -57,7 +51,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
             className="object-cover object-center"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-drift-bg/75" />
+          <div className="absolute inset-0 bg-drift-bg/70" />
           <div
             className="absolute inset-0"
             style={{
@@ -68,11 +62,11 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
         </motion.div>
       )}
 
-      <div className="relative z-10 text-center max-w-lg mx-auto px-6">
+      <div className="relative z-10 text-center max-w-xl mx-auto px-6">
         {/* Transition copy */}
         {transitionCopy && (
           <motion.p
-            className="text-[9px] uppercase tracking-[0.35em] text-drift-accent/50 mb-6"
+            className="text-xs uppercase tracking-[0.35em] text-drift-accent/70 mb-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.05 }}
@@ -83,7 +77,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Zone number */}
         <motion.p
-          className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-8"
+          className="text-sm uppercase tracking-[0.4em] text-drift-muted/70 mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.1 }}
@@ -93,7 +87,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Zone title */}
         <motion.h2
-          className="font-serif text-4xl sm:text-5xl text-drift-text/85 mb-3 tracking-[-0.01em]"
+          className="font-serif text-5xl sm:text-6xl text-drift-text/90 mb-4 tracking-[-0.01em]"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
@@ -103,7 +97,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Subtitle */}
         <motion.p
-          className="text-sm text-drift-muted/65 italic mb-10"
+          className="text-base text-drift-muted/75 italic mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.7 }}
@@ -113,7 +107,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Description */}
         <motion.p
-          className="text-sm text-drift-muted/60 leading-[1.8] mb-10"
+          className="text-base text-drift-text/70 leading-[1.8] mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
@@ -131,13 +125,24 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Epigraph */}
         <motion.p
-          className="text-[13px] text-drift-accent/55 italic font-serif leading-[1.7] max-w-sm mx-auto"
+          className="text-base text-drift-accent/70 italic font-serif leading-[1.7] max-w-sm mx-auto mb-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2.2 }}
         >
           &ldquo;{zone.epigraph}&rdquo;
         </motion.p>
+
+        {/* Continue button — replaces auto-advance */}
+        <motion.button
+          className="text-drift-muted/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-10 border border-drift-border/30 hover:border-drift-accent/40 rounded"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.8, duration: 0.8 }}
+          onClick={onComplete}
+        >
+          Enter Zone
+        </motion.button>
       </div>
     </motion.div>
   );

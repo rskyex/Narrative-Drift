@@ -9,6 +9,12 @@ import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
 import Image from "next/image";
 
+const INTERLUDE_TRANSITION_IMAGE: Record<number, string> = {
+  1: "/transition-1.png",
+  2: "/transition-2.png",
+  3: "/transition-4.png",
+};
+
 interface InterludeRevealProps {
   interludeNumber: number;
   baselineProfile: DriftProfile;
@@ -136,16 +142,29 @@ export function InterludeReveal({
     setTimeout(() => setStage("portrait-drift"), 1200);
   }, []);
 
+  const transitionImage = INTERLUDE_TRANSITION_IMAGE[interludeNumber];
+
   return (
     <div className="max-w-2xl mx-auto">
       <AnimatePresence mode="wait">
-        {/* Stage 1: Reflective narrative */}
+        {/* Stage 1: Reflective narrative with transition image */}
         {stage === "narrative" && (
-          <FadeIn key="narrative" className="min-h-[40vh] flex flex-col items-center justify-center">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-10">
+          <FadeIn key="narrative" className="min-h-[40vh] flex flex-col items-center justify-center relative">
+            {transitionImage && (
+              <div className="absolute inset-0 -z-10 overflow-hidden rounded-lg">
+                <Image
+                  src={transitionImage}
+                  alt=""
+                  fill
+                  className="object-cover object-center opacity-15"
+                  sizes="100vw"
+                />
+              </div>
+            )}
+            <p className="text-sm uppercase tracking-[0.4em] text-drift-accent/70 mb-10">
               Interval — Observation {interludeNumber}
             </p>
-            <p className="text-lg text-drift-text/80 leading-[1.8] font-serif text-center max-w-lg">
+            <p className="text-xl text-drift-text/85 leading-[1.8] font-serif text-center max-w-lg">
               <TypeWriter
                 text={narrative}
                 speed={25}
@@ -160,7 +179,7 @@ export function InterludeReveal({
           <FadeIn key="portrait-drift">
             <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-8">
               <motion.p
-                className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/50"
+                className="text-sm uppercase tracking-[0.3em] text-drift-muted/70"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -185,7 +204,7 @@ export function InterludeReveal({
 
               {/* Drift observation text */}
               <motion.p
-                className="text-sm text-drift-text/70 leading-relaxed font-serif text-center max-w-md"
+                className="text-base text-drift-text/80 leading-relaxed font-serif text-center max-w-md"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.0, duration: 1.2 }}
@@ -241,20 +260,26 @@ export function InterludeReveal({
         {stage === "comparison" && (
           <FadeIn key="comparison">
             <div className="space-y-12">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 text-center">
+              <p className="text-sm uppercase tracking-[0.4em] text-drift-muted/70 text-center">
                 Drift Comparison — Before &amp; After
               </p>
 
-              {/* Side-by-side portraits */}
+              {/* Side-by-side portraits — baseline.png vs interlude.png */}
               <div className="flex items-center justify-center gap-14">
                 <div className="text-center">
-                  <SubjectPortrait profile={baselineProfile} size={120} />
-                  <p className="text-[10px] text-drift-muted/55 mt-3 uppercase tracking-wider">
+                  <Image
+                    src="/baseline.png"
+                    alt="Baseline self"
+                    width={140}
+                    height={140}
+                    className="rounded-sm object-cover"
+                  />
+                  <p className="text-sm text-drift-muted/70 mt-3 uppercase tracking-wider">
                     Baseline
                   </p>
                 </div>
                 <motion.div
-                  className="text-drift-muted/20 text-2xl"
+                  className="text-drift-muted/30 text-3xl"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
@@ -262,8 +287,14 @@ export function InterludeReveal({
                   →
                 </motion.div>
                 <div className="text-center">
-                  <SubjectPortrait profile={currentProfile} size={120} />
-                  <p className="text-[10px] text-drift-muted/55 mt-3 uppercase tracking-wider">
+                  <Image
+                    src="/interlude.png"
+                    alt="Current self"
+                    width={140}
+                    height={140}
+                    className="rounded-sm object-cover"
+                  />
+                  <p className="text-sm text-drift-muted/70 mt-3 uppercase tracking-wider">
                     Current
                   </p>
                 </div>
@@ -290,12 +321,12 @@ export function InterludeReveal({
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 1 + i * 0.1 }}
                     >
-                      <span className="text-[10px] uppercase tracking-wider text-drift-muted/65">
+                      <span className="text-sm uppercase tracking-wider text-drift-muted/75">
                         {axis}
                       </span>
                       <span
-                        className={`text-[11px] font-mono ${
-                          delta > 0 ? "text-drift-accent/60" : "text-drift-alert/60"
+                        className={`text-sm font-mono ${
+                          delta > 0 ? "text-drift-accent/75" : "text-drift-alert/75"
                         }`}
                       >
                         {delta > 0 ? "+" : ""}{(delta * 100).toFixed(0)}
@@ -314,7 +345,7 @@ export function InterludeReveal({
               >
                 <button
                   onClick={onContinue}
-                  className="text-drift-muted/70 hover:text-drift-text text-[11px] tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-8"
+                  className="text-drift-muted/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-8 border border-drift-border/30 hover:border-drift-accent/40 rounded"
                 >
                   Continue
                 </button>

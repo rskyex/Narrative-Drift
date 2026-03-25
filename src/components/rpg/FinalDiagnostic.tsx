@@ -248,7 +248,7 @@ export function FinalDiagnostic({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-3"
+          className="text-sm uppercase tracking-[0.4em] text-drift-muted/70 mb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
