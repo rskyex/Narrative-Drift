@@ -7,6 +7,7 @@ import { getAxisLabels } from "@/engine/drift-model";
 import { useState, useCallback } from "react";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
+import Image from "next/image";
 
 interface InterludeRevealProps {
   interludeNumber: number;
@@ -142,7 +143,7 @@ export function InterludeReveal({
         {stage === "narrative" && (
           <FadeIn key="narrative" className="min-h-[40vh] flex flex-col items-center justify-center">
             <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-10">
-              Interlude {interludeNumber}
+              Interval — Observation {interludeNumber}
             </p>
             <p className="text-lg text-drift-text/65 leading-[1.8] font-serif text-center max-w-lg">
               <TypeWriter
@@ -164,16 +165,22 @@ export function InterludeReveal({
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                Subject Observation
+                Subject Under Observation
               </motion.p>
 
-              {/* Single portrait — current state — letting user see the accumulated drift */}
+              {/* Portrait — replaced with interlude image asset */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.6, duration: 1.2, ease: "easeOut" }}
               >
-                <SubjectPortrait profile={currentProfile} size={180} />
+                <Image
+                  src="/interlude.png"
+                  alt="Subject under observation"
+                  width={180}
+                  height={180}
+                  className="rounded-sm object-cover"
+                />
               </motion.div>
 
               {/* Drift observation text */}
@@ -235,7 +242,7 @@ export function InterludeReveal({
           <FadeIn key="comparison">
             <div className="space-y-12">
               <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 text-center">
-                Profile Comparison
+                Drift Comparison — Before &amp; After
               </p>
 
               {/* Side-by-side portraits */}

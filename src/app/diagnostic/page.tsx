@@ -66,7 +66,7 @@ export default function DiagnosticPage() {
             <FadeIn key="intro-1" className="min-h-[40vh] flex items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/60 text-center font-serif leading-[1.6]">
                 <TypeWriter
-                  text="Nine encounters. Three zones. Each one a chapter in a transformation you may not have noticed."
+                  text="Nine encounters. Three zones. A transformation assembled from choices so small they barely registered."
                   speed={40}
                   onComplete={() => setTimeout(() => advance("intro-2"), 1400)}
                 />
@@ -79,7 +79,7 @@ export default function DiagnosticPage() {
             <FadeIn key="intro-2" className="min-h-[40vh] flex items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/60 text-center font-serif leading-[1.6]">
                 <TypeWriter
-                  text="Here is what the experience revealed — and how AI participated in the change."
+                  text="What follows is the record — what shifted, by how much, and the system's role in each departure from who you were."
                   speed={40}
                   onComplete={() => setTimeout(() => advance("diagnostic"), 1600)}
                 />
@@ -106,7 +106,7 @@ export default function DiagnosticPage() {
                   transition={{ delay: 5 }}
                   onClick={() => advance("timeline")}
                 >
-                  View the timeline
+                  Trace the timeline
                 </motion.button>
               </div>
             </FadeIn>
@@ -128,7 +128,7 @@ export default function DiagnosticPage() {
                   transition={{ delay: 2 }}
                   onClick={() => advance("pathlog")}
                 >
-                  Review the path
+                  Examine the record
                 </motion.button>
               </div>
             </FadeIn>
@@ -140,7 +140,7 @@ export default function DiagnosticPage() {
               <div className="space-y-10">
                 <div className="text-center">
                   <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-3">
-                    Complete Path Record
+                    Full Decision Record
                   </p>
                   <div className="w-16 mx-auto drift-divider" />
                 </div>
@@ -162,7 +162,7 @@ export default function DiagnosticPage() {
                   transition={{ delay: 1 }}
                   onClick={() => advance("intervention")}
                 >
-                  See how the system shaped you
+                  Map the system&apos;s influence
                 </motion.button>
               </div>
             </FadeIn>
@@ -207,7 +207,7 @@ export default function DiagnosticPage() {
                     onClick={handleRestart}
                     className="text-drift-muted/25 hover:text-drift-muted/50 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
                   >
-                    Start over
+                    Return to origin
                   </button>
                 </motion.div>
               </div>

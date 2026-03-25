@@ -85,6 +85,18 @@ body {
   pointer-events: none;
 }
 
+/* Wordmark — editorial display treatment */
+.wordmark {
+  font-family: Cambria, Georgia, "Times New Roman", serif;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #c4b5a0;
+  line-height: 1.1;
+  font-variant-ligatures: discretionary-ligatures;
+  -webkit-font-smoothing: antialiased;
+}
+
 /* Subtle pulse for key moments */
 @keyframes gentlePulse {
   0%, 100% { opacity: 1; }

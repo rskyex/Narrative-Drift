@@ -8,11 +8,11 @@ export const zones: Zone[] = [
   {
     id: 1,
     title: "The Feed",
-    subtitle: "Short-Form Recommendation",
+    subtitle: "Algorithmic Curation of Attention",
     description:
-      "Three encounters with the systems that decide what you see, hear, and read. Each one has learned your patterns. Each one believes it knows what you want.",
+      "Three encounters with the systems that decide what you see, hear, and read. Each has studied your patterns for years. Each believes it understands what you want better than you do.",
     epigraph:
-      "The architecture of attention is the architecture of the self. What you never encounter, you can never become.",
+      "The architecture of attention is the architecture of the self. What you are never shown, you can never become.",
     encounters: [
       {
         id: "z1-playlist",
@@ -137,9 +137,9 @@ export const zones: Zone[] = [
   {
     id: 2,
     title: "The Companion",
-    subtitle: "AI as Personal Assistant",
+    subtitle: "Delegation of Agency",
     description:
-      "Three encounters with AI systems that act on your behalf — composing your words, planning your meals, choosing your route. Each one removes a small friction. Each removal is a small transfer.",
+      "Three encounters with AI systems that act on your behalf — composing your words, selecting your meals, choosing your route. Each removes a small friction from your day. Each removal is a small transfer of authorship.",
     epigraph:
       "The hand that lifts the burden also shapes the posture. What you no longer carry, you no longer feel.",
     encounters: [
@@ -270,11 +270,11 @@ export const zones: Zone[] = [
   {
     id: 3,
     title: "The Commons",
-    subtitle: "Political Information Environment",
+    subtitle: "AI-Mediated Civic Life",
     description:
-      "Three encounters with how AI shapes your understanding of public life — what issues reach you, how you evaluate them, and whether you act. The political self is the self most vulnerable to invisible curation.",
+      "Three encounters with how AI shapes your understanding of public life — what issues reach you, how you evaluate them, and whether you act. The civic self is the self most vulnerable to invisible curation.",
     epigraph:
-      "A citizen who only encounters opinions the algorithm predicts they will share is a citizen who has already voted.",
+      "A citizen who encounters only the opinions an algorithm predicts they will share is a citizen who has already voted.",
     encounters: [
       {
         id: "z3-filter",
