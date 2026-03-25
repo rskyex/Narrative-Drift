@@ -65,6 +65,7 @@ export default function BaselinePage() {
   const { baselineProfile, phase, enterZone } = useSessionStore();
   const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<"intro" | "portrait" | "sheet" | "ready">("intro");
+  const [introReady, setIntroReady] = useState(false);
 
   // Only redirect to landing for phases that precede baseline.
   // Do NOT redirect for forward phases (zone, interlude, etc.) — that would
@@ -113,9 +114,21 @@ export default function BaselinePage() {
                 <TypeWriter
                   text="This is who you are before anything shifts. Remember this version of yourself. Every departure from this origin will be measured, recorded, and returned to you."
                   speed={30}
-                  onComplete={() => setTimeout(() => setStage("portrait"), 1200)}
+                  onComplete={() => setIntroReady(true)}
                 />
               </p>
+
+              {introReady && (
+                <motion.button
+                  className="mt-10 text-drift-muted/60 hover:text-drift-text/80 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8 }}
+                  onClick={() => setStage("portrait")}
+                >
+                  Continue
+                </motion.button>
+              )}
             </div>
           </FadeIn>
         )}

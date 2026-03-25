@@ -138,8 +138,10 @@ export function InterludeReveal({
     currentProfile
   );
 
+  const [narrativeReady, setNarrativeReady] = useState(false);
+
   const handleNarrativeComplete = useCallback(() => {
-    setTimeout(() => setStage("portrait-drift"), 1200);
+    setNarrativeReady(true);
   }, []);
 
   const transitionImage = INTERLUDE_TRANSITION_IMAGE[interludeNumber];
@@ -171,6 +173,18 @@ export function InterludeReveal({
                 onComplete={handleNarrativeComplete}
               />
             </p>
+
+            {narrativeReady && (
+              <motion.button
+                className="mt-10 text-drift-muted/60 hover:text-drift-text/80 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                onClick={() => { setNarrativeReady(false); setStage("portrait-drift"); }}
+              >
+                Continue
+              </motion.button>
+            )}
           </FadeIn>
         )}
 

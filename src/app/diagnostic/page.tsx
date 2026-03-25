@@ -38,6 +38,7 @@ export default function DiagnosticPage() {
   } = useSessionStore();
   const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<RevealStage>("intro-1");
+  const [textReady, setTextReady] = useState(false);
 
   useEffect(() => {
     if (!hasHydrated) return;
@@ -47,6 +48,7 @@ export default function DiagnosticPage() {
   }, [phase, router, hasHydrated]);
 
   const advance = useCallback((to: RevealStage) => {
+    setTextReady(false);
     setStage(to);
   }, []);
 
@@ -71,27 +73,49 @@ export default function DiagnosticPage() {
         <AnimatePresence mode="wait">
           {/* Stage: Intro line 1 */}
           {stage === "intro-1" && (
-            <FadeIn key="intro-1" className="min-h-[40vh] flex items-center justify-center">
+            <FadeIn key="intro-1" className="min-h-[40vh] flex flex-col items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/75 text-center font-serif leading-[1.6]">
                 <TypeWriter
                   text="Nine encounters. Three zones. A transformation assembled from choices so small they barely registered."
                   speed={40}
-                  onComplete={() => setTimeout(() => advance("intro-2"), 1400)}
+                  onComplete={() => setTextReady(true)}
                 />
               </p>
+              {textReady && (
+                <motion.button
+                  className="mt-10 text-drift-muted/60 hover:text-drift-text/80 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8 }}
+                  onClick={() => advance("intro-2")}
+                >
+                  Continue
+                </motion.button>
+              )}
             </FadeIn>
           )}
 
           {/* Stage: Intro line 2 */}
           {stage === "intro-2" && (
-            <FadeIn key="intro-2" className="min-h-[40vh] flex items-center justify-center">
+            <FadeIn key="intro-2" className="min-h-[40vh] flex flex-col items-center justify-center">
               <p className="text-xl sm:text-2xl text-drift-text/75 text-center font-serif leading-[1.6]">
                 <TypeWriter
                   text="What follows is the record — what shifted, by how much, and the system's role in each departure from who you were."
                   speed={40}
-                  onComplete={() => setTimeout(() => advance("diagnostic"), 1600)}
+                  onComplete={() => setTextReady(true)}
                 />
               </p>
+              {textReady && (
+                <motion.button
+                  className="mt-10 text-drift-muted/60 hover:text-drift-text/80 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8 }}
+                  onClick={() => advance("diagnostic")}
+                >
+                  Continue
+                </motion.button>
+              )}
             </FadeIn>
           )}
 

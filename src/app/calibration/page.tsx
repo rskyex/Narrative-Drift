@@ -29,6 +29,7 @@ export default function CalibrationPage() {
 
   const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<"intro" | "active">("intro");
+  const [introReady, setIntroReady] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [previewProfile, setPreviewProfile] = useState<DriftProfile | null>(null);
 
@@ -133,9 +134,21 @@ export default function CalibrationPage() {
                 <TypeWriter
                   text="Before we begin, I need to understand who you are. Five questions. Answer honestly — not who you aspire to be, but who you are in the small, unwitnessed moments where character reveals itself."
                   speed={28}
-                  onComplete={() => setTimeout(() => setStage("active"), 1400)}
+                  onComplete={() => setIntroReady(true)}
                 />
               </p>
+
+              {introReady && (
+                <motion.button
+                  className="mt-10 text-drift-muted/60 hover:text-drift-text/80 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8 }}
+                  onClick={() => setStage("active")}
+                >
+                  Continue
+                </motion.button>
+              )}
             </div>
           </FadeIn>
         ) : (
