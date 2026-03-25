@@ -48,7 +48,7 @@ export default function LandingPage() {
               <LogoMark size={40} className="text-drift-accent/40" />
             </div>
 
-            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl tracking-[-0.02em] mb-14 text-drift-text/90">
+            <h1 className="wordmark text-4xl sm:text-5xl md:text-6xl mb-14">
               Narrative Drift
             </h1>
 

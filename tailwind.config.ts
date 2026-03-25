@@ -10,9 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         drift: {
-          bg: "#0a0a0a",
-          surface: "#141414",
-          border: "#1f1f1f",
+          bg: "#090b12",
+          surface: "#0f1118",
+          border: "#1a1c25",
           text: "#e8e8e8",
           muted: "#737373",
           accent: "#c4b5a0",
@@ -20,6 +20,7 @@ const config: Config = {
         },
       },
       fontFamily: {
+        display: ["Cambria", "Georgia", "'Times New Roman'", "serif"],
         serif: ["Georgia", "Cambria", "'Times New Roman'", "Times", "serif"],
         sans: [
           "system-ui",
