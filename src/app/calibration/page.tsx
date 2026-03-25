@@ -8,11 +8,11 @@ import { calibrationPrompts } from "@/engine/calibration";
 import { applyDrift, getAxisLabels } from "@/engine/drift-model";
 import { Choice, DriftAxis, DriftProfile } from "@/engine/types";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
-import { SubjectPortrait } from "@/components/rpg/SubjectPortrait";
 import { LogoMark } from "@/components/shared/LogoMark";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const ALL_AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"];
 
@@ -104,11 +104,11 @@ export default function CalibrationPage() {
       {/* Fixed header */}
       <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/30">
-            <LogoMark size={16} className="text-drift-accent/25" />
+          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/50">
+            <LogoMark size={20} className="text-drift-accent/50" />
             Subject Calibration
           </span>
-          <span className="text-[10px] font-mono text-drift-accent/30">
+          <span className="text-[10px] font-mono text-drift-accent/50">
             {calibrationIndex + 1} / {calibrationPrompts.length}
           </span>
         </div>
@@ -124,12 +124,12 @@ export default function CalibrationPage() {
                 animate={{ width: 32 }}
                 transition={{ duration: 1, delay: 0.3 }}
               />
-              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/35 mb-10">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/55 mb-10">
                 Baseline Calibration
               </p>
-              <p className="text-lg text-drift-text/60 leading-[1.8] font-serif">
+              <p className="text-lg text-drift-text/75 leading-[1.8] font-serif">
                 <TypeWriter
-                  text="Before the experience begins, we need a reading. Five questions. Answer as you are — not as you wish to be, but as you behave in the small, unwitnessed moments where character is legible."
+                  text="Before we begin, I need to understand who you are. Five questions. Answer honestly — not who you aspire to be, but who you are in the small, unwitnessed moments where character reveals itself."
                   speed={28}
                   onComplete={() => setTimeout(() => setStage("active"), 1400)}
                 />
@@ -164,9 +164,12 @@ export default function CalibrationPage() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <SubjectPortrait
-                      profile={displayProfile}
-                      size={220}
+                    <Image
+                      src="/baseline.png"
+                      alt="Subject portrait"
+                      width={220}
+                      height={220}
+                      className="rounded-sm object-cover"
                     />
                   </motion.div>
                 </div>
@@ -193,14 +196,14 @@ export default function CalibrationPage() {
                           <span
                             className={cn(
                               "text-[9px] uppercase tracking-wider",
-                              isActive ? "text-drift-accent/70" : "text-drift-muted/50"
+                              isActive ? "text-drift-accent/80" : "text-drift-muted/60"
                             )}
                           >
                             {axis}
                           </span>
                           {(isCalibrated || isActive) && (
                             <motion.span
-                              className="text-[9px] font-mono text-drift-accent/40"
+                              className="text-[9px] font-mono text-drift-accent/60"
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                             >
@@ -226,8 +229,8 @@ export default function CalibrationPage() {
                           )}
                         </div>
                         <div className="flex justify-between mt-0.5">
-                          <span className="text-[7px] text-drift-muted/25">{leftLabel}</span>
-                          <span className="text-[7px] text-drift-muted/25">{rightLabel}</span>
+                          <span className="text-[7px] text-drift-muted/45">{leftLabel}</span>
+                          <span className="text-[7px] text-drift-muted/45">{rightLabel}</span>
                         </div>
                       </motion.div>
                     );
@@ -249,18 +252,18 @@ export default function CalibrationPage() {
                     {/* Axis being calibrated */}
                     <div className="flex items-center gap-3 mb-10">
                       <div className="w-8 h-[1px] bg-drift-accent/25" />
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/45">
+                      <span className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/65">
                         Calibrating: {currentPrompt.axis}
                       </span>
                     </div>
 
                     {/* Context */}
-                    <p className="text-sm text-drift-muted/40 leading-[1.7] mb-5 max-w-md">
+                    <p className="text-sm text-drift-muted/60 leading-[1.7] mb-5 max-w-md">
                       {currentPrompt.context}
                     </p>
 
                     {/* Prompt */}
-                    <h2 className="font-serif text-xl sm:text-2xl text-drift-text/85 mb-12 leading-[1.5]">
+                    <h2 className="font-serif text-xl sm:text-2xl text-drift-text/90 mb-12 leading-[1.5]">
                       {currentPrompt.prompt}
                     </h2>
 
@@ -299,11 +302,11 @@ export default function CalibrationPage() {
                                 !isDisabled && "group-hover:bg-drift-accent/40"
                               )} />
                               <div>
-                                <p className="text-drift-text/80 text-sm leading-relaxed">
+                                <p className="text-drift-text/90 text-sm leading-relaxed">
                                   {choice.label}
                                 </p>
                                 {choice.subtext && (
-                                  <p className="text-drift-muted/40 text-xs mt-1 leading-relaxed">
+                                  <p className="text-drift-muted/60 text-xs mt-1 leading-relaxed">
                                     {choice.subtext}
                                   </p>
                                 )}

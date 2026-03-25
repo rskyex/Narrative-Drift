@@ -7,6 +7,7 @@ import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
+import { LogoMark } from "@/components/shared/LogoMark";
 import { FinalDiagnostic } from "@/components/rpg/FinalDiagnostic";
 import { PathLog } from "@/components/rpg/PathLog";
 import { DriftReveal } from "@/components/reflection/DriftReveal";
@@ -59,12 +60,17 @@ export default function DiagnosticPage() {
     <main className="relative min-h-screen py-28 px-6">
       <GrainOverlay />
 
+      {/* Fixed logo */}
+      <div className="fixed top-4 left-6 z-50">
+        <LogoMark size={20} className="text-drift-accent/50" />
+      </div>
+
       <div className="relative z-10 max-w-2xl mx-auto">
         <AnimatePresence mode="wait">
           {/* Stage: Intro line 1 */}
           {stage === "intro-1" && (
             <FadeIn key="intro-1" className="min-h-[40vh] flex items-center justify-center">
-              <p className="text-xl sm:text-2xl text-drift-text/60 text-center font-serif leading-[1.6]">
+              <p className="text-xl sm:text-2xl text-drift-text/75 text-center font-serif leading-[1.6]">
                 <TypeWriter
                   text="Nine encounters. Three zones. A transformation assembled from choices so small they barely registered."
                   speed={40}
@@ -77,7 +83,7 @@ export default function DiagnosticPage() {
           {/* Stage: Intro line 2 */}
           {stage === "intro-2" && (
             <FadeIn key="intro-2" className="min-h-[40vh] flex items-center justify-center">
-              <p className="text-xl sm:text-2xl text-drift-text/60 text-center font-serif leading-[1.6]">
+              <p className="text-xl sm:text-2xl text-drift-text/75 text-center font-serif leading-[1.6]">
                 <TypeWriter
                   text="What follows is the record — what shifted, by how much, and the system's role in each departure from who you were."
                   speed={40}
@@ -100,7 +106,7 @@ export default function DiagnosticPage() {
                 />
 
                 <motion.button
-                  className="block mx-auto text-drift-muted/40 hover:text-drift-muted/70 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
+                  className="block mx-auto text-drift-muted/60 hover:text-drift-muted/85 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 5 }}
@@ -122,7 +128,7 @@ export default function DiagnosticPage() {
                 />
 
                 <motion.button
-                  className="block mx-auto text-drift-muted/50 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
+                  className="block mx-auto text-drift-muted/65 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 2 }}
@@ -139,7 +145,7 @@ export default function DiagnosticPage() {
             <FadeIn key="pathlog">
               <div className="space-y-10">
                 <div className="text-center">
-                  <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-3">
+                  <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-3">
                     Full Decision Record
                   </p>
                   <div className="w-16 mx-auto drift-divider" />
@@ -156,7 +162,7 @@ export default function DiagnosticPage() {
                 </div>
 
                 <motion.button
-                  className="block mx-auto text-drift-muted/40 hover:text-drift-muted/70 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
+                  className="block mx-auto text-drift-muted/60 hover:text-drift-muted/85 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
@@ -179,7 +185,7 @@ export default function DiagnosticPage() {
                 />
 
                 <motion.button
-                  className="block mx-auto text-drift-muted/50 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
+                  className="block mx-auto text-drift-muted/65 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 4 }}
@@ -205,7 +211,7 @@ export default function DiagnosticPage() {
                 >
                   <button
                     onClick={handleRestart}
-                    className="text-drift-muted/25 hover:text-drift-muted/50 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
+                    className="text-drift-muted/50 hover:text-drift-muted/70 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
                   >
                     Return to origin
                   </button>
