@@ -34,6 +34,7 @@ export function SubjectPortrait({ profile, size = 200, className }: SubjectPortr
   const skin = hsl(skinHue, skinSat, skinLight);
   const skinShade = hsl(skinHue, skinSat + 5, skinLight - 14);
   const skinDeep = hsl(skinHue, skinSat + 3, skinLight - 22);
+  const skinHighlight = hsl(skinHue - 2, skinSat - 5, skinLight + 6);
 
   // Hair
   const hairHue = skinHue - 3;
@@ -46,14 +47,15 @@ export function SubjectPortrait({ profile, size = 200, className }: SubjectPortr
   const irisHue = 38 + novelty * 30;
   const irisSat = 35 + Math.abs(novelty) * 20;
   const iris = hsl(irisHue, irisSat, 42);
+  const irisLight = hsl(irisHue, irisSat + 8, 52);
   const eyeOpen = 0.75 + autonomy * 0.25; // 0.5–1.0
   const pupilDx = -autonomy * 1.2;
 
-  // Mouth
-  const mouthDy = affect * 1.5; // positive affect → subtle smile (control point moves UP = negative y)
+  // Mouth — wider expression range
+  const mouthDy = affect * 3;
 
-  // Brows
-  const browLift = autonomy * 2; // autonomous → slightly raised
+  // Brows — stronger lift range
+  const browLift = autonomy * 3;
 
   // Cybernetic
   const cyberAlpha = 0.15 + (1 + sociality) * 0.15;
@@ -70,19 +72,20 @@ export function SubjectPortrait({ profile, size = 200, className }: SubjectPortr
   const cloth = hsl(hairHue + 5, 10, 16);
   const clothEdge = hsl(hairHue + 5, 8, 22);
 
-  // ─── EYE GEOMETRY ────────────────────────────────────────
+  // ─── EYE GEOMETRY (larger, more visible) ───────────────────
 
-  const eH = 4 + eyeOpen * 5.5;
-  const eBot = eH * 0.6;
+  const eH = 5 + eyeOpen * 6;       // was 4+eyeOpen*5.5 → bigger range
+  const eBot = eH * 0.55;
 
-  const lEye = almondPath(82, 96, 11, eH, eBot);
-  const rEye = almondPath(118, 96, 11, eH, eBot);
+  const lEye = almondPath(82, 96, 13, eH, eBot);    // halfW 11→13
+  const rEye = almondPath(118, 96, 13, eH, eBot);
 
   const lIrisX = 82 + pupilDx;
   const rIrisX = 118 + pupilDx;
   const irisY = 95.5;
-  const irisR = 5.5;
-  const pupilR = 2.8;
+  const irisR = 6.5;                // was 5.5 → larger iris
+  const pupilR = 3.2;               // was 2.8 → proportional pupil
+  const limbalR = irisR + 0.6;      // dark limbal ring around iris
 
   // ─── CYBERNETIC TRACE ────────────────────────────────────
 
@@ -122,10 +125,32 @@ export function SubjectPortrait({ profile, size = 200, className }: SubjectPortr
             <stop offset="0%" stopColor={hsla(accentHue, 25, 55, glowAlpha)} />
             <stop offset="100%" stopColor="transparent" />
           </radialGradient>
-          <linearGradient id={`${uid}-faceG`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={skin} />
-            <stop offset="85%" stopColor={skin} />
-            <stop offset="100%" stopColor={skinShade} />
+          {/* Volumetric face gradient — light source top-left */}
+          <radialGradient id={`${uid}-faceG`} cx="38%" cy="32%" r="65%" fx="38%" fy="32%">
+            <stop offset="0%" stopColor={skinHighlight} />
+            <stop offset="45%" stopColor={skin} />
+            <stop offset="85%" stopColor={skinShade} />
+            <stop offset="100%" stopColor={skinDeep} />
+          </radialGradient>
+          {/* Forehead highlight */}
+          <radialGradient id={`${uid}-foreG`} cx="45%" cy="30%" r="30%">
+            <stop offset="0%" stopColor={hsla(skinHue - 2, skinSat - 8, skinLight + 8, 0.35)} />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+          {/* Cheek warmth (left) */}
+          <radialGradient id={`${uid}-cheekL`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor={hsla(skinHue + 8, skinSat + 15, skinLight - 2, 0.12)} />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+          {/* Cheek warmth (right) */}
+          <radialGradient id={`${uid}-cheekR`} cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor={hsla(skinHue + 8, skinSat + 15, skinLight - 2, 0.10)} />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+          {/* Nose highlight */}
+          <linearGradient id={`${uid}-noseHi`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={hsla(skinHue, skinSat - 5, skinLight + 10, 0.2)} />
+            <stop offset="100%" stopColor="transparent" />
           </linearGradient>
         </defs>
 
@@ -153,186 +178,276 @@ export function SubjectPortrait({ profile, size = 200, className }: SubjectPortr
         <path
           d="M91,145 C90,155 89,164 89,172 L111,172 C111,164 110,155 109,145"
           fill={skinShade}
-          opacity={0.12}
+          opacity={0.15}
+        />
+        {/* Neck side shadow — left */}
+        <path
+          d="M91,146 C90,156 89,165 89,172 L93,172 C93,165 92,156 92,148"
+          fill={skinDeep} opacity={0.08}
+        />
+        {/* Neck side shadow — right */}
+        <path
+          d="M109,146 C110,156 111,165 111,172 L107,172 C107,165 108,156 108,148"
+          fill={skinDeep} opacity={0.06}
         />
         {/* Throat shadow */}
         <path
           d="M96,148 Q100,155 104,148"
           fill="none"
           stroke={skinShade}
-          strokeWidth={0.6}
-          opacity={0.15}
+          strokeWidth={0.8}
+          opacity={0.2}
         />
 
-        {/* ── Head / face (skin base) ── */}
+        {/* ── Head / face — sculpted silhouette ── */}
         <path
           d={`
             M100,152
-            C86,152 76,142 72,128
-            C66,112 64,96 66,78
-            C68,64 76,52 86,46
-            C93,42 97,40 100,40
-            C103,40 107,42 114,46
-            C124,52 132,64 134,78
-            C136,96 134,112 128,128
-            C124,142 114,152 100,152 Z
+            C88,152 78,144 73,132
+            C68,120 64,106 64,90
+            C64,74 68,62 76,52
+            C84,42 92,38 100,38
+            C108,38 116,42 124,52
+            C132,62 136,74 136,90
+            C136,106 132,120 127,132
+            C122,144 112,152 100,152 Z
           `}
           fill={`url(#${uid}-faceG)`}
         />
+        {/* Forehead highlight overlay */}
+        <ellipse cx={94} cy={60} rx={22} ry={18} fill={`url(#${uid}-foreG)`} />
+        {/* Cheek warmth overlays */}
+        <ellipse cx={76} cy={112} rx={10} ry={8} fill={`url(#${uid}-cheekL)`} />
+        <ellipse cx={124} cy={112} rx={10} ry={8} fill={`url(#${uid}-cheekR)`} />
 
-        {/* ── Face contour shadows ── */}
+        {/* ── Face contour shadows (stronger) ── */}
         {/* Temple shadows */}
         <path
-          d="M72,65 C70,72 68,82 67,90"
-          fill="none" stroke={skinShade} strokeWidth={6} opacity={0.06} strokeLinecap="round"
+          d="M70,62 C67,72 65,82 64,92"
+          fill="none" stroke={skinDeep} strokeWidth={7} opacity={0.1} strokeLinecap="round"
         />
         <path
-          d="M128,65 C130,72 132,82 133,90"
-          fill="none" stroke={skinShade} strokeWidth={6} opacity={0.06} strokeLinecap="round"
+          d="M130,62 C133,72 135,82 136,92"
+          fill="none" stroke={skinDeep} strokeWidth={5} opacity={0.07} strokeLinecap="round"
         />
-        {/* Cheekbone */}
+        {/* Cheekbone shadow */}
         <path
-          d="M70,108 Q74,118 80,126"
-          fill="none" stroke={skinShade} strokeWidth={4} opacity={0.06} strokeLinecap="round"
+          d="M68,106 Q72,118 78,128"
+          fill="none" stroke={skinShade} strokeWidth={5} opacity={0.12} strokeLinecap="round"
         />
         <path
-          d="M130,108 Q126,118 120,126"
-          fill="none" stroke={skinShade} strokeWidth={4} opacity={0.06} strokeLinecap="round"
+          d="M132,106 Q128,118 122,128"
+          fill="none" stroke={skinShade} strokeWidth={4} opacity={0.08} strokeLinecap="round"
         />
-        {/* Under-eye hollow */}
-        <ellipse cx={82} cy={102} rx={8} ry={3} fill={skinShade} opacity={0.05} />
-        <ellipse cx={118} cy={102} rx={8} ry={3} fill={skinShade} opacity={0.05} />
+        {/* Under-eye hollows */}
+        <ellipse cx={82} cy={102} rx={9} ry={3.5} fill={skinShade} opacity={0.1} />
+        <ellipse cx={118} cy={102} rx={9} ry={3.5} fill={skinShade} opacity={0.08} />
         {/* Jaw definition */}
         <path
-          d="M78,138 C84,146 92,150 100,152 C108,150 116,146 122,138"
-          fill="none" stroke={skinShade} strokeWidth={0.6} opacity={0.1}
+          d="M76,136 C84,146 92,151 100,152 C108,151 116,146 124,136"
+          fill="none" stroke={skinShade} strokeWidth={0.8} opacity={0.18}
         />
+        {/* Chin shadow */}
+        <ellipse cx={100} cy={148} rx={8} ry={3} fill={skinDeep} opacity={0.08} />
 
         {/* ── Ears ── */}
         <path
-          d="M65,90 C59,90 56,96 57,102 C58,108 61,112 65,110"
+          d="M63,88 C57,88 54,94 55,100 C56,106 59,110 63,108"
           fill={skin} stroke={skinShade} strokeWidth={0.5} opacity={0.9}
         />
         <path
-          d="M135,90 C141,90 144,96 143,102 C142,108 139,112 135,110"
+          d="M137,88 C143,88 146,94 145,100 C144,106 141,110 137,108"
           fill={skin} stroke={skinShade} strokeWidth={0.5} opacity={0.9}
         />
         {/* Inner ear detail */}
         <path
-          d="M62,94 C60,98 60,104 62,107"
-          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.2}
+          d="M60,92 C58,96 58,102 60,105"
+          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.25}
         />
         <path
-          d="M138,94 C140,98 140,104 138,107"
+          d="M140,92 C142,96 142,102 140,105"
           fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.2}
         />
 
-        {/* ── Eyebrows ── */}
+        {/* ── Eyebrows (thicker, more expressive) ── */}
         <path
-          d={`M70,${85 - browLift} Q76,${80 - browLift * 1.3} 82,${80 - browLift} Q88,${80.5 - browLift * 0.8} 93,${82 - browLift * 0.5}`}
-          fill="none" stroke={hair} strokeWidth={1.6} strokeLinecap="round" opacity={0.65}
+          d={`M68,${85 - browLift} Q76,${79 - browLift * 1.3} 82,${79 - browLift} Q88,${79.5 - browLift * 0.8} 94,${81 - browLift * 0.5}`}
+          fill="none" stroke={hair} strokeWidth={2} strokeLinecap="round" opacity={0.7}
         />
         <path
-          d={`M107,${82 - browLift * 0.5} Q112,${80.5 - browLift * 0.8} 118,${80 - browLift} Q124,${80 - browLift * 1.3} 130,${85 - browLift}`}
-          fill="none" stroke={hair} strokeWidth={1.6} strokeLinecap="round" opacity={0.65}
+          d={`M106,${81 - browLift * 0.5} Q112,${79.5 - browLift * 0.8} 118,${79 - browLift} Q124,${79 - browLift * 1.3} 132,${85 - browLift}`}
+          fill="none" stroke={hair} strokeWidth={2} strokeLinecap="round" opacity={0.7}
         />
 
-        {/* ── Eyes ── */}
-        {/* Left */}
-        <path d={lEye} fill="#e6e2dd" />
+        {/* ── Eyes (larger, more detailed) ── */}
+        {/* Left eye */}
+        <path d={lEye} fill="#e8e4df" />
+        {/* Sclera pink tint at corners */}
+        <circle cx={72} cy={96} r={3} fill={hsla(0, 30, 75, 0.08)} />
         <g clipPath={`url(#${uid}-le)`}>
+          {/* Limbal ring (dark border around iris) */}
+          <circle cx={lIrisX} cy={irisY} r={limbalR} fill={hsl(irisHue, irisSat, 25)} />
+          {/* Iris with radial detail */}
           <circle cx={lIrisX} cy={irisY} r={irisR} fill={iris} />
-          <circle cx={lIrisX} cy={irisY} r={irisR} fill="none" stroke={hsl(irisHue, irisSat, 32)} strokeWidth={0.5} />
-          <circle cx={lIrisX} cy={irisY} r={pupilR} fill="#111" />
-          <circle cx={lIrisX - 1.5} cy={irisY - 1.5} r={1.3} fill="white" opacity={0.45} />
-          <circle cx={lIrisX + 2} cy={irisY + 1} r={0.6} fill="white" opacity={0.25} />
+          <circle cx={lIrisX} cy={irisY} r={irisR - 1.5} fill={irisLight} opacity={0.3} />
+          {/* Iris texture — radial spokes */}
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
+            const rad = (angle * Math.PI) / 180;
+            return (
+              <line
+                key={`li-${angle}`}
+                x1={lIrisX + Math.cos(rad) * 2.5}
+                y1={irisY + Math.sin(rad) * 2.5}
+                x2={lIrisX + Math.cos(rad) * irisR}
+                y2={irisY + Math.sin(rad) * irisR}
+                stroke={hsl(irisHue, irisSat, 32)}
+                strokeWidth={0.3}
+                opacity={0.3}
+              />
+            );
+          })}
+          {/* Pupil */}
+          <circle cx={lIrisX} cy={irisY} r={pupilR} fill="#0a0a0a" />
+          {/* Catchlight — primary (large) */}
+          <circle cx={lIrisX - 2} cy={irisY - 2} r={1.8} fill="white" opacity={0.55} />
+          {/* Catchlight — secondary */}
+          <circle cx={lIrisX + 2.5} cy={irisY + 1.5} r={0.8} fill="white" opacity={0.3} />
         </g>
-        <path d={lEye} fill="none" stroke={skinDeep} strokeWidth={0.7} />
+        <path d={lEye} fill="none" stroke={skinDeep} strokeWidth={0.8} />
         {/* Upper lid crease */}
         <path
-          d={`M73,${91 - eH * 0.25} Q82,${87 - eH * 0.4} 92,${91 - eH * 0.25}`}
-          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.3}
+          d={`M71,${90 - eH * 0.3} Q82,${85 - eH * 0.45} 94,${90 - eH * 0.3}`}
+          fill="none" stroke={skinShade} strokeWidth={0.5} opacity={0.35}
         />
-        {/* Lash line (thicker on upper outer) */}
+        {/* Upper lash line (thicker, darker) */}
         <path
-          d={`M74,96 Q78,${96 - eH + 0.5} 82,${95 - eH} Q86,${95 - eH - 0.5} 92,${95.5 - eH * 0.6}`}
-          fill="none" stroke={skinDeep} strokeWidth={0.8} opacity={0.35} strokeLinecap="round"
+          d={`M71,96 Q76,${96 - eH + 0.3} 82,${95 - eH} Q88,${95 - eH - 0.3} 94,${95.5 - eH * 0.5}`}
+          fill="none" stroke={skinDeep} strokeWidth={1.2} opacity={0.5} strokeLinecap="round"
+        />
+        {/* Lower lash line (subtle) */}
+        <path
+          d={`M73,97 Q82,${96 + eBot + 0.5} 92,97`}
+          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.15}
         />
 
-        {/* Right */}
-        <path d={rEye} fill="#e6e2dd" />
+        {/* Right eye */}
+        <path d={rEye} fill="#e8e4df" />
+        <circle cx={128} cy={96} r={3} fill={hsla(0, 30, 75, 0.08)} />
         <g clipPath={`url(#${uid}-re)`}>
+          <circle cx={rIrisX} cy={irisY} r={limbalR} fill={hsl(irisHue, irisSat, 25)} />
           <circle cx={rIrisX} cy={irisY} r={irisR} fill={iris} />
-          <circle cx={rIrisX} cy={irisY} r={irisR} fill="none" stroke={hsl(irisHue, irisSat, 32)} strokeWidth={0.5} />
-          <circle cx={rIrisX} cy={irisY} r={pupilR} fill="#111" />
-          <circle cx={rIrisX - 1.5} cy={irisY - 1.5} r={1.3} fill="white" opacity={0.45} />
-          <circle cx={rIrisX + 2} cy={irisY + 1} r={0.6} fill="white" opacity={0.25} />
+          <circle cx={rIrisX} cy={irisY} r={irisR - 1.5} fill={irisLight} opacity={0.3} />
+          {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => {
+            const rad = (angle * Math.PI) / 180;
+            return (
+              <line
+                key={`ri-${angle}`}
+                x1={rIrisX + Math.cos(rad) * 2.5}
+                y1={irisY + Math.sin(rad) * 2.5}
+                x2={rIrisX + Math.cos(rad) * irisR}
+                y2={irisY + Math.sin(rad) * irisR}
+                stroke={hsl(irisHue, irisSat, 32)}
+                strokeWidth={0.3}
+                opacity={0.3}
+              />
+            );
+          })}
+          <circle cx={rIrisX} cy={irisY} r={pupilR} fill="#0a0a0a" />
+          <circle cx={rIrisX - 2} cy={irisY - 2} r={1.8} fill="white" opacity={0.55} />
+          <circle cx={rIrisX + 2.5} cy={irisY + 1.5} r={0.8} fill="white" opacity={0.3} />
         </g>
-        <path d={rEye} fill="none" stroke={skinDeep} strokeWidth={0.7} />
+        <path d={rEye} fill="none" stroke={skinDeep} strokeWidth={0.8} />
         <path
-          d={`M108,${91 - eH * 0.25} Q118,${87 - eH * 0.4} 127,${91 - eH * 0.25}`}
-          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.3}
+          d={`M106,${90 - eH * 0.3} Q118,${85 - eH * 0.45} 129,${90 - eH * 0.3}`}
+          fill="none" stroke={skinShade} strokeWidth={0.5} opacity={0.35}
         />
         <path
-          d={`M108,${95.5 - eH * 0.6} Q114,${95 - eH - 0.5} 118,${95 - eH} Q122,${96 - eH + 0.5} 126,96`}
-          fill="none" stroke={skinDeep} strokeWidth={0.8} opacity={0.35} strokeLinecap="round"
+          d={`M106,${95.5 - eH * 0.5} Q112,${95 - eH - 0.3} 118,${95 - eH} Q124,${96 - eH + 0.3} 129,96`}
+          fill="none" stroke={skinDeep} strokeWidth={1.2} opacity={0.5} strokeLinecap="round"
+        />
+        <path
+          d={`M108,97 Q118,${96 + eBot + 0.5} 127,97`}
+          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.15}
         />
 
-        {/* ── Nose ── */}
+        {/* ── Nose (stronger bridge and tip) ── */}
+        {/* Bridge highlight */}
         <path
-          d="M98,86 L97,110 Q97,116 100,118 Q103,116 103,110 L102,86"
-          fill={skinShade} opacity={0.1}
+          d="M99,82 L98.5,108"
+          fill="none" stroke={skinHighlight} strokeWidth={2} opacity={0.15} strokeLinecap="round"
         />
+        {/* Bridge shadow — left side */}
         <path
-          d="M94,118 Q96,122 100,121 Q104,122 106,118"
-          fill="none" stroke={skinShade} strokeWidth={0.7} opacity={0.3}
+          d="M97,84 L96,110 Q96,116 100,118"
+          fill="none" stroke={skinShade} strokeWidth={1.2} opacity={0.15}
         />
-        <ellipse cx={95.5} cy={119} rx={2.2} ry={1.6} fill={skinShade} opacity={0.1} />
-        <ellipse cx={104.5} cy={119} rx={2.2} ry={1.6} fill={skinShade} opacity={0.1} />
+        {/* Bridge shadow — right side */}
+        <path
+          d="M103,84 L104,110 Q104,116 100,118"
+          fill="none" stroke={skinShade} strokeWidth={0.8} opacity={0.08}
+        />
+        {/* Nostril wings */}
+        <path
+          d="M93,118 Q95,122 100,121 Q105,122 107,118"
+          fill="none" stroke={skinShade} strokeWidth={0.8} opacity={0.35}
+        />
+        {/* Nostril shadows */}
+        <ellipse cx={95} cy={119.5} rx={2.5} ry={1.8} fill={skinDeep} opacity={0.15} />
+        <ellipse cx={105} cy={119.5} rx={2.5} ry={1.8} fill={skinDeep} opacity={0.15} />
+        {/* Nose tip highlight */}
+        <ellipse cx={100} cy={117} rx={3} ry={2} fill={`url(#${uid}-noseHi)`} />
 
-        {/* ── Mouth ── */}
-        {/* Upper lip line */}
+        {/* ── Mouth (wider expression range) ── */}
+        {/* Upper lip line — cupid's bow */}
         <path
-          d={`M88,${132 + mouthDy * 0.2}
-              Q93,${129 - mouthDy * 0.5} 97,${130 - mouthDy * 0.3}
-              L100,${131 - mouthDy * 0.1}
-              L103,${130 - mouthDy * 0.3}
-              Q107,${129 - mouthDy * 0.5} 112,${132 + mouthDy * 0.2}`}
+          d={`M86,${132 + mouthDy * 0.15}
+              Q92,${129 - mouthDy * 0.4} 97,${130 - mouthDy * 0.25}
+              L100,${131 - mouthDy * 0.08}
+              L103,${130 - mouthDy * 0.25}
+              Q108,${129 - mouthDy * 0.4} 114,${132 + mouthDy * 0.15}`}
           fill="none"
           stroke={hsl(skinHue + 6, skinSat + 14, skinLight - 18)}
-          strokeWidth={1}
+          strokeWidth={1.1}
           strokeLinecap="round"
         />
         {/* Lower lip body */}
         <path
-          d={`M89,${132.5 + mouthDy * 0.2}
-              Q100,${138 + mouthDy * 0.6} 111,${132.5 + mouthDy * 0.2}`}
-          fill={hsla(skinHue + 8, skinSat + 12, skinLight - 6, 0.3)}
+          d={`M87,${132.5 + mouthDy * 0.15}
+              Q100,${139 + mouthDy * 0.5} 113,${132.5 + mouthDy * 0.15}`}
+          fill={hsla(skinHue + 8, skinSat + 12, skinLight - 6, 0.35)}
           stroke={hsl(skinHue + 5, skinSat + 10, skinLight - 14)}
-          strokeWidth={0.4}
+          strokeWidth={0.5}
+        />
+        {/* Lower lip highlight */}
+        <ellipse
+          cx={100}
+          cy={135 + mouthDy * 0.3}
+          rx={6}
+          ry={2}
+          fill={hsla(skinHue, skinSat - 5, skinLight + 8, 0.12)}
         />
         {/* Lip separation */}
         <path
-          d={`M89,${132.5 + mouthDy * 0.2} Q100,${134 + mouthDy * 0.4} 111,${132.5 + mouthDy * 0.2}`}
+          d={`M87,${132.5 + mouthDy * 0.15} Q100,${134 + mouthDy * 0.35} 113,${132.5 + mouthDy * 0.15}`}
           fill="none"
           stroke={hsl(skinHue, skinSat + 5, skinLight - 22)}
-          strokeWidth={0.5}
-          opacity={0.25}
+          strokeWidth={0.6}
+          opacity={0.3}
         />
         {/* Lower lip shadow */}
         <path
-          d={`M92,${139 + mouthDy * 0.5} Q100,${141 + mouthDy * 0.3} 108,${139 + mouthDy * 0.5}`}
-          fill="none" stroke={skinShade} strokeWidth={0.5} opacity={0.1}
+          d={`M90,${140 + mouthDy * 0.4} Q100,${142 + mouthDy * 0.25} 110,${140 + mouthDy * 0.4}`}
+          fill="none" stroke={skinShade} strokeWidth={0.6} opacity={0.15}
         />
 
-        {/* Philtrum (subtle) */}
+        {/* Philtrum */}
         <path
           d="M99,121 L98.5,129"
-          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.08}
+          fill="none" stroke={skinShade} strokeWidth={0.5} opacity={0.12}
         />
         <path
           d="M101,121 L101.5,129"
-          fill="none" stroke={skinShade} strokeWidth={0.4} opacity={0.08}
+          fill="none" stroke={skinShade} strokeWidth={0.5} opacity={0.12}
         />
 
         {/* ── Hair (drawn ON TOP of face to frame it) ── */}

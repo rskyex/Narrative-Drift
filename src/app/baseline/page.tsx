@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSessionStore } from "@/store/session-store";
@@ -10,47 +10,57 @@ import { TypeWriter } from "@/components/shared/TypeWriter";
 import { SubjectPortrait } from "@/components/rpg/SubjectPortrait";
 import { DriftAxis } from "@/engine/types";
 import { getAxisLabels } from "@/engine/drift-model";
-import { useState } from "react";
 
 const AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"];
 
-function baselineReading(axis: DriftAxis, value: number): string {
-  const descriptions: Record<DriftAxis, Record<string, string>> = {
-    autonomy: {
-      pos: "You lean toward self-direction. Decisions feel like they belong to you.",
-      neg: "You're comfortable accepting guidance. Good information deserves trust.",
-      mid: "No strong lean. You adapt your approach to the situation.",
-    },
-    novelty: {
-      pos: "You gravitate toward the unfamiliar. Known territory feels like limitation.",
-      neg: "You value the well-mapped path. Depth over breadth.",
-      mid: "A balance between the known and the new.",
-    },
-    sociality: {
-      pos: "Others activate something in you. Connection is generative.",
-      neg: "Your clearest thinking happens alone. Solitude is productive.",
-      mid: "Selective engagement. Neither isolated nor immersed.",
-    },
-    tempo: {
-      pos: "You favor speed. Time saved is time recovered.",
-      neg: "You favor duration. Things worth doing deserve their full time.",
-      mid: "No strong temporal bias. Speed and care as needed.",
-    },
-    affect: {
-      pos: "Emotionally open. You stay receptive to what arrives.",
-      neg: "Emotionally conservative. Feeling deeply doesn't require showing it.",
-      mid: "A measured emotional register.",
-    },
-  };
+const axisReadings: Record<DriftAxis, Record<string, string>> = {
+  autonomy: {
+    pos: "Self-directed. You default to your own compass.",
+    neg: "Externally guided. You trust the wisdom of others.",
+    mid: "Contextual. You choose your frame per-situation.",
+  },
+  novelty: {
+    pos: "Novelty-seeking. The unfamiliar draws you forward.",
+    neg: "Depth-seeking. You prefer the known path, deeply walked.",
+    mid: "Balanced. You move between the mapped and the unmapped.",
+  },
+  sociality: {
+    pos: "Socially aligned. Others sharpen your thinking.",
+    neg: "Independent. Your best work happens in solitude.",
+    mid: "Selective. You engage deliberately, not reflexively.",
+  },
+  tempo: {
+    pos: "Optimized. You value speed as a resource.",
+    neg: "Deliberate. You give things the time they require.",
+    mid: "Adaptive. No fixed tempo — you match the task.",
+  },
+  affect: {
+    pos: "Expressive. You remain open to emotional signal.",
+    neg: "Reserved. Feeling deeply and showing it are different.",
+    mid: "Measured. A calibrated emotional register.",
+  },
+};
 
+function getReading(axis: DriftAxis, value: number): string {
   const key = value > 0.08 ? "pos" : value < -0.08 ? "neg" : "mid";
-  return descriptions[axis][key];
+  return axisReadings[axis][key];
+}
+
+function getDescriptor(axis: DriftAxis, value: number): string {
+  const descriptors: Record<DriftAxis, (v: number) => string> = {
+    autonomy: (v) => (v > 0.1 ? "Self-directed" : v < -0.1 ? "Guided" : "Neutral"),
+    novelty: (v) => (v > 0.1 ? "Seeking" : v < -0.1 ? "Settled" : "Neutral"),
+    sociality: (v) => (v > 0.1 ? "Communal" : v < -0.1 ? "Solitary" : "Neutral"),
+    tempo: (v) => (v > 0.1 ? "Accelerated" : v < -0.1 ? "Deliberate" : "Neutral"),
+    affect: (v) => (v > 0.1 ? "Expressive" : v < -0.1 ? "Reserved" : "Neutral"),
+  };
+  return descriptors[axis](value);
 }
 
 export default function BaselinePage() {
   const router = useRouter();
-  const { baselineProfile, userName, phase, enterZone } = useSessionStore();
-  const [stage, setStage] = useState<"intro" | "reveal" | "ready">("intro");
+  const { baselineProfile, phase, enterZone } = useSessionStore();
+  const [stage, setStage] = useState<"intro" | "portrait" | "sheet" | "ready">("intro");
 
   useEffect(() => {
     if (phase !== "baseline") {
@@ -66,121 +76,233 @@ export default function BaselinePage() {
   if (phase !== "baseline") return null;
 
   return (
-    <main className="relative min-h-screen py-24 px-6">
+    <main className="relative min-h-screen overflow-hidden">
       <GrainOverlay />
 
-      <div className="relative z-10 max-w-2xl mx-auto">
-        <AnimatePresence mode="wait">
-          {stage === "intro" && (
-            <FadeIn key="intro" className="min-h-[30vh] flex items-center justify-center">
-              <div className="text-center">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-8">
-                  Baseline Self
-                </p>
-                <p className="text-xl text-drift-text/70 font-serif leading-relaxed">
-                  <TypeWriter
-                    text="This is you — before the encounters begin. Remember this shape. It will change."
-                    speed={35}
-                    onComplete={() => setTimeout(() => setStage("reveal"), 1500)}
-                  />
-                </p>
-              </div>
-            </FadeIn>
-          )}
+      {/* Fixed header */}
+      <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
+        <div className="flex items-center justify-between max-w-5xl mx-auto">
+          <span className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/30">
+            Baseline Self
+          </span>
+          <span className="text-[10px] font-mono text-drift-accent/30">
+            Pre-drift state
+          </span>
+        </div>
+      </div>
 
-          {stage === "reveal" && (
-            <FadeIn key="reveal">
-              <div className="space-y-10">
-                {/* Portrait */}
+      <AnimatePresence mode="wait">
+        {/* ─── Stage 1: Intro text ─── */}
+        {stage === "intro" && (
+          <FadeIn key="intro" className="min-h-screen flex items-center justify-center px-6">
+            <div className="text-center max-w-md">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-8">
+                Calibration Complete
+              </p>
+              <p className="text-lg text-drift-text/60 leading-relaxed font-serif">
+                <TypeWriter
+                  text="This is you. Before anything changes. Remember this shape — it is the origin point against which all drift will be measured."
+                  speed={30}
+                  onComplete={() => setTimeout(() => setStage("portrait"), 1200)}
+                />
+              </p>
+            </div>
+          </FadeIn>
+        )}
+
+        {/* ─── Stage 2: Portrait reveal ─── */}
+        {stage === "portrait" && (
+          <motion.div
+            key="portrait"
+            className="min-h-screen flex items-center justify-center px-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="flex flex-col items-center">
+              {/* Portrait with scan frame */}
+              <div className="relative">
+                {/* Corner brackets — larger for baseline */}
+                <div className="absolute -inset-6 pointer-events-none">
+                  <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="M0,10 L0,0 L10,0" fill="none" stroke="currentColor" className="text-drift-accent/20" strokeWidth="0.4" />
+                    <path d="M90,0 L100,0 L100,10" fill="none" stroke="currentColor" className="text-drift-accent/20" strokeWidth="0.4" />
+                    <path d="M100,90 L100,100 L90,100" fill="none" stroke="currentColor" className="text-drift-accent/20" strokeWidth="0.4" />
+                    <path d="M10,100 L0,100 L0,90" fill="none" stroke="currentColor" className="text-drift-accent/20" strokeWidth="0.4" />
+                  </svg>
+                </div>
+
                 <motion.div
-                  className="flex justify-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3, duration: 1 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                  <SubjectPortrait profile={baselineProfile} size={180} />
+                  <SubjectPortrait profile={baselineProfile} size={260} />
                 </motion.div>
+              </div>
 
-                {/* Subject name */}
-                {userName && (
-                  <motion.p
-                    className="text-center text-sm text-drift-muted/50"
+              {/* Label beneath portrait */}
+              <motion.div
+                className="mt-6 text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.0, duration: 0.8 }}
+              >
+                <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/40">
+                  Baseline Established
+                </p>
+              </motion.div>
+
+              {/* Continue to sheet */}
+              <motion.button
+                className="mt-10 text-drift-muted/40 hover:text-drift-text/60 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2.0, duration: 0.8 }}
+                onClick={() => setStage("sheet")}
+              >
+                View subject profile
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ─── Stage 3: Full subject sheet ─── */}
+        {stage === "sheet" && (
+          <motion.div
+            key="sheet"
+            className="min-h-screen pt-20 pb-16 px-4 sm:px-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="max-w-4xl mx-auto">
+              <div className="flex flex-col lg:flex-row lg:gap-16 xl:gap-20 items-start">
+                {/* ─── Left column: Portrait + meta ─── */}
+                <div className="lg:w-[280px] flex-shrink-0 flex flex-col items-center lg:sticky lg:top-24 mb-10 lg:mb-0 w-full">
+                  <div className="relative">
+                    <div className="absolute -inset-4 pointer-events-none">
+                      <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M0,10 L0,0 L10,0" fill="none" stroke="currentColor" className="text-drift-accent/15" strokeWidth="0.5" />
+                        <path d="M90,0 L100,0 L100,10" fill="none" stroke="currentColor" className="text-drift-accent/15" strokeWidth="0.5" />
+                        <path d="M100,90 L100,100 L90,100" fill="none" stroke="currentColor" className="text-drift-accent/15" strokeWidth="0.5" />
+                        <path d="M10,100 L0,100 L0,90" fill="none" stroke="currentColor" className="text-drift-accent/15" strokeWidth="0.5" />
+                      </svg>
+                    </div>
+                    <SubjectPortrait profile={baselineProfile} size={200} />
+                  </div>
+
+                  <div className="mt-6 text-center space-y-1">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/40">
+                      Subject Baseline
+                    </p>
+                    <p className="text-[9px] font-mono text-drift-muted/30">
+                      Pre-drift · Zone 0
+                    </p>
+                  </div>
+                </div>
+
+                {/* ─── Right column: Subject sheet ─── */}
+                <div className="flex-1 w-full">
+                  {/* Sheet header */}
+                  <motion.div
+                    className="border-b border-drift-border/20 pb-4 mb-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8 }}
+                    transition={{ delay: 0.2, duration: 0.6 }}
                   >
-                    Subject: {userName}
-                  </motion.p>
-                )}
+                    <h1 className="text-[11px] uppercase tracking-[0.3em] text-drift-muted/50">
+                      Subject Dossier — Initial State
+                    </h1>
+                  </motion.div>
 
-                {/* Axis readings */}
-                <motion.div
-                  className="space-y-5"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.2, duration: 0.8 }}
-                >
-                  {AXES.map((axis, i) => {
-                    const [leftLabel, rightLabel] = getAxisLabels(axis);
-                    const value = baselineProfile[axis];
-                    const percentage = 50 + value * 50;
+                  {/* Axis readings */}
+                  <div className="space-y-6">
+                    {AXES.map((axis, i) => {
+                      const value = baselineProfile[axis];
+                      const pct = 50 + value * 50;
+                      const [leftLabel, rightLabel] = getAxisLabels(axis);
+                      const descriptor = getDescriptor(axis, value);
+                      const reading = getReading(axis, value);
 
-                    return (
-                      <motion.div
-                        key={axis}
-                        className="space-y-2"
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 1.4 + i * 0.15 }}
-                      >
-                        <div className="flex justify-between items-baseline">
-                          <span className="text-[10px] uppercase tracking-wider text-drift-muted/60">
-                            {axis}
-                          </span>
-                          <span className="text-[10px] font-mono text-drift-accent/50">
-                            {value > 0 ? "+" : ""}{(value * 100).toFixed(0)}
-                          </span>
-                        </div>
-                        <div className="relative h-[2px] bg-drift-border/40 rounded-full">
-                          <div className="absolute left-1/2 top-0 w-[1px] h-full bg-drift-muted/20 -translate-x-1/2" />
-                          <motion.div
-                            className="absolute top-1/2 w-1.5 h-1.5 bg-drift-accent/80 rounded-full -translate-y-1/2 -translate-x-1/2"
-                            initial={{ left: "50%" }}
-                            animate={{ left: `${percentage}%` }}
-                            transition={{ duration: 0.8, delay: 1.6 + i * 0.15 }}
-                          />
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-[8px] text-drift-muted/30">{leftLabel}</span>
-                          <span className="text-[8px] text-drift-muted/30">{rightLabel}</span>
-                        </div>
-                        <p className="text-xs text-drift-text/40 leading-relaxed">
-                          {baselineReading(axis, value)}
-                        </p>
-                      </motion.div>
-                    );
-                  })}
-                </motion.div>
+                      return (
+                        <motion.div
+                          key={axis}
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 + i * 0.12, duration: 0.5 }}
+                        >
+                          <div className="flex items-baseline justify-between mb-2">
+                            <div className="flex items-center gap-3">
+                              <span className="text-[10px] uppercase tracking-[0.2em] text-drift-text/60">
+                                {axis}
+                              </span>
+                              <span className="text-[9px] font-mono text-drift-accent/50">
+                                {descriptor}
+                              </span>
+                            </div>
+                            <span className="text-[10px] font-mono text-drift-muted/40">
+                              {value > 0 ? "+" : ""}
+                              {(value * 100).toFixed(0)}
+                            </span>
+                          </div>
 
-                {/* Proceed button */}
-                <motion.div
-                  className="text-center pt-8"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 3.5 }}
-                >
-                  <button
-                    onClick={handleProceed}
-                    className="text-drift-muted hover:text-drift-text text-sm tracking-widest uppercase transition-colors duration-300 py-2 px-6"
+                          {/* Bar */}
+                          <div className="relative h-[2px] bg-drift-border/25 rounded-full mb-2">
+                            <div className="absolute left-1/2 top-1/2 w-[1px] h-3 bg-drift-muted/10 -translate-x-1/2 -translate-y-1/2" />
+                            <motion.div
+                              className="absolute top-1/2 w-1.5 h-1.5 bg-drift-accent/70 rounded-full -translate-y-1/2 -translate-x-1/2"
+                              initial={{ left: "50%" }}
+                              animate={{ left: `${pct}%` }}
+                              transition={{ duration: 0.8, delay: 0.5 + i * 0.12, ease: "easeOut" }}
+                            />
+                          </div>
+
+                          <div className="flex justify-between mb-2">
+                            <span className="text-[8px] text-drift-muted/25">{leftLabel}</span>
+                            <span className="text-[8px] text-drift-muted/25">{rightLabel}</span>
+                          </div>
+
+                          {/* Reading description */}
+                          <p className="text-xs text-drift-text/35 leading-relaxed">
+                            {reading}
+                          </p>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Divider */}
+                  <motion.div
+                    className="border-t border-drift-border/15 mt-10 pt-6"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1.4, duration: 0.6 }}
                   >
-                    Enter the experience
-                  </button>
-                </motion.div>
+                    <p className="text-xs text-drift-muted/30 leading-relaxed mb-8 max-w-md">
+                      This profile represents your pre-drift state. The encounters ahead will apply
+                      pressure to each axis. How you respond will determine how far you drift — and
+                      in which direction.
+                    </p>
+
+                    <motion.button
+                      onClick={handleProceed}
+                      className="text-drift-muted/50 hover:text-drift-text/70 text-xs tracking-[0.2em] uppercase transition-colors duration-300 py-2"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 2.0, duration: 0.8 }}
+                    >
+                      Begin the experience →
+                    </motion.button>
+                  </motion.div>
+                </div>
               </div>
-            </FadeIn>
-          )}
-        </AnimatePresence>
-      </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }
