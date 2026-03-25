@@ -10,9 +10,18 @@ import { FadeIn } from "@/components/shared/FadeIn";
 import { FinalDiagnostic } from "@/components/rpg/FinalDiagnostic";
 import { PathLog } from "@/components/rpg/PathLog";
 import { DriftReveal } from "@/components/reflection/DriftReveal";
+import { TimelineOfChange } from "@/components/reflection/TimelineOfChange";
+import { AIInterventionMap } from "@/components/reflection/AIInterventionMap";
 import { ClosingStatement } from "@/components/reflection/ClosingStatement";
 
-type RevealStage = "intro-1" | "intro-2" | "diagnostic" | "pathlog" | "closing";
+type RevealStage =
+  | "intro-1"
+  | "intro-2"
+  | "diagnostic"
+  | "timeline"
+  | "pathlog"
+  | "intervention"
+  | "closing";
 
 export default function DiagnosticPage() {
   const router = useRouter();
@@ -78,7 +87,7 @@ export default function DiagnosticPage() {
             </FadeIn>
           )}
 
-          {/* Stage: Final Diagnostic */}
+          {/* Stage: Final Diagnostic — portraits, archetype, axes, summary */}
           {stage === "diagnostic" && (
             <FadeIn key="diagnostic">
               <div className="space-y-14">
@@ -95,6 +104,28 @@ export default function DiagnosticPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 5 }}
+                  onClick={() => advance("timeline")}
+                >
+                  View the timeline
+                </motion.button>
+              </div>
+            </FadeIn>
+          )}
+
+          {/* Stage: Timeline of Change */}
+          {stage === "timeline" && (
+            <FadeIn key="timeline">
+              <div className="space-y-8">
+                <TimelineOfChange
+                  choices={choiceHistory}
+                  baselineProfile={baselineProfile}
+                />
+
+                <motion.button
+                  className="block mx-auto text-drift-muted/50 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2 }}
                   onClick={() => advance("pathlog")}
                 >
                   Review the path
@@ -103,7 +134,7 @@ export default function DiagnosticPage() {
             </FadeIn>
           )}
 
-          {/* Stage: Full path log */}
+          {/* Stage: Path log + drift visualization */}
           {stage === "pathlog" && (
             <FadeIn key="pathlog">
               <div className="space-y-10">
@@ -129,6 +160,29 @@ export default function DiagnosticPage() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
+                  onClick={() => advance("intervention")}
+                >
+                  See how the system shaped you
+                </motion.button>
+              </div>
+            </FadeIn>
+          )}
+
+          {/* Stage: AI Intervention Map */}
+          {stage === "intervention" && (
+            <FadeIn key="intervention">
+              <div className="space-y-8">
+                <AIInterventionMap
+                  choices={choiceHistory}
+                  baselineProfile={baselineProfile}
+                  currentProfile={currentProfile}
+                />
+
+                <motion.button
+                  className="block mx-auto text-drift-muted/50 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 4 }}
                   onClick={() => advance("closing")}
                 >
                   Continue

@@ -137,6 +137,11 @@ export default function ExperiencePage() {
                 interludeNumber={currentInterlude}
                 baselineProfile={baselineProfile}
                 currentProfile={currentProfile}
+                previousProfile={
+                  profileSnapshots.length >= 2
+                    ? profileSnapshots[profileSnapshots.length - 2]?.profile
+                    : baselineProfile
+                }
                 snapshots={profileSnapshots}
                 onContinue={handleInterludeContinue}
               />

@@ -12,6 +12,7 @@ interface InterludeRevealProps {
   interludeNumber: number;
   baselineProfile: DriftProfile;
   currentProfile: DriftProfile;
+  previousProfile?: DriftProfile;
   snapshots: ProfileSnapshot[];
   onContinue: () => void;
 }
@@ -80,24 +81,64 @@ function getDriftNarrative(
     `Something shifted during the last zone. The movement was subtle — a fraction of a degree along the ${maxAxis} axis. But fractions accumulate.`;
 }
 
+function getPortraitDriftObservation(
+  interludeNumber: number,
+  baseline: DriftProfile,
+  current: DriftProfile
+): string {
+  const totalShift = AXES.reduce(
+    (sum, axis) => sum + Math.abs(current[axis] - baseline[axis]),
+    0
+  );
+
+  if (totalShift < 0.15) {
+    return "Look closely. The face is the same face. But something in the posture of the gaze has shifted — a fraction of a degree. The kind of change that only becomes visible when you know to look for it.";
+  }
+
+  if (totalShift < 0.35) {
+    const observations: Record<number, string> = {
+      1: "The same person. But the eyes have adjusted to a different focal length — calibrated, perhaps, to the distance between a screen and a face. The change is subtle. It is also real.",
+      2: "Still recognizable. But there is something smoother now, something slightly more efficient in the expression. As if a few small frictions have been polished away. Whether that is refinement or erosion depends on what you valued in the friction.",
+      3: "The features have not changed. But the way they settle has. There is a different weight behind the expression — the weight of positions reinforced or quietly abandoned. The political self leaves traces on the face.",
+    };
+    return observations[interludeNumber] ?? observations[1];
+  }
+
+  const observations: Record<number, string> = {
+    1: "The shift is legible now. Not dramatic — never dramatic. But the person looking back at you has been shaped by what they consumed. The feed did not change the face. It changed what the face is prepared to see.",
+    2: "Convenience leaves its signature. The expression carries less of the effort that used to be present — less of the small labor of deciding, remembering, navigating without assistance. Something has been delegated that cannot be taken back.",
+    3: "The civic self is visible in the face now. Whether it has expanded or contracted, the person who emerged from the information environment carries its architecture in their expression. The algorithm's influence is no longer hypothetical.",
+  };
+  return observations[interludeNumber] ?? observations[1];
+}
+
 export function InterludeReveal({
   interludeNumber,
   baselineProfile,
   currentProfile,
+  previousProfile,
   snapshots,
   onContinue,
 }: InterludeRevealProps) {
-  const [stage, setStage] = useState<"narrative" | "comparison" | "ready">("narrative");
+  const [stage, setStage] = useState<
+    "narrative" | "portrait-drift" | "comparison" | "ready"
+  >("narrative");
 
   const narrative = getDriftNarrative(interludeNumber, baselineProfile, currentProfile);
+  const driftObservation = getPortraitDriftObservation(
+    interludeNumber,
+    baselineProfile,
+    currentProfile
+  );
 
   const handleNarrativeComplete = useCallback(() => {
-    setTimeout(() => setStage("comparison"), 1200);
+    setTimeout(() => setStage("portrait-drift"), 1200);
   }, []);
 
   return (
     <div className="max-w-2xl mx-auto">
       <AnimatePresence mode="wait">
+        {/* Stage 1: Reflective narrative */}
         {stage === "narrative" && (
           <FadeIn key="narrative" className="min-h-[40vh] flex flex-col items-center justify-center">
             <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-10">
@@ -113,6 +154,83 @@ export function InterludeReveal({
           </FadeIn>
         )}
 
+        {/* Stage 2: Portrait drift moment — show the subject again, observe change */}
+        {stage === "portrait-drift" && (
+          <FadeIn key="portrait-drift">
+            <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-8">
+              <motion.p
+                className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/30"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+              >
+                Subject Observation
+              </motion.p>
+
+              {/* Single portrait — current state — letting user see the accumulated drift */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6, duration: 1.2, ease: "easeOut" }}
+              >
+                <SubjectPortrait profile={currentProfile} size={180} />
+              </motion.div>
+
+              {/* Drift observation text */}
+              <motion.p
+                className="text-sm text-drift-text/50 leading-relaxed font-serif text-center max-w-md"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2.0, duration: 1.2 }}
+              >
+                {driftObservation}
+              </motion.p>
+
+              {/* Subtle axis shift indicators */}
+              <motion.div
+                className="flex gap-4 mt-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 3.2 }}
+              >
+                {AXES.map((axis) => {
+                  const delta = currentProfile[axis] - baselineProfile[axis];
+                  if (Math.abs(delta) < 0.02) return null;
+                  return (
+                    <div key={axis} className="text-center">
+                      <div
+                        className="w-[3px] mx-auto rounded-full mb-1"
+                        style={{
+                          height: `${Math.min(Math.abs(delta) * 80, 24)}px`,
+                          backgroundColor:
+                            delta > 0
+                              ? "rgba(196, 181, 160, 0.35)"
+                              : "rgba(166, 124, 109, 0.35)",
+                        }}
+                      />
+                      <span className="text-[8px] text-drift-muted/30 uppercase tracking-wider">
+                        {axis.slice(0, 3)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </motion.div>
+
+              {/* Continue to comparison */}
+              <motion.button
+                className="text-drift-muted/40 hover:text-drift-muted text-xs tracking-widest uppercase transition-colors duration-300 mt-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 4.0 }}
+                onClick={() => setStage("comparison")}
+              >
+                Continue
+              </motion.button>
+            </div>
+          </FadeIn>
+        )}
+
+        {/* Stage 3: Side-by-side comparison */}
         {stage === "comparison" && (
           <FadeIn key="comparison">
             <div className="space-y-12">
