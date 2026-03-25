@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --color-drift-bg: #090b12;
-  --color-drift-surface: #0f1118;
-  --color-drift-border: #1a1c25;
+  --color-drift-bg: #0a0a0a;
+  --color-drift-surface: #141414;
+  --color-drift-border: #1f1f1f;
   --color-drift-text: #e8e8e8;
   --color-drift-muted: #737373;
   --color-drift-accent: #c4b5a0;
-  --ambient-hue: 225;
-  --ambient-saturation: 15%;
+  --ambient-hue: 0;
+  --ambient-saturation: 0%;
   --ambient-lightness: 4%;
 }
 
@@ -20,7 +20,7 @@ html {
 
 body {
   background-color: var(--color-drift-bg);
-  background-image: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(196, 181, 160, 0.012) 0%, transparent 70%);
+  background-image: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(196, 181, 160, 0.015) 0%, transparent 70%);
   color: var(--color-drift-text);
   font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -42,12 +42,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1a1c25;
+  background: #1f1f1f;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #24262f;
+  background: #2a2a2a;
 }
 
 /* Vertical text for zone labels */

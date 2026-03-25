@@ -10,9 +10,9 @@ const config: Config = {
     extend: {
       colors: {
         drift: {
-          bg: "#090b12",
-          surface: "#0f1118",
-          border: "#1a1c25",
+          bg: "#0a0a0a",
+          surface: "#141414",
+          border: "#1f1f1f",
           text: "#e8e8e8",
           muted: "#737373",
           accent: "#c4b5a0",
