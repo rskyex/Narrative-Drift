@@ -2,13 +2,35 @@
 
 import { motion } from "framer-motion";
 import { Zone } from "@/engine/types";
+import Image from "next/image";
 
 interface ZoneIntroProps {
   zone: Zone;
   onComplete: () => void;
 }
 
+/**
+ * Map zone IDs to their transition images.
+ * transition-1 = entering Zone 1 (after baseline)
+ * transition-2 = entering Zone 2
+ * transition-4 = entering Zone 3 (transition-3 not present; transition-4 used)
+ */
+const ZONE_TRANSITION_IMAGE: Record<number, string> = {
+  1: "/transition-1.png",
+  2: "/transition-2.png",
+  3: "/transition-4.png",
+};
+
+const ZONE_TRANSITION_COPY: Record<number, string> = {
+  1: "Rendering the first environment",
+  2: "Updating the conditions of choice",
+  3: "Recalibrating the subject model",
+};
+
 export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
+  const transitionImage = ZONE_TRANSITION_IMAGE[zone.id];
+  const transitionCopy = ZONE_TRANSITION_COPY[zone.id];
+
   return (
     <motion.div
       className="fixed inset-0 flex items-center justify-center z-30"
@@ -20,7 +42,45 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
         setTimeout(onComplete, 4500);
       }}
     >
-      <div className="text-center max-w-lg mx-auto px-6">
+      {/* Transition image — atmospheric backdrop */}
+      {transitionImage && (
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          initial={{ opacity: 0, scale: 1.03 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 2, ease: "easeOut" }}
+        >
+          <Image
+            src={transitionImage}
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-drift-bg/75" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.5) 100%)",
+            }}
+          />
+        </motion.div>
+      )}
+
+      <div className="relative z-10 text-center max-w-lg mx-auto px-6">
+        {/* Transition copy */}
+        {transitionCopy && (
+          <motion.p
+            className="text-[9px] uppercase tracking-[0.35em] text-drift-accent/25 mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.05 }}
+          >
+            {transitionCopy}
+          </motion.p>
+        )}
+
         {/* Zone number */}
         <motion.p
           className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-8"

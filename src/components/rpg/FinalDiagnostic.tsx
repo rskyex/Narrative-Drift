@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { DriftProfile, DriftAxis, ChoiceRecord, ProfileSnapshot } from "@/engine/types";
 import { computeCumulativeDrift } from "@/engine/drift-model";
-import { SubjectPortrait } from "./SubjectPortrait";
 import { zones } from "@/engine/zones";
+import Image from "next/image";
 
 interface FinalDiagnosticProps {
   userName: string | null;
@@ -271,7 +271,13 @@ export function FinalDiagnostic({
         transition={{ delay: 0.6, duration: 1.2 }}
       >
         <div className="text-center">
-          <SubjectPortrait profile={initialProfile} size={140} />
+          <Image
+            src="/baseline.png"
+            alt="Baseline self"
+            width={140}
+            height={140}
+            className="rounded-sm object-cover"
+          />
           <p className="text-[9px] text-drift-muted/35 mt-4 uppercase tracking-[0.2em]">
             Baseline
           </p>
@@ -292,7 +298,13 @@ export function FinalDiagnostic({
           →
         </motion.div>
         <div className="text-center">
-          <SubjectPortrait profile={currentProfile} size={140} />
+          <Image
+            src="/Final Diagnostic.png"
+            alt="Final state"
+            width={140}
+            height={140}
+            className="rounded-sm object-cover"
+          />
           <p className="text-[9px] text-drift-muted/35 mt-4 uppercase tracking-[0.2em]">
             Final
           </p>

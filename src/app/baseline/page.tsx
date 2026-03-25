@@ -11,6 +11,7 @@ import { SubjectPortrait } from "@/components/rpg/SubjectPortrait";
 import { LogoMark } from "@/components/shared/LogoMark";
 import { DriftAxis } from "@/engine/types";
 import { getAxisLabels } from "@/engine/drift-model";
+import Image from "next/image";
 
 const AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"];
 
@@ -145,7 +146,13 @@ export default function BaselinePage() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                  <SubjectPortrait profile={baselineProfile} size={260} />
+                  <Image
+                    src="/baseline.png"
+                    alt="Baseline self"
+                    width={260}
+                    height={260}
+                    className="rounded-sm object-cover"
+                  />
                 </motion.div>
               </div>
 
@@ -198,7 +205,13 @@ export default function BaselinePage() {
                         <path d="M10,100 L0,100 L0,90" fill="none" stroke="currentColor" className="text-drift-accent/15" strokeWidth="0.5" />
                       </svg>
                     </div>
-                    <SubjectPortrait profile={baselineProfile} size={200} />
+                    <Image
+                      src="/baseline.png"
+                      alt="Baseline self"
+                      width={200}
+                      height={200}
+                      className="rounded-sm object-cover"
+                    />
                   </div>
 
                   <div className="mt-6 text-center space-y-1">
