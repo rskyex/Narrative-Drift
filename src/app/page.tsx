@@ -41,11 +41,11 @@ export default function LandingPage() {
       <AnimatePresence mode="wait">
         {!exiting && (
           <FadeIn key="landing" className="text-center max-w-2xl mx-auto">
-            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl tracking-tight mb-12 text-drift-text">
+            <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl tracking-[-0.02em] mb-14 text-drift-text/90">
               Narrative Drift
             </h1>
 
-            <div className="text-lg sm:text-xl leading-relaxed text-drift-muted mb-16 max-w-prose mx-auto">
+            <div className="text-lg sm:text-xl leading-[1.7] text-drift-muted mb-20 max-w-prose mx-auto">
               <TypeWriter
                 text="You are about to enter three zones of mediated experience. In each, an AI system will shape what you see, what you choose, and who you become. The changes will be small. None will feel consequential. That is the point."
                 speed={30}
@@ -69,7 +69,7 @@ export default function LandingPage() {
 
                     <button
                       onClick={handleBegin}
-                      className="text-drift-muted hover:text-drift-text text-sm tracking-widest uppercase transition-colors duration-300 py-2 px-6"
+                      className="text-drift-muted/70 hover:text-drift-text text-[11px] tracking-[0.25em] uppercase transition-all duration-500 py-3 px-8 border border-drift-border/0 hover:border-drift-border/30 rounded"
                     >
                       Begin
                     </button>
@@ -82,7 +82,7 @@ export default function LandingPage() {
       </AnimatePresence>
 
       {exiting && (
-        <div className="fixed inset-0 bg-drift-bg animate-pulse" />
+        <div className="fixed inset-0 bg-drift-bg transition-opacity duration-700" />
       )}
     </main>
   );

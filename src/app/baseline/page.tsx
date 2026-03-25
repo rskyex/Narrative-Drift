@@ -96,10 +96,10 @@ export default function BaselinePage() {
         {stage === "intro" && (
           <FadeIn key="intro" className="min-h-screen flex items-center justify-center px-6">
             <div className="text-center max-w-md">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-8">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/35 mb-10">
                 Calibration Complete
               </p>
-              <p className="text-lg text-drift-text/60 leading-relaxed font-serif">
+              <p className="text-lg text-drift-text/60 leading-[1.8] font-serif">
                 <TypeWriter
                   text="This is you. Before anything changes. Remember this shape — it is the origin point against which all drift will be measured."
                   speed={30}
@@ -208,18 +208,19 @@ export default function BaselinePage() {
                 <div className="flex-1 w-full">
                   {/* Sheet header */}
                   <motion.div
-                    className="border-b border-drift-border/20 pb-4 mb-8"
+                    className="pb-5 mb-10"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
                   >
-                    <h1 className="text-[11px] uppercase tracking-[0.3em] text-drift-muted/50">
+                    <h1 className="text-[11px] uppercase tracking-[0.3em] text-drift-muted/50 mb-3">
                       Subject Dossier — Initial State
                     </h1>
+                    <div className="drift-divider" />
                   </motion.div>
 
                   {/* Axis readings */}
-                  <div className="space-y-6">
+                  <div className="space-y-7">
                     {AXES.map((axis, i) => {
                       const value = baselineProfile[axis];
                       const pct = 50 + value * 50;
@@ -266,7 +267,7 @@ export default function BaselinePage() {
                           </div>
 
                           {/* Reading description */}
-                          <p className="text-xs text-drift-text/35 leading-relaxed">
+                          <p className="text-xs text-drift-text/35 leading-[1.7]">
                             {reading}
                           </p>
                         </motion.div>
@@ -276,12 +277,13 @@ export default function BaselinePage() {
 
                   {/* Divider */}
                   <motion.div
-                    className="border-t border-drift-border/15 mt-10 pt-6"
+                    className="mt-12 pt-8"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.4, duration: 0.6 }}
                   >
-                    <p className="text-xs text-drift-muted/30 leading-relaxed mb-8 max-w-md">
+                    <div className="drift-divider mb-8" />
+                    <p className="text-xs text-drift-muted/30 leading-[1.8] mb-10 max-w-md">
                       This profile represents your pre-drift state. The encounters ahead will apply
                       pressure to each axis. How you respond will determine how far you drift — and
                       in which direction.

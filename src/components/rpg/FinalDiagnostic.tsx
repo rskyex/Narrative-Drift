@@ -166,15 +166,15 @@ export function FinalDiagnostic({
 
   return (
     <motion.div
-      className="space-y-12"
+      className="space-y-16"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      transition={{ duration: 1.2 }}
     >
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-2"
+          className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -182,28 +182,28 @@ export function FinalDiagnostic({
           Final Diagnostic
         </motion.p>
         <motion.div
-          className="w-12 h-[1px] bg-drift-border mx-auto"
+          className="w-16 mx-auto drift-divider"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
+          transition={{ delay: 0.5, duration: 1 }}
         />
       </div>
 
       {/* Transformation portraits — baseline vs final */}
       <motion.div
-        className="flex items-center justify-center gap-10"
+        className="flex items-center justify-center gap-12 sm:gap-16"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.6, duration: 1 }}
+        transition={{ delay: 0.6, duration: 1.2 }}
       >
         <div className="text-center">
           <SubjectPortrait profile={initialProfile} size={140} />
-          <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
+          <p className="text-[9px] text-drift-muted/35 mt-4 uppercase tracking-[0.2em]">
             Baseline
           </p>
         </div>
         <motion.div
-          className="text-drift-muted/20 text-2xl"
+          className="text-drift-muted/15 text-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -212,7 +212,7 @@ export function FinalDiagnostic({
         </motion.div>
         <div className="text-center">
           <SubjectPortrait profile={currentProfile} size={140} />
-          <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
+          <p className="text-[9px] text-drift-muted/35 mt-4 uppercase tracking-[0.2em]">
             Final
           </p>
         </div>
@@ -220,22 +220,22 @@ export function FinalDiagnostic({
 
       {/* Archetype designation */}
       <motion.div
-        className="text-center space-y-3"
+        className="text-center space-y-4"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
+        transition={{ delay: 1.2, duration: 1 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40">
           Subject Classification
         </p>
-        <h3 className="font-serif text-3xl sm:text-4xl text-drift-accent/90">
+        <h3 className="font-serif text-3xl sm:text-4xl md:text-5xl text-drift-accent/85 tracking-[-0.01em]">
           {archetype.designation}
         </h3>
-        <p className="text-sm text-drift-muted/60 italic">
+        <p className="text-[13px] text-drift-muted/50 italic leading-relaxed">
           {archetype.description}
         </p>
         {userName && (
-          <p className="text-xs text-drift-muted/30 mt-2">
+          <p className="text-[11px] text-drift-muted/25 mt-3 font-mono">
             Subject: {userName}
           </p>
         )}
@@ -243,50 +243,52 @@ export function FinalDiagnostic({
 
       {/* Cumulative drift */}
       <motion.div
-        className="text-center py-6 border-y border-drift-border/20"
+        className="text-center py-8"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.8, duration: 0.8 }}
+        transition={{ delay: 1.8, duration: 1 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50 mb-2">
+        <div className="drift-divider mb-8" />
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-3">
           Total Displacement
         </p>
-        <p className="font-serif text-5xl text-drift-accent/80 font-light">
+        <p className="font-serif text-5xl sm:text-6xl text-drift-accent/75 font-light tracking-tight">
           {driftPercentage}%
         </p>
-        <p className="text-xs text-drift-muted/40 mt-1">
+        <p className="text-[11px] text-drift-muted/35 mt-2 leading-relaxed">
           from baseline across {choices.length} encounters in {zoneSummaries.length} zones
         </p>
+        <div className="drift-divider mt-8" />
       </motion.div>
 
       {/* Zone journey */}
       <motion.div
-        className="space-y-3"
+        className="space-y-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.0, duration: 0.8 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50 text-center mb-4">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center mb-6">
           Transformation Journey
         </p>
         {zoneSummaries.map((summary, i) => (
           <motion.div
             key={summary.zoneId}
-            className="flex items-center gap-4 border-l border-drift-border/30 pl-4"
+            className="flex items-center gap-4 border-l border-drift-border/25 pl-5 py-1"
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 2.2 + i * 0.15 }}
           >
-            <div className="w-6 h-6 rounded-full border border-drift-accent/30 flex items-center justify-center flex-shrink-0">
-              <span className="text-[9px] font-mono text-drift-accent/60">
+            <div className="w-7 h-7 rounded-full border border-drift-accent/25 flex items-center justify-center flex-shrink-0">
+              <span className="text-[9px] font-mono text-drift-accent/50">
                 {summary.zoneId}
               </span>
             </div>
             <div>
-              <p className="text-sm text-drift-text/70">
+              <p className="text-sm text-drift-text/65">
                 {summary.title}
               </p>
-              <p className="text-[10px] text-drift-muted/40">
+              <p className="text-[10px] text-drift-muted/35">
                 {summary.subtitle} — {summary.choiceCount} encounters
               </p>
             </div>
@@ -296,37 +298,37 @@ export function FinalDiagnostic({
 
       {/* Axis readings */}
       <motion.div
-        className="space-y-6"
+        className="space-y-7"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2.8, duration: 0.8 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50 text-center">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center mb-2">
           Axis Readings
         </p>
         {AXES.map((axis, i) => (
           <motion.div
             key={axis}
-            className="border-l border-drift-border/30 pl-4"
+            className="border-l border-drift-border/25 pl-5"
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 3 + i * 0.15, duration: 0.5 }}
           >
-            <div className="flex items-baseline justify-between mb-1">
-              <span className="text-[10px] uppercase tracking-wider text-drift-muted/50">
+            <div className="flex items-baseline justify-between mb-1.5">
+              <span className="text-[10px] uppercase tracking-[0.15em] text-drift-muted/45">
                 {axis}
               </span>
-              <div className="flex items-baseline gap-2">
-                <span className="text-[9px] font-mono text-drift-muted/30">
+              <div className="flex items-baseline gap-2.5">
+                <span className="text-[9px] font-mono text-drift-muted/25">
                   {initialProfile[axis] > 0 ? "+" : ""}{(initialProfile[axis] * 100).toFixed(0)}
                 </span>
-                <span className="text-drift-muted/20">→</span>
-                <span className="text-[11px] font-mono text-drift-accent/50">
+                <span className="text-drift-muted/15 text-xs">→</span>
+                <span className="text-[11px] font-mono text-drift-accent/45">
                   {currentProfile[axis] > 0 ? "+" : ""}{(currentProfile[axis] * 100).toFixed(0)}
                 </span>
               </div>
             </div>
-            <p className="text-xs text-drift-text/50 leading-relaxed">
+            <p className="text-xs text-drift-text/45 leading-[1.7]">
               {generateAxisReading(axis, currentProfile[axis])}
             </p>
           </motion.div>
@@ -335,15 +337,15 @@ export function FinalDiagnostic({
 
       {/* Analysis */}
       <motion.div
-        className="bg-drift-surface/40 border border-drift-border/20 rounded-lg p-6"
+        className="bg-drift-surface/30 border border-drift-border/15 rounded-lg p-7 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 4, duration: 1 }}
+        transition={{ delay: 4, duration: 1.2 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/40 mb-4">
+        <p className="text-[10px] uppercase tracking-[0.25em] text-drift-muted/35 mb-5">
           Interpretive Analysis
         </p>
-        <p className="text-sm text-drift-text/60 leading-relaxed">
+        <p className="text-sm text-drift-text/55 leading-[1.8]">
           {archetype.analysis}
         </p>
       </motion.div>

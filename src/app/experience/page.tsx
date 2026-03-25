@@ -151,9 +151,9 @@ export default function ExperiencePage() {
       </div>
 
       {/* Progress thread */}
-      <div className="fixed top-0 left-0 right-0 z-40 h-[2px] bg-drift-border/30">
+      <div className="fixed top-0 left-0 right-0 z-40 h-[1px] bg-drift-border/20">
         <div
-          className="h-full bg-drift-accent/40 transition-all duration-800 ease-out"
+          className="h-full bg-drift-accent/35 transition-all duration-1000 ease-out"
           style={{
             width: `${(choiceHistory.length / totalEncounters) * 100}%`,
           }}

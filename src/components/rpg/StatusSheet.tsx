@@ -74,7 +74,7 @@ export function StatusSheet({
 }: StatusSheetProps) {
   return (
     <motion.div
-      className="border border-drift-border/30 bg-drift-surface/30 backdrop-blur-sm rounded-lg overflow-hidden"
+      className="border border-drift-border/20 bg-drift-surface/25 backdrop-blur-sm rounded-lg overflow-hidden rpg-panel-glow"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}

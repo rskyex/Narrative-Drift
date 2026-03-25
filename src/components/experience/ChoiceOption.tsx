@@ -34,16 +34,16 @@ export function ChoiceOption({
       onClick={onSelect}
       disabled={disabled}
       className={cn(
-        "w-full text-left p-5 rounded-lg border transition-all duration-300",
-        "bg-drift-surface/50 border-drift-border",
-        !disabled && "hover:bg-drift-surface hover:border-drift-accent/20 cursor-pointer",
-        selected && "border-drift-accent/40 bg-drift-surface",
+        "w-full text-left px-5 py-4 rounded-lg border transition-all duration-300",
+        "bg-drift-surface/40 border-drift-border/60",
+        !disabled && "hover:bg-drift-surface/70 hover:border-drift-accent/25 cursor-pointer",
+        selected && "border-drift-accent/40 bg-drift-surface/60",
         disabled && !selected && "cursor-default"
       )}
     >
-      <p className="text-drift-text/90 leading-relaxed">{choice.label}</p>
+      <p className="text-drift-text/85 leading-[1.6]">{choice.label}</p>
       {choice.subtext && (
-        <p className="text-drift-muted text-sm mt-1.5 leading-relaxed">
+        <p className="text-drift-muted/70 text-sm mt-1.5 leading-[1.6]">
           {choice.subtext}
         </p>
       )}
