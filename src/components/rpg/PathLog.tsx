@@ -22,12 +22,12 @@ export function PathLog({ choices, compact = false }: PathLogProps) {
         animate={{ opacity: 1 }}
       >
         <div className="px-4 py-3 border-b border-drift-border/20">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/65">
             Path Log
           </span>
         </div>
         <div className="px-4 py-6 text-center">
-          <p className="text-[11px] text-drift-muted/40 italic">No encounters recorded</p>
+          <p className="text-[11px] text-drift-muted/60 italic">No encounters recorded</p>
         </div>
       </motion.div>
     );
@@ -41,10 +41,10 @@ export function PathLog({ choices, compact = false }: PathLogProps) {
     >
       <div className="px-4 py-3 border-b border-drift-border/20">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/65">
             Path Log
           </span>
-          <span className="text-[10px] font-mono text-drift-muted/40">
+          <span className="text-[10px] font-mono text-drift-muted/60">
             {choices.length} encounter{choices.length !== 1 ? "s" : ""}
           </span>
         </div>
@@ -72,7 +72,7 @@ export function PathLog({ choices, compact = false }: PathLogProps) {
 
                 <div className="flex-1 min-w-0">
                   {/* Zone label */}
-                  <p className="text-[9px] uppercase tracking-wider text-drift-muted/40 mb-0.5">
+                  <p className="text-[9px] uppercase tracking-wider text-drift-muted/60 mb-0.5">
                     {getZoneTitle(choice.zoneId)}
                   </p>
 

@@ -16,10 +16,10 @@ export function ClosingStatement({ userName }: ClosingStatementProps) {
     >
       <div className="w-16 mx-auto drift-divider" />
 
-      <p className="text-drift-text/60 leading-[1.8] text-lg">
+      <p className="text-drift-text/80 leading-[1.8] text-lg">
         Not one of these choices felt consequential in the moment.
       </p>
-      <p className="text-drift-text/60 leading-[1.8] text-lg">
+      <p className="text-drift-text/80 leading-[1.8] text-lg">
         Each was convenient. Reasonable. Even, at times, helpful.
       </p>
       <p className="text-drift-accent/70 leading-[1.6] font-serif text-2xl mt-6">
@@ -45,7 +45,7 @@ export function ClosingStatement({ userName }: ClosingStatementProps) {
         )}
       </p>
 
-      <p className="text-drift-muted/40 text-sm mt-10 leading-[1.8]">
+      <p className="text-drift-muted/60 text-sm mt-10 leading-[1.8]">
         Each micro-concession to convenience is a micro-transfer of self.
         The drift was never dramatic. It did not need to be.
       </p>

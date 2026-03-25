@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { DriftProfile, DriftAxis } from "@/engine/types";
 import { getAxisLabels } from "@/engine/drift-model";
-import { SubjectPortrait } from "./SubjectPortrait";
+import Image from "next/image";
 
 interface StatusSheetProps {
   profile: DriftProfile;
@@ -14,6 +14,12 @@ interface StatusSheetProps {
 }
 
 const AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"];
+
+const ZONE_AVATAR: Record<number, string> = {
+  1: "/transition-1.png",
+  2: "/transition-2.png",
+  3: "/transition-4.png",
+};
 
 const axisDescriptors: Record<DriftAxis, (v: number) => string> = {
   autonomy: (v) =>
@@ -41,7 +47,7 @@ function AxisBar({ axis, value, index }: { axis: DriftAxis; value: number; index
       transition={{ delay: index * 0.08, duration: 0.4 }}
     >
       <div className="flex justify-between items-baseline">
-        <span className="text-[10px] uppercase tracking-wider text-drift-muted/60">
+        <span className="text-[10px] uppercase tracking-wider text-drift-muted/70">
           {axis}
         </span>
         <span className="text-[10px] text-drift-accent/70 font-mono">
@@ -58,8 +64,8 @@ function AxisBar({ axis, value, index }: { axis: DriftAxis; value: number; index
         />
       </div>
       <div className="flex justify-between">
-        <span className="text-[8px] text-drift-muted/30">{leftLabel}</span>
-        <span className="text-[8px] text-drift-muted/30">{rightLabel}</span>
+        <span className="text-[8px] text-drift-muted/50">{leftLabel}</span>
+        <span className="text-[8px] text-drift-muted/50">{rightLabel}</span>
       </div>
     </motion.div>
   );
@@ -82,7 +88,7 @@ export function StatusSheet({
       {/* Header */}
       <div className="px-4 py-3 border-b border-drift-border/20">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50">
+          <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/65">
             Subject Dossier
           </span>
           {currentZone && (
@@ -97,9 +103,15 @@ export function StatusSheet({
       </div>
 
       {/* Portrait */}
-      {!compact && (
+      {!compact && currentZone && (
         <div className="flex justify-center py-4 border-b border-drift-border/10">
-          <SubjectPortrait profile={profile} size={140} />
+          <Image
+            src={ZONE_AVATAR[currentZone] ?? "/baseline.png"}
+            alt="Zone avatar"
+            width={140}
+            height={140}
+            className="rounded-sm object-cover"
+          />
         </div>
       )}
 

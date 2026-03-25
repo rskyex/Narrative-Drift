@@ -72,7 +72,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
         {/* Transition copy */}
         {transitionCopy && (
           <motion.p
-            className="text-[9px] uppercase tracking-[0.35em] text-drift-accent/25 mb-6"
+            className="text-[9px] uppercase tracking-[0.35em] text-drift-accent/50 mb-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.05 }}
@@ -83,7 +83,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Zone number */}
         <motion.p
-          className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-8"
+          className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.1 }}
@@ -103,7 +103,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Subtitle */}
         <motion.p
-          className="text-sm text-drift-muted/50 italic mb-10"
+          className="text-sm text-drift-muted/65 italic mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.7 }}
@@ -113,7 +113,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Description */}
         <motion.p
-          className="text-sm text-drift-muted/40 leading-[1.8] mb-10"
+          className="text-sm text-drift-muted/60 leading-[1.8] mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
@@ -131,7 +131,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Epigraph */}
         <motion.p
-          className="text-[13px] text-drift-accent/35 italic font-serif leading-[1.7] max-w-sm mx-auto"
+          className="text-[13px] text-drift-accent/55 italic font-serif leading-[1.7] max-w-sm mx-auto"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 2.2 }}

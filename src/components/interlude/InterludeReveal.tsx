@@ -142,10 +142,10 @@ export function InterludeReveal({
         {/* Stage 1: Reflective narrative */}
         {stage === "narrative" && (
           <FadeIn key="narrative" className="min-h-[40vh] flex flex-col items-center justify-center">
-            <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-10">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-10">
               Interval — Observation {interludeNumber}
             </p>
-            <p className="text-lg text-drift-text/65 leading-[1.8] font-serif text-center max-w-lg">
+            <p className="text-lg text-drift-text/80 leading-[1.8] font-serif text-center max-w-lg">
               <TypeWriter
                 text={narrative}
                 speed={25}
@@ -160,7 +160,7 @@ export function InterludeReveal({
           <FadeIn key="portrait-drift">
             <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-8">
               <motion.p
-                className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/30"
+                className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/50"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -185,7 +185,7 @@ export function InterludeReveal({
 
               {/* Drift observation text */}
               <motion.p
-                className="text-sm text-drift-text/50 leading-relaxed font-serif text-center max-w-md"
+                className="text-sm text-drift-text/70 leading-relaxed font-serif text-center max-w-md"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.0, duration: 1.2 }}
@@ -215,7 +215,7 @@ export function InterludeReveal({
                               : "rgba(166, 124, 109, 0.35)",
                         }}
                       />
-                      <span className="text-[8px] text-drift-muted/30 uppercase tracking-wider">
+                      <span className="text-[8px] text-drift-muted/50 uppercase tracking-wider">
                         {axis.slice(0, 3)}
                       </span>
                     </div>
@@ -225,7 +225,7 @@ export function InterludeReveal({
 
               {/* Continue to comparison */}
               <motion.button
-                className="text-drift-muted/40 hover:text-drift-muted text-xs tracking-widest uppercase transition-colors duration-300 mt-6"
+                className="text-drift-muted/60 hover:text-drift-muted text-xs tracking-widest uppercase transition-colors duration-300 mt-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 4.0 }}
@@ -241,7 +241,7 @@ export function InterludeReveal({
         {stage === "comparison" && (
           <FadeIn key="comparison">
             <div className="space-y-12">
-              <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 text-center">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 text-center">
                 Drift Comparison — Before &amp; After
               </p>
 
@@ -249,7 +249,7 @@ export function InterludeReveal({
               <div className="flex items-center justify-center gap-14">
                 <div className="text-center">
                   <SubjectPortrait profile={baselineProfile} size={120} />
-                  <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
+                  <p className="text-[10px] text-drift-muted/55 mt-3 uppercase tracking-wider">
                     Baseline
                   </p>
                 </div>
@@ -263,7 +263,7 @@ export function InterludeReveal({
                 </motion.div>
                 <div className="text-center">
                   <SubjectPortrait profile={currentProfile} size={120} />
-                  <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
+                  <p className="text-[10px] text-drift-muted/55 mt-3 uppercase tracking-wider">
                     Current
                   </p>
                 </div>
@@ -290,7 +290,7 @@ export function InterludeReveal({
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 1 + i * 0.1 }}
                     >
-                      <span className="text-[10px] uppercase tracking-wider text-drift-muted/50">
+                      <span className="text-[10px] uppercase tracking-wider text-drift-muted/65">
                         {axis}
                       </span>
                       <span
@@ -314,7 +314,7 @@ export function InterludeReveal({
               >
                 <button
                   onClick={onContinue}
-                  className="text-drift-muted/60 hover:text-drift-text text-[11px] tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-8"
+                  className="text-drift-muted/70 hover:text-drift-text text-[11px] tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-8"
                 >
                   Continue
                 </button>
