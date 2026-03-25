@@ -17,8 +17,8 @@ export function DriftReveal({ initialProfile, currentProfile }: DriftRevealProps
   const driftPercentage = Math.round(cumulativeDrift * 100);
 
   return (
-    <div className="space-y-12">
-      <div className="space-y-6">
+    <div className="space-y-14">
+      <div className="space-y-7">
         {AXES.map((axis, i) => (
           <AxisComparison
             key={axis}
@@ -30,18 +30,19 @@ export function DriftReveal({ initialProfile, currentProfile }: DriftRevealProps
       </div>
 
       <motion.div
-        className="text-center pt-8"
+        className="text-center pt-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1 }}
+        transition={{ delay: 1.5, duration: 1.2 }}
       >
-        <p className="text-drift-muted text-sm tracking-wide uppercase mb-2">
+        <div className="drift-divider mb-8" />
+        <p className="text-drift-muted/50 text-[10px] tracking-[0.3em] uppercase mb-3">
           Cumulative drift
         </p>
-        <p className="font-serif text-5xl text-drift-accent">
+        <p className="font-serif text-5xl text-drift-accent/80 tracking-tight">
           {driftPercentage}%
         </p>
-        <p className="text-drift-muted/60 text-sm mt-2">
+        <p className="text-drift-muted/40 text-[11px] mt-2">
           from where you started
         </p>
       </motion.div>

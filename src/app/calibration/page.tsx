@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSessionStore } from "@/store/session-store";
+import { useSessionStore, useHasHydrated } from "@/store/session-store";
 import { calibrationPrompts } from "@/engine/calibration";
 import { applyDrift, getAxisLabels } from "@/engine/drift-model";
 import { Choice, DriftAxis, DriftProfile } from "@/engine/types";
@@ -25,15 +25,17 @@ export default function CalibrationPage() {
     phase,
   } = useSessionStore();
 
+  const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<"intro" | "active">("intro");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [previewProfile, setPreviewProfile] = useState<DriftProfile | null>(null);
 
   useEffect(() => {
+    if (!hasHydrated) return;
     if (phase !== "calibration") {
       router.push("/");
     }
-  }, [phase, router]);
+  }, [phase, router, hasHydrated]);
 
   // Reset selection state when calibration index changes
   useEffect(() => {
@@ -78,7 +80,7 @@ export default function CalibrationPage() {
     [calibrationIndex, makeCalibrationChoice, completeCalibration, router]
   );
 
-  if (!currentPrompt || phase !== "calibration") return null;
+  if (!hasHydrated || !currentPrompt || phase !== "calibration") return null;
 
   const displayProfile = previewProfile ?? currentProfile;
 
@@ -117,10 +119,10 @@ export default function CalibrationPage() {
                 animate={{ width: 32 }}
                 transition={{ duration: 1, delay: 0.3 }}
               />
-              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-8">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/35 mb-10">
                 Initiating Calibration Protocol
               </p>
-              <p className="text-lg text-drift-text/60 leading-relaxed font-serif">
+              <p className="text-lg text-drift-text/60 leading-[1.8] font-serif">
                 <TypeWriter
                   text="We need to establish a baseline. Five questions. Answer honestly — not who you aspire to be, but who you are in the small, unwitnessed decisions."
                   speed={28}
@@ -240,20 +242,20 @@ export default function CalibrationPage() {
                     transition={{ duration: 0.5 }}
                   >
                     {/* Axis being calibrated */}
-                    <div className="flex items-center gap-3 mb-8">
-                      <div className="w-6 h-[1px] bg-drift-accent/30" />
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/50">
+                    <div className="flex items-center gap-3 mb-10">
+                      <div className="w-8 h-[1px] bg-drift-accent/25" />
+                      <span className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/45">
                         Calibrating: {currentPrompt.axis}
                       </span>
                     </div>
 
                     {/* Context */}
-                    <p className="text-sm text-drift-muted/40 leading-relaxed mb-4 max-w-md">
+                    <p className="text-sm text-drift-muted/40 leading-[1.7] mb-5 max-w-md">
                       {currentPrompt.context}
                     </p>
 
                     {/* Prompt */}
-                    <h2 className="font-serif text-xl sm:text-2xl text-drift-text/85 mb-10 leading-relaxed">
+                    <h2 className="font-serif text-xl sm:text-2xl text-drift-text/85 mb-12 leading-[1.5]">
                       {currentPrompt.prompt}
                     </h2>
 
