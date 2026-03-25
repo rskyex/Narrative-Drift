@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Encounter, Choice } from "@/engine/types";
 import { ChoiceOption } from "./ChoiceOption";
+import { ScenePanel } from "@/components/scenes/ScenePanel";
 import { useState } from "react";
 
 interface MomentCardProps {
@@ -13,6 +14,7 @@ interface MomentCardProps {
 }
 
 export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }: MomentCardProps) {
+  const [showContext, setShowContext] = useState(false);
   const [showChoices, setShowChoices] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -23,7 +25,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
 
   return (
     <motion.div
-      className="max-w-prose mx-auto px-6"
+      className="max-w-2xl mx-auto px-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -12 }}
@@ -31,7 +33,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
     >
       {/* Encounter header */}
       <motion.div
-        className="mb-8 flex items-center gap-3"
+        className="mb-6 flex items-center gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -43,29 +45,41 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
         <div className="flex-1 h-[1px] bg-drift-border/30" />
       </motion.div>
 
-      {/* Context */}
-      <motion.p
-        className="text-lg sm:text-xl leading-relaxed text-drift-text/90 mb-10"
-        initial={{ opacity: 0, y: 12 }}
+      {/* Scene panel — the visual centerpiece */}
+      <motion.div
+        className="flex justify-center mb-8"
+        initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        onAnimationComplete={() => setShowChoices(true)}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        onAnimationComplete={() => setShowContext(true)}
       >
-        {encounter.context}
-      </motion.p>
+        <ScenePanel encounterId={encounter.id} zoneId={encounter.zoneId} />
+      </motion.div>
 
-      {/* System Framing */}
+      {/* Context narrative — emotional framing beneath the visual */}
+      {showContext && (
+        <motion.p
+          className="text-base sm:text-lg leading-relaxed text-drift-text/80 mb-8 max-w-prose"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          onAnimationComplete={() => setShowChoices(true)}
+        >
+          {encounter.context}
+        </motion.p>
+      )}
+
+      {/* System framing + choices */}
       {showChoices && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm text-drift-muted mb-6 tracking-wide uppercase">
+          <p className="text-sm text-drift-muted mb-5 tracking-wide uppercase">
             {encounter.systemFraming}
           </p>
 
-          {/* Choices */}
           <div className="space-y-3">
             {encounter.choices.map((choice, i) => (
               <ChoiceOption
