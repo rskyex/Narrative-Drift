@@ -63,9 +63,12 @@ export default function BaselinePage() {
   const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<"intro" | "portrait" | "sheet" | "ready">("intro");
 
+  // Only redirect to landing for phases that precede baseline.
+  // Do NOT redirect for forward phases (zone, interlude, etc.) — that would
+  // race with the intentional router.push("/experience") in handleProceed.
   useEffect(() => {
     if (!hasHydrated) return;
-    if (phase !== "baseline") {
+    if (phase === "landing" || phase === "calibration") {
       router.push("/");
     }
   }, [phase, router, hasHydrated]);
