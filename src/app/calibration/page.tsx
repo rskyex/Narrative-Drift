@@ -9,6 +9,7 @@ import { applyDrift, getAxisLabels } from "@/engine/drift-model";
 import { Choice, DriftAxis, DriftProfile } from "@/engine/types";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
 import { SubjectPortrait } from "@/components/rpg/SubjectPortrait";
+import { LogoMark } from "@/components/shared/LogoMark";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { cn } from "@/lib/utils";
@@ -103,7 +104,8 @@ export default function CalibrationPage() {
       {/* Fixed header */}
       <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/30">
+          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/30">
+            <LogoMark size={16} className="text-drift-accent/25" />
             Subject Calibration
           </span>
           <span className="text-[10px] font-mono text-drift-accent/30">
@@ -123,11 +125,11 @@ export default function CalibrationPage() {
                 transition={{ duration: 1, delay: 0.3 }}
               />
               <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/35 mb-10">
-                Initiating Calibration Protocol
+                Baseline Calibration
               </p>
               <p className="text-lg text-drift-text/60 leading-[1.8] font-serif">
                 <TypeWriter
-                  text="We need to establish a baseline. Five questions. Answer honestly — not who you aspire to be, but who you are in the small, unwitnessed decisions."
+                  text="Before the experience begins, we need a reading. Five questions. Answer as you are — not as you wish to be, but as you behave in the small, unwitnessed moments where character is legible."
                   speed={28}
                   onComplete={() => setTimeout(() => setStage("active"), 1400)}
                 />

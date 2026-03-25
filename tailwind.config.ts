@@ -20,6 +20,7 @@ const config: Config = {
         },
       },
       fontFamily: {
+        display: ["Cambria", "Georgia", "'Times New Roman'", "serif"],
         serif: ["Georgia", "Cambria", "'Times New Roman'", "Times", "serif"],
         sans: [
           "system-ui",
