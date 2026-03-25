@@ -30,9 +30,12 @@ export default function CalibrationPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [previewProfile, setPreviewProfile] = useState<DriftProfile | null>(null);
 
+  // Only redirect to landing if the user hasn't reached calibration yet.
+  // Do NOT redirect for forward phases (baseline, zone, etc.) — that would
+  // race with the intentional router.push("/baseline") in handleChoice.
   useEffect(() => {
     if (!hasHydrated) return;
-    if (phase !== "calibration") {
+    if (phase === "landing") {
       router.push("/");
     }
   }, [phase, router, hasHydrated]);
