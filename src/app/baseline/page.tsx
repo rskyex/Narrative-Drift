@@ -8,6 +8,7 @@ import { GrainOverlay } from "@/components/shared/GrainOverlay";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { SubjectPortrait } from "@/components/rpg/SubjectPortrait";
+import { LogoMark } from "@/components/shared/LogoMark";
 import { DriftAxis } from "@/engine/types";
 import { getAxisLabels } from "@/engine/drift-model";
 
@@ -87,7 +88,8 @@ export default function BaselinePage() {
       {/* Fixed header */}
       <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
         <div className="flex items-center justify-between max-w-5xl mx-auto">
-          <span className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/30">
+          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/30">
+            <LogoMark size={16} className="text-drift-accent/25" />
             Baseline Self
           </span>
           <span className="text-[10px] font-mono text-drift-accent/30">
@@ -106,7 +108,7 @@ export default function BaselinePage() {
               </p>
               <p className="text-lg text-drift-text/60 leading-[1.8] font-serif">
                 <TypeWriter
-                  text="This is you. Before anything changes. Remember this shape — it is the origin point against which all drift will be measured."
+                  text="This is the shape of you before anything shifts. Commit it to memory. Every departure from this origin will be measured, recorded, and returned to you."
                   speed={30}
                   onComplete={() => setTimeout(() => setStage("portrait"), 1200)}
                 />
@@ -155,7 +157,7 @@ export default function BaselinePage() {
                 transition={{ delay: 1.0, duration: 0.8 }}
               >
                 <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/40">
-                  Baseline Established
+                  Origin State Recorded
                 </p>
               </motion.div>
 
@@ -167,7 +169,7 @@ export default function BaselinePage() {
                 transition={{ delay: 2.0, duration: 0.8 }}
                 onClick={() => setStage("sheet")}
               >
-                View subject profile
+                Examine the profile
               </motion.button>
             </div>
           </motion.div>
@@ -219,7 +221,7 @@ export default function BaselinePage() {
                     transition={{ delay: 0.2, duration: 0.6 }}
                   >
                     <h1 className="text-[11px] uppercase tracking-[0.3em] text-drift-muted/50 mb-3">
-                      Subject Dossier — Initial State
+                      Subject Profile — Pre-Drift State
                     </h1>
                     <div className="drift-divider" />
                   </motion.div>
@@ -289,9 +291,9 @@ export default function BaselinePage() {
                   >
                     <div className="drift-divider mb-8" />
                     <p className="text-xs text-drift-muted/30 leading-[1.8] mb-10 max-w-md">
-                      This profile represents your pre-drift state. The encounters ahead will apply
-                      pressure to each axis. How you respond will determine how far you drift — and
-                      in which direction.
+                      This is your origin state. The encounters ahead will apply quiet pressure
+                      to each axis — through convenience, through framing, through the architecture
+                      of choice itself. How you respond will determine how far you drift.
                     </p>
 
                     <motion.button
@@ -301,7 +303,7 @@ export default function BaselinePage() {
                       animate={{ opacity: 1 }}
                       transition={{ delay: 2.0, duration: 0.8 }}
                     >
-                      Begin the experience →
+                      Enter the first zone
                     </motion.button>
                   </motion.div>
                 </div>

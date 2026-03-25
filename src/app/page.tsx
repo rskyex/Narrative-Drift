@@ -6,6 +6,8 @@ import { AnimatePresence } from "framer-motion";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
+import { HeroBackground } from "@/components/shared/HeroBackground";
+import { LogoMark } from "@/components/shared/LogoMark";
 import { useSessionStore } from "@/store/session-store";
 
 export default function LandingPage() {
@@ -36,18 +38,23 @@ export default function LandingPage() {
 
   return (
     <main className="relative min-h-screen flex items-center justify-center px-6">
+      <HeroBackground />
       <GrainOverlay />
 
       <AnimatePresence mode="wait">
         {!exiting && (
-          <FadeIn key="landing" className="text-center max-w-2xl mx-auto">
+          <FadeIn key="landing" className="relative z-10 text-center max-w-2xl mx-auto">
+            <div className="flex justify-center mb-8">
+              <LogoMark size={40} className="text-drift-accent/40" />
+            </div>
+
             <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl tracking-[-0.02em] mb-14 text-drift-text/90">
               Narrative Drift
             </h1>
 
             <div className="text-lg sm:text-xl leading-[1.7] text-drift-muted mb-20 max-w-prose mx-auto">
               <TypeWriter
-                text="You are about to enter three zones of mediated experience. In each, an AI system will shape what you see, what you choose, and who you become. The changes will be small. None will feel consequential. That is the point."
+                text="You are about to enter three zones of mediated experience. In each, an AI system will shape what you see, what you choose, and who you become. The changes will be imperceptible. None will feel consequential. That is precisely the point."
                 speed={30}
                 onComplete={handlePremiseComplete}
               />
@@ -62,7 +69,7 @@ export default function LandingPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleBegin()}
-                      placeholder="What should we call you?"
+                      placeholder="Enter a subject identifier"
                       className="w-full max-w-xs bg-transparent border-b border-drift-border text-drift-text text-center text-lg py-3 placeholder:text-drift-muted/50 focus:outline-none focus:border-drift-accent/50 transition-colors"
                       autoFocus
                     />
@@ -71,7 +78,7 @@ export default function LandingPage() {
                       onClick={handleBegin}
                       className="text-drift-muted/70 hover:text-drift-text text-[11px] tracking-[0.25em] uppercase transition-all duration-500 py-3 px-8 border border-drift-border/0 hover:border-drift-border/30 rounded"
                     >
-                      Begin
+                      Initiate
                     </button>
                   </div>
                 </FadeIn>

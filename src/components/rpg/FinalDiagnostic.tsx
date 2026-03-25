@@ -253,7 +253,7 @@ export function FinalDiagnostic({
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          Final Diagnostic
+          Subject Diagnostic — Final State
         </motion.p>
         <motion.div
           className="w-16 mx-auto drift-divider"
@@ -357,7 +357,7 @@ export function FinalDiagnostic({
         transition={{ delay: 2.0, duration: 0.8 }}
       >
         <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center mb-6">
-          Transformation Journey
+          Zone Progression
         </p>
         {zoneSummaries.map((summary, i) => (
           <motion.div
@@ -392,7 +392,7 @@ export function FinalDiagnostic({
         transition={{ delay: 2.8, duration: 0.8 }}
       >
         <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center mb-2">
-          Baseline vs Final — Axis Readings
+          Axis Readings — Origin vs. Terminal State
         </p>
         {AXES.map((axis, i) => (
           <motion.div
@@ -441,7 +441,7 @@ export function FinalDiagnostic({
         transition={{ delay: 4, duration: 1.2 }}
       >
         <p className="text-[10px] uppercase tracking-[0.25em] text-drift-muted/35 mb-5">
-          Interpretive Analysis
+          Diagnostic Interpretation
         </p>
         <p className="text-sm text-drift-text/55 leading-[1.8]">
           {archetype.analysis}

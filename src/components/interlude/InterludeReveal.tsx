@@ -142,7 +142,7 @@ export function InterludeReveal({
         {stage === "narrative" && (
           <FadeIn key="narrative" className="min-h-[40vh] flex flex-col items-center justify-center">
             <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-10">
-              Interlude {interludeNumber}
+              Interval — Observation {interludeNumber}
             </p>
             <p className="text-lg text-drift-text/65 leading-[1.8] font-serif text-center max-w-lg">
               <TypeWriter
@@ -164,7 +164,7 @@ export function InterludeReveal({
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                Subject Observation
+                Subject Under Observation
               </motion.p>
 
               {/* Single portrait — current state — letting user see the accumulated drift */}
@@ -235,7 +235,7 @@ export function InterludeReveal({
           <FadeIn key="comparison">
             <div className="space-y-12">
               <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 text-center">
-                Profile Comparison
+                Drift Comparison — Before &amp; After
               </p>
 
               {/* Side-by-side portraits */}
