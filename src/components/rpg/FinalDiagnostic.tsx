@@ -152,6 +152,72 @@ function generateZoneSummary(choices: ChoiceRecord[]): { zoneId: number; title: 
   return summaries;
 }
 
+/** Generate final subject diagnostic summary */
+function generateDiagnosticSummary(
+  userName: string | null,
+  archetype: ArchetypeResult,
+  baseline: DriftProfile,
+  current: DriftProfile,
+  choices: ChoiceRecord[],
+  driftPercentage: number
+): string {
+  const subject = userName || "The subject";
+
+  // Count delegation vs autonomy choices
+  const delegatedCount = choices.filter((c) =>
+    c.driftVectors.some((v) => v.axis === "autonomy" && v.delta < 0)
+  ).length;
+  const autonomousCount = choices.filter((c) =>
+    c.driftVectors.some((v) => v.axis === "autonomy" && v.delta > 0)
+  ).length;
+
+  // Find most stable and most shifted axes
+  let minShift = Infinity;
+  let maxShift = 0;
+  let stableAxis: DriftAxis = "autonomy";
+  let shiftedAxis: DriftAxis = "autonomy";
+
+  for (const axis of AXES) {
+    const d = Math.abs(current[axis] - baseline[axis]);
+    if (d < minShift) {
+      minShift = d;
+      stableAxis = axis;
+    }
+    if (d > maxShift) {
+      maxShift = d;
+      shiftedAxis = axis;
+    }
+  }
+
+  const delegationRatio = choices.length > 0
+    ? Math.round((delegatedCount / choices.length) * 100)
+    : 0;
+
+  let summary = `${subject} entered the experience as a baseline self — unmediated, uncurated, carrying only the orientations established during calibration. `;
+
+  if (driftPercentage <= 15) {
+    summary += `Over nine encounters, the profile shifted minimally (${driftPercentage}% total displacement). This stability suggests either strong prior convictions or a consistent strategy of resistance to algorithmic influence. `;
+  } else if (driftPercentage <= 35) {
+    summary += `Over nine encounters, the profile shifted measurably (${driftPercentage}% total displacement). The drift was distributed across multiple axes, suggesting a subject responsive to contextual pressure but not uniformly susceptible. `;
+  } else {
+    summary += `Over nine encounters, the profile shifted significantly (${driftPercentage}% total displacement). The magnitude of change indicates a subject who engaged deeply with each zone's framing — whether through acceptance or reaction, the system's influence registered. `;
+  }
+
+  summary += `The ${shiftedAxis} axis showed the greatest movement, while ${stableAxis} remained most stable. `;
+
+  if (delegationRatio >= 60) {
+    summary += `In ${delegationRatio}% of encounters, ${subject.toLowerCase() === "the subject" ? "the subject" : "they"} chose options that delegated decision-making to the system. This pattern — classified as "${archetype.designation}" — reflects not a failure of will but an environment designed to make delegation feel rational. `;
+  } else if (delegationRatio <= 30) {
+    summary += `In only ${delegationRatio}% of encounters did ${subject.toLowerCase() === "the subject" ? "the subject" : "they"} delegate to the system. This resistance — classified as "${archetype.designation}" — came at a cost: more time, more effort, more friction. The question is whether that cost remains sustainable. `;
+  } else {
+    summary += `The delegation pattern was mixed (${delegationRatio}% system-aligned choices), suggesting a subject who navigated each encounter on its own terms rather than from a fixed stance. Classification as "${archetype.designation}" reflects the dominant tendency, not the whole picture. `;
+  }
+
+  summary += `The experience is now complete. The distance between who ${subject.toLowerCase() === "the subject" ? "the subject was" : "they were"} and who ${subject.toLowerCase() === "the subject" ? "the subject is" : "they are"} was not created by any single choice. It accumulated — in the ordinary, in the convenient, in the reasonable.`;
+
+  return summary;
+}
+
 export function FinalDiagnostic({
   userName,
   initialProfile,
@@ -163,6 +229,14 @@ export function FinalDiagnostic({
   const cumulativeDrift = computeCumulativeDrift(initialProfile, currentProfile);
   const driftPercentage = Math.round(cumulativeDrift * 100);
   const zoneSummaries = generateZoneSummary(choices);
+  const diagnosticSummary = generateDiagnosticSummary(
+    userName,
+    archetype,
+    initialProfile,
+    currentProfile,
+    choices,
+    driftPercentage
+  );
 
   return (
     <motion.div
@@ -201,6 +275,13 @@ export function FinalDiagnostic({
           <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
             Baseline
           </p>
+          <div className="mt-2 space-y-0.5">
+            {AXES.map((axis) => (
+              <p key={axis} className="text-[8px] font-mono text-drift-muted/25">
+                {axis.slice(0, 3)}: {initialProfile[axis] > 0 ? "+" : ""}{(initialProfile[axis] * 100).toFixed(0)}
+              </p>
+            ))}
+          </div>
         </div>
         <motion.div
           className="text-drift-muted/20 text-2xl"
@@ -215,6 +296,13 @@ export function FinalDiagnostic({
           <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
             Final
           </p>
+          <div className="mt-2 space-y-0.5">
+            {AXES.map((axis) => (
+              <p key={axis} className="text-[8px] font-mono text-drift-muted/25">
+                {axis.slice(0, 3)}: {currentProfile[axis] > 0 ? "+" : ""}{(currentProfile[axis] * 100).toFixed(0)}
+              </p>
+            ))}
+          </div>
         </div>
       </motion.div>
 
@@ -294,7 +382,7 @@ export function FinalDiagnostic({
         ))}
       </motion.div>
 
-      {/* Axis readings */}
+      {/* Axis readings — baseline vs final */}
       <motion.div
         className="space-y-6"
         initial={{ opacity: 0 }}
@@ -302,7 +390,7 @@ export function FinalDiagnostic({
         transition={{ delay: 2.8, duration: 0.8 }}
       >
         <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/50 text-center">
-          Axis Readings
+          Baseline vs Final — Axis Readings
         </p>
         {AXES.map((axis, i) => (
           <motion.div
@@ -324,6 +412,16 @@ export function FinalDiagnostic({
                 <span className="text-[11px] font-mono text-drift-accent/50">
                   {currentProfile[axis] > 0 ? "+" : ""}{(currentProfile[axis] * 100).toFixed(0)}
                 </span>
+                <span
+                  className={`text-[9px] font-mono ${
+                    currentProfile[axis] - initialProfile[axis] >= 0
+                      ? "text-drift-accent/30"
+                      : "text-drift-alert/30"
+                  }`}
+                >
+                  ({currentProfile[axis] - initialProfile[axis] >= 0 ? "+" : ""}
+                  {Math.round((currentProfile[axis] - initialProfile[axis]) * 100)})
+                </span>
               </div>
             </div>
             <p className="text-xs text-drift-text/50 leading-relaxed">
@@ -333,7 +431,7 @@ export function FinalDiagnostic({
         ))}
       </motion.div>
 
-      {/* Analysis */}
+      {/* Interpretive Analysis */}
       <motion.div
         className="bg-drift-surface/40 border border-drift-border/20 rounded-lg p-6"
         initial={{ opacity: 0 }}
@@ -345,6 +443,21 @@ export function FinalDiagnostic({
         </p>
         <p className="text-sm text-drift-text/60 leading-relaxed">
           {archetype.analysis}
+        </p>
+      </motion.div>
+
+      {/* Subject Diagnostic Summary */}
+      <motion.div
+        className="bg-drift-surface/30 border border-drift-border/15 rounded-lg p-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 4.5, duration: 1 }}
+      >
+        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/40 mb-4">
+          Subject Diagnostic Summary
+        </p>
+        <p className="text-xs text-drift-text/50 leading-relaxed">
+          {diagnosticSummary}
         </p>
       </motion.div>
     </motion.div>
