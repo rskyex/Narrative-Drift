@@ -392,7 +392,7 @@ export function FinalDiagnostic({
         transition={{ delay: 2.8, duration: 0.8 }}
       >
         <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center mb-2">
-          Axis Readings
+          Baseline vs Final — Axis Readings
         </p>
         {AXES.map((axis, i) => (
           <motion.div
