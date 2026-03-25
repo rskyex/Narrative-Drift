@@ -17,6 +17,7 @@ import { InterludeReveal } from "@/components/interlude/InterludeReveal";
 import { StatusSheet } from "@/components/rpg/StatusSheet";
 import { PathLog } from "@/components/rpg/PathLog";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
+import { LogoMark } from "@/components/shared/LogoMark";
 
 type ViewState = "zone-intro" | "encounter" | "interlude";
 
@@ -151,10 +152,15 @@ export default function ExperiencePage() {
 
         {/* Right gutter — zone indicator */}
         <aside className="hidden lg:flex flex-col items-center justify-center w-16 flex-shrink-0">
-          <div className="writing-mode-vertical text-[10px] uppercase tracking-[0.3em] text-drift-muted/20 select-none">
+          <div className="writing-mode-vertical text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 select-none">
             {zone.subtitle}
           </div>
         </aside>
+      </div>
+
+      {/* Fixed logo */}
+      <div className="fixed top-4 left-6 z-50">
+        <LogoMark size={20} className="text-drift-accent/50" />
       </div>
 
       {/* Progress thread */}

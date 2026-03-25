@@ -68,7 +68,7 @@ export function TimelineOfChange({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-2"
+          className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/60 mb-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -97,10 +97,10 @@ export function TimelineOfChange({
         >
           <div className="relative z-10 w-[15px] h-[15px] rounded-full border-2 border-drift-muted/40 bg-drift-bg flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-[10px] uppercase tracking-wider text-drift-muted/50">
+            <p className="text-[10px] uppercase tracking-wider text-drift-muted/65">
               Baseline Established
             </p>
-            <p className="text-[11px] text-drift-text/40 mt-0.5">
+            <p className="text-[11px] text-drift-text/75 mt-0.5">
               Calibration complete. Profile recorded.
             </p>
           </div>
@@ -154,7 +154,7 @@ export function TimelineOfChange({
                   }}
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-[11px] text-drift-text/60 leading-relaxed">
+                  <p className="text-[11px] text-drift-text/75 leading-relaxed">
                     {snapshot.choiceLabel}
                   </p>
                   <div className="flex items-center gap-3 mt-1">
@@ -170,7 +170,7 @@ export function TimelineOfChange({
                         {Math.round(shift.delta * 100)}
                       </span>
                     )}
-                    <span className="text-[9px] font-mono text-drift-muted/30">
+                    <span className="text-[9px] font-mono text-drift-muted/65">
                       drift: {Math.round(cumulDrift * 100)}%
                     </span>
                   </div>
@@ -192,7 +192,7 @@ export function TimelineOfChange({
             <p className="text-[10px] uppercase tracking-wider text-drift-accent/60">
               Final State
             </p>
-            <p className="text-[11px] text-drift-text/40 mt-0.5">
+            <p className="text-[11px] text-drift-text/75 mt-0.5">
               {Math.round(
                 computeCumulativeDrift(
                   baselineProfile,

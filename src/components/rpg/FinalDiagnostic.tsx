@@ -248,7 +248,7 @@ export function FinalDiagnostic({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-3"
+          className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -278,12 +278,12 @@ export function FinalDiagnostic({
             height={140}
             className="rounded-sm object-cover"
           />
-          <p className="text-[9px] text-drift-muted/35 mt-4 uppercase tracking-[0.2em]">
+          <p className="text-[9px] text-drift-muted/55 mt-4 uppercase tracking-[0.2em]">
             Baseline
           </p>
           <div className="mt-2 space-y-0.5">
             {AXES.map((axis) => (
-              <p key={axis} className="text-[8px] font-mono text-drift-muted/25">
+              <p key={axis} className="text-[8px] font-mono text-drift-muted/60">
                 {axis.slice(0, 3)}: {initialProfile[axis] > 0 ? "+" : ""}{(initialProfile[axis] * 100).toFixed(0)}
               </p>
             ))}
@@ -305,12 +305,12 @@ export function FinalDiagnostic({
             height={140}
             className="rounded-sm object-cover"
           />
-          <p className="text-[9px] text-drift-muted/35 mt-4 uppercase tracking-[0.2em]">
+          <p className="text-[9px] text-drift-muted/55 mt-4 uppercase tracking-[0.2em]">
             Final
           </p>
           <div className="mt-2 space-y-0.5">
             {AXES.map((axis) => (
-              <p key={axis} className="text-[8px] font-mono text-drift-muted/25">
+              <p key={axis} className="text-[8px] font-mono text-drift-muted/60">
                 {axis.slice(0, 3)}: {currentProfile[axis] > 0 ? "+" : ""}{(currentProfile[axis] * 100).toFixed(0)}
               </p>
             ))}
@@ -325,7 +325,7 @@ export function FinalDiagnostic({
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 1 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/60">
           Subject Classification
         </p>
         <h3 className="font-serif text-3xl sm:text-4xl md:text-5xl text-drift-accent/85 tracking-[-0.01em]">
@@ -335,7 +335,7 @@ export function FinalDiagnostic({
           {archetype.description}
         </p>
         {userName && (
-          <p className="text-[11px] text-drift-muted/25 mt-3 font-mono">
+          <p className="text-[11px] text-drift-muted/60 mt-3 font-mono">
             Subject: {userName}
           </p>
         )}
@@ -349,13 +349,13 @@ export function FinalDiagnostic({
         transition={{ delay: 1.8, duration: 1 }}
       >
         <div className="drift-divider mb-8" />
-        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-3">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/60 mb-3">
           Total Displacement
         </p>
         <p className="font-serif text-5xl sm:text-6xl text-drift-accent/75 font-light tracking-tight">
           {driftPercentage}%
         </p>
-        <p className="text-[11px] text-drift-muted/35 mt-2 leading-relaxed">
+        <p className="text-[11px] text-drift-muted/55 mt-2 leading-relaxed">
           from baseline across {choices.length} encounters in {zoneSummaries.length} zones
         </p>
         <div className="drift-divider mt-8" />
@@ -368,7 +368,7 @@ export function FinalDiagnostic({
         animate={{ opacity: 1 }}
         transition={{ delay: 2.0, duration: 0.8 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center mb-6">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/60 text-center mb-6">
           Zone Progression
         </p>
         {zoneSummaries.map((summary, i) => (
@@ -385,10 +385,10 @@ export function FinalDiagnostic({
               </span>
             </div>
             <div>
-              <p className="text-sm text-drift-text/65">
+              <p className="text-sm text-drift-text/80">
                 {summary.title}
               </p>
-              <p className="text-[10px] text-drift-muted/35">
+              <p className="text-[10px] text-drift-muted/55">
                 {summary.subtitle} — {summary.choiceCount} encounters
               </p>
             </div>
@@ -403,7 +403,7 @@ export function FinalDiagnostic({
         animate={{ opacity: 1 }}
         transition={{ delay: 2.8, duration: 0.8 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center mb-2">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/60 text-center mb-2">
           Axis Readings — Origin vs. Terminal State
         </p>
         {AXES.map((axis, i) => (
@@ -415,11 +415,11 @@ export function FinalDiagnostic({
             transition={{ delay: 3 + i * 0.15, duration: 0.5 }}
           >
             <div className="flex items-baseline justify-between mb-1.5">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-drift-muted/45">
+              <span className="text-[10px] uppercase tracking-[0.15em] text-drift-muted/60">
                 {axis}
               </span>
               <div className="flex items-baseline gap-2.5">
-                <span className="text-[9px] font-mono text-drift-muted/25">
+                <span className="text-[9px] font-mono text-drift-muted/60">
                   {initialProfile[axis] > 0 ? "+" : ""}{(initialProfile[axis] * 100).toFixed(0)}
                 </span>
                 <span className="text-drift-muted/15 text-xs">→</span>
@@ -438,7 +438,7 @@ export function FinalDiagnostic({
                 </span>
               </div>
             </div>
-            <p className="text-xs text-drift-text/45 leading-[1.7]">
+            <p className="text-xs text-drift-text/80 leading-[1.7]">
               {generateAxisReading(axis, currentProfile[axis])}
             </p>
           </motion.div>
@@ -452,10 +452,10 @@ export function FinalDiagnostic({
         animate={{ opacity: 1 }}
         transition={{ delay: 4, duration: 1.2 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.25em] text-drift-muted/35 mb-5">
+        <p className="text-[10px] uppercase tracking-[0.25em] text-drift-muted/55 mb-5">
           Diagnostic Interpretation
         </p>
-        <p className="text-sm text-drift-text/55 leading-[1.8]">
+        <p className="text-sm text-drift-text/70 leading-[1.8]">
           {archetype.analysis}
         </p>
       </motion.div>
@@ -467,10 +467,10 @@ export function FinalDiagnostic({
         animate={{ opacity: 1 }}
         transition={{ delay: 4.5, duration: 1 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/40 mb-4">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/60 mb-4">
           Subject Diagnostic Summary
         </p>
-        <p className="text-xs text-drift-text/50 leading-relaxed">
+        <p className="text-xs text-drift-text/80 leading-relaxed">
           {diagnosticSummary}
         </p>
       </motion.div>

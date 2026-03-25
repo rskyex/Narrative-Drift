@@ -39,7 +39,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
         transition={{ duration: 0.5 }}
       >
         <div className="w-8 h-[1px] bg-drift-border" />
-        <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/40">
+        <span className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/60">
           Encounter {globalIndex} of {totalEncounters}
         </span>
         <div className="flex-1 h-[1px] bg-drift-border/30" />
@@ -59,7 +59,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
       {/* Context narrative — emotional framing beneath the visual */}
       {showContext && (
         <motion.p
-          className="text-base sm:text-lg leading-[1.75] text-drift-text/75 mb-10 max-w-prose font-serif"
+          className="text-base sm:text-lg leading-[1.75] text-drift-text/85 mb-10 max-w-prose font-serif"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
@@ -76,7 +76,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-[11px] text-drift-muted/60 mb-5 tracking-[0.15em] uppercase">
+          <p className="text-[11px] text-drift-muted/70 mb-5 tracking-[0.15em] uppercase">
             {encounter.systemFraming}
           </p>
 

@@ -23,10 +23,10 @@ export function AxisComparison({ axis, value, index }: AxisComparisonProps) {
       transition={{ duration: 0.6, delay: index * 0.15 }}
     >
       <div className="flex justify-between text-[13px]">
-        <span className={value < 0 ? "text-drift-accent/80" : "text-drift-muted/60"}>
+        <span className={value < 0 ? "text-drift-accent/80" : "text-drift-muted/75"}>
           {leftLabel}
         </span>
-        <span className={value > 0 ? "text-drift-accent/80" : "text-drift-muted/60"}>
+        <span className={value > 0 ? "text-drift-accent/80" : "text-drift-muted/75"}>
           {rightLabel}
         </span>
       </div>
@@ -70,7 +70,7 @@ export function AxisComparison({ axis, value, index }: AxisComparisonProps) {
 
       {percentage > 0 && (
         <motion.p
-          className="text-xs text-drift-muted/60 text-center"
+          className="text-xs text-drift-muted/75 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: index * 0.15 + 1 }}

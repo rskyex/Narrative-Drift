@@ -89,11 +89,11 @@ export default function BaselinePage() {
       {/* Fixed header */}
       <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
         <div className="flex items-center justify-between max-w-5xl mx-auto">
-          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/30">
-            <LogoMark size={16} className="text-drift-accent/25" />
+          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/50">
+            <LogoMark size={20} className="text-drift-accent/50" />
             Baseline Self
           </span>
-          <span className="text-[10px] font-mono text-drift-accent/30">
+          <span className="text-[10px] font-mono text-drift-accent/50">
             Pre-drift state
           </span>
         </div>
@@ -104,12 +104,12 @@ export default function BaselinePage() {
         {stage === "intro" && (
           <FadeIn key="intro" className="min-h-screen flex items-center justify-center px-6">
             <div className="text-center max-w-md">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/35 mb-10">
+              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/55 mb-10">
                 Calibration Complete
               </p>
-              <p className="text-lg text-drift-text/60 leading-[1.8] font-serif">
+              <p className="text-lg text-drift-text/75 leading-[1.8] font-serif">
                 <TypeWriter
-                  text="This is the shape of you before anything shifts. Commit it to memory. Every departure from this origin will be measured, recorded, and returned to you."
+                  text="This is who you are before anything shifts. Remember this version of yourself. Every departure from this origin will be measured, recorded, and returned to you."
                   speed={30}
                   onComplete={() => setTimeout(() => setStage("portrait"), 1200)}
                 />
@@ -163,14 +163,14 @@ export default function BaselinePage() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.0, duration: 0.8 }}
               >
-                <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/40">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/60">
                   Origin State Recorded
                 </p>
               </motion.div>
 
               {/* Continue to sheet */}
               <motion.button
-                className="mt-10 text-drift-muted/40 hover:text-drift-text/60 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                className="mt-10 text-drift-muted/60 hover:text-drift-text/80 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.0, duration: 0.8 }}
@@ -215,10 +215,10 @@ export default function BaselinePage() {
                   </div>
 
                   <div className="mt-6 text-center space-y-1">
-                    <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/40">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/60">
                       Subject Baseline
                     </p>
-                    <p className="text-[9px] font-mono text-drift-muted/30">
+                    <p className="text-[9px] font-mono text-drift-muted/50">
                       Pre-drift · Zone 0
                     </p>
                   </div>
@@ -233,7 +233,7 @@ export default function BaselinePage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2, duration: 0.6 }}
                   >
-                    <h1 className="text-[11px] uppercase tracking-[0.3em] text-drift-muted/50 mb-3">
+                    <h1 className="text-[11px] uppercase tracking-[0.3em] text-drift-muted/65 mb-3">
                       Subject Profile — Pre-Drift State
                     </h1>
                     <div className="drift-divider" />
@@ -257,14 +257,14 @@ export default function BaselinePage() {
                         >
                           <div className="flex items-baseline justify-between mb-2">
                             <div className="flex items-center gap-3">
-                              <span className="text-[10px] uppercase tracking-[0.2em] text-drift-text/60">
+                              <span className="text-[10px] uppercase tracking-[0.2em] text-drift-text/75">
                                 {axis}
                               </span>
-                              <span className="text-[9px] font-mono text-drift-accent/50">
+                              <span className="text-[9px] font-mono text-drift-accent/65">
                                 {descriptor}
                               </span>
                             </div>
-                            <span className="text-[10px] font-mono text-drift-muted/40">
+                            <span className="text-[10px] font-mono text-drift-muted/60">
                               {value > 0 ? "+" : ""}
                               {(value * 100).toFixed(0)}
                             </span>
@@ -282,12 +282,12 @@ export default function BaselinePage() {
                           </div>
 
                           <div className="flex justify-between mb-2">
-                            <span className="text-[8px] text-drift-muted/25">{leftLabel}</span>
-                            <span className="text-[8px] text-drift-muted/25">{rightLabel}</span>
+                            <span className="text-[8px] text-drift-muted/45">{leftLabel}</span>
+                            <span className="text-[8px] text-drift-muted/45">{rightLabel}</span>
                           </div>
 
                           {/* Reading description */}
-                          <p className="text-xs text-drift-text/35 leading-[1.7]">
+                          <p className="text-xs text-drift-text/55 leading-[1.7]">
                             {reading}
                           </p>
                         </motion.div>
@@ -303,7 +303,7 @@ export default function BaselinePage() {
                     transition={{ delay: 1.4, duration: 0.6 }}
                   >
                     <div className="drift-divider mb-8" />
-                    <p className="text-xs text-drift-muted/30 leading-[1.8] mb-10 max-w-md">
+                    <p className="text-xs text-drift-muted/55 leading-[1.8] mb-10 max-w-md">
                       This is your origin state. The encounters ahead will apply quiet pressure
                       to each axis — through convenience, through framing, through the architecture
                       of choice itself. How you respond will determine how far you drift.
@@ -311,7 +311,7 @@ export default function BaselinePage() {
 
                     <motion.button
                       onClick={handleProceed}
-                      className="text-drift-muted/50 hover:text-drift-text/70 text-xs tracking-[0.2em] uppercase transition-colors duration-300 py-2"
+                      className="text-drift-muted/65 hover:text-drift-text/85 text-xs tracking-[0.2em] uppercase transition-colors duration-300 py-2"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 2.0, duration: 0.8 }}
