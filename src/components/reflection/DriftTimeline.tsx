@@ -49,7 +49,7 @@ export function DriftTimeline({ choices }: DriftTimelineProps) {
                 }}
               />
               <span className="text-[10px] text-drift-muted/40 mt-2">
-                Day {i + 1}
+                {snapshot.zoneId > 0 ? `Z${snapshot.zoneId}` : "Cal"}
               </span>
 
               {/* Hover tooltip */}

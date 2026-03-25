@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ChoiceRecord } from "@/engine/types";
-import { scenarios } from "@/engine/scenarios";
+import { zones } from "@/engine/zones";
 
 interface ChoiceReplayProps {
   choices: ChoiceRecord[];
@@ -12,8 +12,7 @@ export function ChoiceReplay({ choices }: ChoiceReplayProps) {
   return (
     <div className="space-y-6">
       {choices.map((choice, i) => {
-        const scenario = scenarios.find((s) => s.id === choice.scenarioId);
-        if (!scenario) return null;
+        const zone = zones.find((z) => z.id === choice.zoneId);
 
         return (
           <motion.div
@@ -24,7 +23,7 @@ export function ChoiceReplay({ choices }: ChoiceReplayProps) {
             transition={{ delay: i * 0.1, duration: 0.5 }}
           >
             <p className="text-xs text-drift-muted/50 uppercase tracking-wide mb-1">
-              Day {scenario.day} — {scenario.dayName}
+              Zone {choice.zoneId} — {zone?.title ?? "Unknown"}
             </p>
             <p className="text-drift-text/80 text-sm mb-2">
               {choice.choiceLabel}

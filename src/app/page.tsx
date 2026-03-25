@@ -10,7 +10,7 @@ import { useSessionStore } from "@/store/session-store";
 
 export default function LandingPage() {
   const router = useRouter();
-  const { setUserName, startExperience, reset } = useSessionStore();
+  const { setUserName, startCalibration, reset } = useSessionStore();
   const [name, setName] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [exiting, setExiting] = useState(false);
@@ -25,10 +25,10 @@ export default function LandingPage() {
       if (name.trim()) {
         setUserName(name.trim());
       }
-      startExperience();
-      router.push("/experience");
+      startCalibration();
+      router.push("/calibration");
     }, 800);
-  }, [name, setUserName, startExperience, reset, router]);
+  }, [name, setUserName, startCalibration, reset, router]);
 
   const handlePremiseComplete = useCallback(() => {
     setShowInput(true);
@@ -47,7 +47,7 @@ export default function LandingPage() {
 
             <div className="text-lg sm:text-xl leading-relaxed text-drift-muted mb-16 max-w-prose mx-auto">
               <TypeWriter
-                text="You are about to live a week. Each day, an AI will help you with something ordinary — a playlist, a reply, a route, a purchase. Each choice is small. None will feel consequential. That is the point."
+                text="You are about to enter three zones of mediated experience. In each, an AI system will shape what you see, what you choose, and who you become. The changes will be small. None will feel consequential. That is the point."
                 speed={30}
                 onComplete={handlePremiseComplete}
               />
