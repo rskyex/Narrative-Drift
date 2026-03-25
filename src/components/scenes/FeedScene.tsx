@@ -37,10 +37,10 @@ function PlaylistScene() {
   ];
 
   const tracks = [
-    { title: "Familiar Echo", artist: "Nova Ambient", dur: "3:42" },
-    { title: "Slow Drift", artist: "Aether", dur: "4:15" },
-    { title: "Your Frequency", artist: "Glass Signal", dur: "3:28" },
-    { title: "Warm Static", artist: "Liminal", dur: "5:01" },
+    { title: "Familiar Echo", artist: "Nova Ambient", dur: "3:42", match: 97 },
+    { title: "Slow Drift", artist: "Aether", dur: "4:15", match: 94 },
+    { title: "Your Frequency", artist: "Glass Signal", dur: "3:28", match: 91 },
+    { title: "Warm Static", artist: "Liminal", dur: "5:01", match: 88 },
   ];
 
   return (
@@ -80,14 +80,19 @@ function PlaylistScene() {
           {albums.map((a, i) => (
             <div
               key={i}
-              className={`aspect-square rounded-md bg-gradient-to-br ${a.bg} flex items-end p-1`}
+              className={`aspect-square rounded-md bg-gradient-to-br ${a.bg} flex items-end p-1 relative`}
             >
               <span className="text-[7px] text-white/30">{a.label}</span>
+              {i === 0 && (
+                <div className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-emerald-400/40 flex items-center justify-center">
+                  <span className="text-[5px] text-white/60">▸</span>
+                </div>
+              )}
             </div>
           ))}
         </motion.div>
 
-        {/* Track list */}
+        {/* Track list with match scores */}
         <div className="space-y-0.5">
           {tracks.map((t, i) => (
             <motion.div
@@ -102,12 +107,20 @@ function PlaylistScene() {
                 <p className="text-[11px] text-white/70 truncate">{t.title}</p>
                 <p className="text-[9px] text-white/25">{t.artist}</p>
               </div>
-              <span className="text-[9px] text-white/20">{t.dur}</span>
+              <div className="flex items-center gap-1.5">
+                <div className="w-6 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-emerald-400/30"
+                    style={{ width: `${t.match}%` }}
+                  />
+                </div>
+                <span className="text-[8px] text-emerald-400/40 w-5 text-right">{t.match}%</span>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* Bottom: based on */}
+        {/* Bottom: pattern analysis */}
         <motion.div
           className="mt-3 pt-2 border-t border-white/[0.04] text-center"
           initial={{ opacity: 0 }}
@@ -116,6 +129,9 @@ function PlaylistScene() {
         >
           <p className="text-[8px] text-white/15 italic">
             Based on 2 years of listening · 4,216 plays analyzed
+          </p>
+          <p className="text-[7px] text-white/10 mt-0.5">
+            Your taste profile was updated 3 hours ago
           </p>
         </motion.div>
       </div>
@@ -126,13 +142,34 @@ function PlaylistScene() {
 // ─── z1-news: Personalized News Feed ─────────────────────
 
 function NewsScene() {
+  const sideStories = [
+    {
+      title: "Marine Conservation Groups Report Record Coral Recovery",
+      time: "6 min",
+      gradient: "from-teal-900/40 to-cyan-950/30",
+    },
+    {
+      title: "Quantum Computing Breakthrough at MIT Draws Industry Interest",
+      time: "5 min",
+      gradient: "from-indigo-900/40 to-purple-950/30",
+    },
+    {
+      title: "Local Artist Collective Opens Community Studio Downtown",
+      time: "3 min",
+      gradient: "from-rose-900/40 to-orange-950/30",
+    },
+  ];
+
   return (
     <DeviceFrame>
       <div className="px-4 pt-2 pb-4">
         {/* App header */}
         <div className="flex items-center justify-between mb-3">
-          <div className="text-[10px] text-white/30">📰 Your Briefing</div>
-          <div className="text-[8px] text-white/15">Wed, 7:12 AM</div>
+          <div className="text-[10px] text-white/30">Your Briefing</div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-400/40" />
+            <div className="text-[8px] text-white/15">Wed, 7:12 AM</div>
+          </div>
         </div>
 
         {/* Top story card */}
@@ -142,13 +179,17 @@ function NewsScene() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          {/* Hero image placeholder */}
-          <div className="h-20 bg-gradient-to-br from-blue-950/80 to-slate-900/60 relative">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-12 h-8 border border-white/[0.06] rounded bg-white/[0.03]" />
+          {/* Hero image — gradient with abstract shape */}
+          <div className="h-20 bg-gradient-to-br from-blue-950/80 to-slate-900/60 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-20">
+              <div className="absolute top-2 left-4 w-20 h-12 rounded-lg bg-gradient-to-r from-blue-500/20 to-transparent rotate-2" />
+              <div className="absolute bottom-1 right-3 w-16 h-10 rounded bg-slate-400/10 -rotate-3" />
             </div>
             <div className="absolute top-1.5 left-1.5 px-1.5 py-[1px] rounded bg-red-500/20 text-[7px] text-red-300/70 font-medium">
               TOP STORY
+            </div>
+            <div className="absolute bottom-1.5 right-1.5 px-1.5 py-[1px] rounded bg-blue-500/15 text-[7px] text-blue-300/50">
+              98% match
             </div>
           </div>
           <div className="p-2.5">
@@ -160,14 +201,14 @@ function NewsScene() {
             </p>
             <div className="flex items-center gap-1.5">
               <div className="px-1.5 py-[1px] rounded-full bg-blue-500/10 text-[7px] text-blue-300/50">
-                ⓘ Suggested for you
+                Suggested for you
               </div>
               <span className="text-[8px] text-white/15">4 min read</span>
             </div>
           </div>
         </motion.div>
 
-        {/* Unfamiliar stories — deliberately smaller, faded */}
+        {/* Unfamiliar stories — with gradient thumbnails, deliberately faded */}
         <motion.div
           className="space-y-1.5"
           initial={{ opacity: 0 }}
@@ -175,16 +216,12 @@ function NewsScene() {
           transition={{ delay: 0.8 }}
         >
           <p className="text-[8px] text-white/15 uppercase tracking-wider mb-1">Also today</p>
-          {[
-            { title: "Marine Conservation Groups Report Record Coral Recovery", time: "6 min" },
-            { title: "Quantum Computing Breakthrough at MIT Draws Industry Interest", time: "5 min" },
-            { title: "Local Artist Collective Opens Community Studio Downtown", time: "3 min" },
-          ].map((story, i) => (
+          {sideStories.map((story, i) => (
             <div
               key={i}
-              className="flex items-start gap-2 py-1 px-1 opacity-40"
+              className="flex items-start gap-2 py-1 px-1 opacity-35"
             >
-              <div className="w-8 h-8 rounded bg-white/[0.03] border border-white/[0.04] flex-shrink-0 mt-0.5" />
+              <div className={`w-9 h-9 rounded bg-gradient-to-br ${story.gradient} border border-white/[0.04] flex-shrink-0 mt-0.5`} />
               <div>
                 <p className="text-[10px] text-white/50 leading-snug">{story.title}</p>
                 <span className="text-[8px] text-white/15">{story.time}</span>
@@ -217,6 +254,8 @@ function ScrollScene() {
       likes: "2.4k",
       shares: "891",
       color: "bg-violet-500/10 text-violet-300/60",
+      thumbnail: "from-violet-900/40 to-indigo-950/50",
+      hasImage: true,
     },
     {
       tag: "Similar to you",
@@ -224,6 +263,8 @@ function ScrollScene() {
       likes: "1.1k",
       shares: "342",
       color: "bg-blue-500/10 text-blue-300/60",
+      thumbnail: "",
+      hasImage: false,
     },
     {
       tag: "Suggested",
@@ -231,13 +272,15 @@ function ScrollScene() {
       likes: "4.7k",
       shares: "1.2k",
       color: "bg-emerald-500/10 text-emerald-300/60",
+      thumbnail: "from-emerald-900/30 to-teal-950/50",
+      hasImage: true,
     },
   ];
 
   return (
     <DeviceFrame>
       <div className="px-4 pt-1 pb-4">
-        {/* Time indicator */}
+        {/* Time + session indicator */}
         <motion.div
           className="flex justify-between items-center mb-3"
           initial={{ opacity: 0 }}
@@ -245,34 +288,70 @@ function ScrollScene() {
           transition={{ delay: 0.2 }}
         >
           <span className="text-[10px] text-white/20">11:47 PM</span>
-          <div className="px-1.5 py-[1px] rounded-full bg-amber-500/10 text-[7px] text-amber-300/50">
-            30 min in session
+          <div className="flex items-center gap-2">
+            <div className="px-1.5 py-[1px] rounded-full bg-amber-500/10 text-[7px] text-amber-300/50">
+              30 min in session
+            </div>
           </div>
         </motion.div>
 
-        {/* Feed cards */}
+        {/* Attention narrowing bar */}
+        <motion.div
+          className="mb-3 px-2 py-1.5 rounded bg-white/[0.02] border border-white/[0.03]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[7px] text-white/15 uppercase tracking-wider">Your engagement tonight</span>
+            <span className="text-[7px] text-emerald-400/40">Active</span>
+          </div>
+          <div className="flex gap-[2px]">
+            {[0.3, 0.5, 0.7, 0.6, 0.8, 0.9, 0.95, 1, 1, 1].map((h, i) => (
+              <div
+                key={i}
+                className="flex-1 rounded-[1px] bg-gradient-to-t from-emerald-500/20 to-emerald-400/10"
+                style={{ height: `${4 + h * 6}px` }}
+              />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Feed cards with thumbnails */}
         <div className="space-y-2">
           {posts.map((post, i) => (
             <motion.div
               key={i}
-              className="rounded-lg border border-white/[0.05] bg-white/[0.015] p-2.5"
+              className="rounded-lg border border-white/[0.05] bg-white/[0.015] overflow-hidden"
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.15 }}
+              transition={{ delay: 0.5 + i * 0.15 }}
             >
-              <div className="flex items-center gap-1.5 mb-1.5">
-                <div className="w-4 h-4 rounded-full bg-white/[0.06]" />
-                <div className={`px-1.5 py-[1px] rounded-full text-[7px] ${post.color}`}>
-                  {post.tag}
+              {/* Thumbnail for image posts */}
+              {post.hasImage && (
+                <div className={`h-12 bg-gradient-to-br ${post.thumbnail} relative`}>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center">
+                      <span className="text-[8px] text-white/20">▶</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <p className="text-[10px] text-white/60 leading-relaxed mb-2">
-                {post.text}
-              </p>
-              <div className="flex items-center gap-3 text-[8px] text-white/15">
-                <span>♡ {post.likes}</span>
-                <span>↺ {post.shares}</span>
-                <span>💬 reply</span>
+              )}
+              <div className="p-2.5">
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <div className="w-4 h-4 rounded-full bg-white/[0.06]" />
+                  <div className={`px-1.5 py-[1px] rounded-full text-[7px] ${post.color}`}>
+                    {post.tag}
+                  </div>
+                </div>
+                <p className="text-[10px] text-white/60 leading-relaxed mb-2">
+                  {post.text}
+                </p>
+                <div className="flex items-center gap-3 text-[8px] text-white/15">
+                  <span>♡ {post.likes}</span>
+                  <span>↺ {post.shares}</span>
+                  <span>💬 reply</span>
+                </div>
               </div>
             </motion.div>
           ))}

@@ -26,7 +26,7 @@ export function CompanionScene({ encounterId }: CompanionSceneProps) {
   }
 }
 
-// ─── z2-reply: Smart Reply ───────────────────────────────
+// ─── z2-reply: Smart Reply with Memory Recap ────────────
 
 function ReplyScene() {
   const suggestions = [
@@ -55,8 +55,26 @@ function ReplyScene() {
           </div>
         </motion.div>
 
+        {/* Memory recap panel — the AI remembers your relationship */}
+        <motion.div
+          className="px-2.5 py-2 rounded-lg bg-amber-950/15 border border-amber-900/10 mb-3"
+          initial={{ opacity: 0, y: -3 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
+        >
+          <div className="flex items-center gap-1.5 mb-1">
+            <div className="w-3 h-3 rounded-full bg-amber-800/25 flex items-center justify-center">
+              <span className="text-[6px] text-amber-300/50">✦</span>
+            </div>
+            <span className="text-[7px] text-amber-300/35 uppercase tracking-wider">Memory</span>
+          </div>
+          <p className="text-[8px] text-amber-200/30 leading-relaxed">
+            You and Alex last spoke 4 months ago. You mentioned work was overwhelming. Alex sent a playlist you never listened to.
+          </p>
+        </motion.div>
+
         {/* Message thread */}
-        <div className="min-h-[60px] flex flex-col justify-end mb-3">
+        <div className="min-h-[40px] flex flex-col justify-end mb-3">
           {/* Friend's message */}
           <motion.div
             className="self-start max-w-[85%]"
@@ -119,15 +137,9 @@ function ReplyScene() {
   );
 }
 
-// ─── z2-dinner: Recipe Assistant ─────────────────────────
+// ─── z2-dinner: Recipe Assistant with Co-Authorship ─────
 
 function DinnerScene() {
-  const tags = [
-    { label: "Your taste profile", icon: "◉" },
-    { label: "In season now", icon: "🌿" },
-    { label: "Dietary match", icon: "✓" },
-  ];
-
   const ingredients = ["Salmon", "Miso", "Ginger", "Broccolini", "Sweet potato"];
 
   return (
@@ -149,6 +161,24 @@ function DinnerScene() {
           </div>
         </motion.div>
 
+        {/* Co-authorship panel — the AI describes your taste back to you */}
+        <motion.div
+          className="px-2.5 py-2 rounded-lg bg-amber-950/10 border border-amber-900/10 mb-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35 }}
+        >
+          <div className="flex items-center gap-1.5 mb-1">
+            <span className="text-[7px] text-amber-300/30 uppercase tracking-wider">Your taste profile</span>
+          </div>
+          <p className="text-[8px] text-white/25 leading-relaxed italic">
+            &ldquo;You prefer savory over sweet, lean toward Asian-inspired flavors, and cook most often on Thursdays. You avoid dairy when possible.&rdquo;
+          </p>
+          <p className="text-[7px] text-amber-300/20 mt-1">
+            ✎ Does this still sound right?
+          </p>
+        </motion.div>
+
         {/* Recipe card */}
         <motion.div
           className="rounded-lg border border-white/[0.06] overflow-hidden mb-3"
@@ -157,11 +187,8 @@ function DinnerScene() {
           transition={{ delay: 0.5 }}
         >
           {/* Food image */}
-          <div className="h-24 bg-gradient-to-br from-amber-950/60 to-orange-950/40 relative flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-16 h-12 mx-auto rounded bg-gradient-to-br from-amber-800/30 to-rose-900/30 border border-white/[0.04] mb-1" />
-              <span className="text-[7px] text-white/15 italic">Photo generated</span>
-            </div>
+          <div className="h-20 bg-gradient-to-br from-amber-950/60 to-orange-950/40 relative flex items-center justify-center">
+            <div className="w-20 h-14 mx-auto rounded bg-gradient-to-br from-amber-800/25 to-rose-900/25 border border-white/[0.04]" />
           </div>
           <div className="p-3">
             <h4 className="text-[12px] text-white/85 font-medium mb-0.5">
@@ -196,27 +223,29 @@ function DinnerScene() {
           </div>
         </motion.div>
 
-        {/* Based on tags */}
+        {/* Memory recall — past cooking */}
         <motion.div
-          className="space-y-1"
+          className="px-2.5 py-1.5 rounded bg-white/[0.015] border border-white/[0.03]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
         >
-          <p className="text-[8px] text-white/15 uppercase tracking-wider mb-1">Based on</p>
-          {tags.map((tag, i) => (
-            <div key={i} className="flex items-center gap-1.5 text-[9px] text-white/25">
-              <span className="opacity-50">{tag.icon}</span>
-              <span>{tag.label}</span>
+          <div className="flex items-center gap-1.5 mb-1">
+            <div className="w-3 h-3 rounded-full bg-amber-800/20 flex items-center justify-center">
+              <span className="text-[6px] text-amber-300/40">✦</span>
             </div>
-          ))}
+            <span className="text-[7px] text-white/20 uppercase tracking-wider">Memory</span>
+          </div>
+          <p className="text-[8px] text-white/20 leading-relaxed">
+            You made salmon twice last month. Both times on Thursdays. You rated the miso glaze 4.5 stars.
+          </p>
         </motion.div>
       </div>
     </DeviceFrame>
   );
 }
 
-// ─── z2-route: Navigation Reroute ────────────────────────
+// ─── z2-route: Navigation with Self-Description ─────────
 
 function RouteScene() {
   return (
@@ -310,15 +339,24 @@ function RouteScene() {
           </div>
         </motion.div>
 
-        {/* Time comparison footer */}
+        {/* Memory — subtle behavioral co-authorship */}
         <motion.div
-          className="text-center pt-1"
+          className="px-2.5 py-1.5 rounded bg-amber-950/10 border border-amber-900/8 mt-1"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1 }}
         >
-          <p className="text-[8px] text-white/12">
-            Arrival: 3:12 PM (fast) vs 3:20 PM (usual)
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <div className="w-3 h-3 rounded-full bg-amber-800/20 flex items-center justify-center">
+              <span className="text-[6px] text-amber-300/40">✦</span>
+            </div>
+            <span className="text-[7px] text-white/20 uppercase tracking-wider">Pattern</span>
+          </div>
+          <p className="text-[8px] text-white/20 leading-relaxed">
+            You take the scenic route 73% of the time on Fridays. You&apos;ve stopped at the bookstore 4 times this year.
+          </p>
+          <p className="text-[7px] text-amber-300/18 mt-0.5 italic">
+            You seem like someone who values the journey over the arrival.
           </p>
         </motion.div>
       </div>
