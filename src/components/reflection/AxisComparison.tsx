@@ -22,11 +22,11 @@ export function AxisComparison({ axis, value, index }: AxisComparisonProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: index * 0.15 }}
     >
-      <div className="flex justify-between text-sm">
-        <span className={value < 0 ? "text-drift-accent" : "text-drift-muted"}>
+      <div className="flex justify-between text-[13px]">
+        <span className={value < 0 ? "text-drift-accent/80" : "text-drift-muted/60"}>
           {leftLabel}
         </span>
-        <span className={value > 0 ? "text-drift-accent" : "text-drift-muted"}>
+        <span className={value > 0 ? "text-drift-accent/80" : "text-drift-muted/60"}>
           {rightLabel}
         </span>
       </div>

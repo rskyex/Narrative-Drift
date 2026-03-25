@@ -47,7 +47,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
 
       {/* Scene panel — the visual centerpiece */}
       <motion.div
-        className="flex justify-center mb-8"
+        className="flex justify-center mb-10"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
@@ -59,7 +59,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
       {/* Context narrative — emotional framing beneath the visual */}
       {showContext && (
         <motion.p
-          className="text-base sm:text-lg leading-relaxed text-drift-text/80 mb-8 max-w-prose"
+          className="text-base sm:text-lg leading-[1.75] text-drift-text/75 mb-10 max-w-prose font-serif"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
@@ -76,7 +76,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <p className="text-sm text-drift-muted mb-5 tracking-wide uppercase">
+          <p className="text-[11px] text-drift-muted/60 mb-5 tracking-[0.15em] uppercase">
             {encounter.systemFraming}
           </p>
 

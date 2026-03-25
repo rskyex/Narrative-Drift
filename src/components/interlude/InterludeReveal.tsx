@@ -100,10 +100,10 @@ export function InterludeReveal({
       <AnimatePresence mode="wait">
         {stage === "narrative" && (
           <FadeIn key="narrative" className="min-h-[40vh] flex flex-col items-center justify-center">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 mb-8">
+            <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 mb-10">
               Interlude {interludeNumber}
             </p>
-            <p className="text-lg text-drift-text/70 leading-relaxed font-serif text-center max-w-lg">
+            <p className="text-lg text-drift-text/65 leading-[1.8] font-serif text-center max-w-lg">
               <TypeWriter
                 text={narrative}
                 speed={25}
@@ -115,13 +115,13 @@ export function InterludeReveal({
 
         {stage === "comparison" && (
           <FadeIn key="comparison">
-            <div className="space-y-10">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 text-center">
+            <div className="space-y-12">
+              <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/30 text-center">
                 Profile Comparison
               </p>
 
               {/* Side-by-side portraits */}
-              <div className="flex items-center justify-center gap-12">
+              <div className="flex items-center justify-center gap-14">
                 <div className="text-center">
                   <SubjectPortrait profile={baselineProfile} size={120} />
                   <p className="text-[10px] text-drift-muted/40 mt-3 uppercase tracking-wider">
@@ -182,14 +182,14 @@ export function InterludeReveal({
 
               {/* Continue button */}
               <motion.div
-                className="text-center pt-6"
+                className="text-center pt-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.5 }}
               >
                 <button
                   onClick={onContinue}
-                  className="text-drift-muted hover:text-drift-text text-sm tracking-widest uppercase transition-colors duration-300 py-2 px-6"
+                  className="text-drift-muted/60 hover:text-drift-text text-[11px] tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-8"
                 >
                   Continue
                 </button>

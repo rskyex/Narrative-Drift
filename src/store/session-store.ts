@@ -2,6 +2,7 @@
 
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { useState, useEffect } from "react";
 import {
   DriftProfile,
   ChoiceRecord,
@@ -178,3 +179,27 @@ export const useSessionStore = create<SessionState>()(
     }
   )
 );
+
+/**
+ * Returns true only after the Zustand persist middleware has finished
+ * rehydrating state from sessionStorage. Route guards must wait for
+ * this before redirecting, otherwise they read default state ("landing")
+ * and incorrectly push to "/".
+ */
+export function useHasHydrated(): boolean {
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    // persist API is only available on the client
+    if (useSessionStore.persist?.hasHydrated()) {
+      setHydrated(true);
+    } else {
+      const unsub = useSessionStore.persist?.onFinishHydration(() =>
+        setHydrated(true)
+      );
+      return unsub;
+    }
+  }, []);
+
+  return hydrated;
+}
