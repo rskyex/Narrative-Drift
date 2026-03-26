@@ -29,23 +29,6 @@ export function DriftReveal({ initialProfile, currentProfile }: DriftRevealProps
         ))}
       </div>
 
-      <motion.div
-        className="text-center pt-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 1.2 }}
-      >
-        <div className="drift-divider mb-8" />
-        <p className="text-drift-text/70 text-[10px] tracking-[0.3em] uppercase mb-3">
-          Cumulative drift
-        </p>
-        <p className="font-serif text-5xl text-drift-accent/90 tracking-tight">
-          {driftPercentage}%
-        </p>
-        <p className="text-drift-text/65 text-[11px] mt-2">
-          from where you started
-        </p>
-      </motion.div>
     </div>
   );
 }

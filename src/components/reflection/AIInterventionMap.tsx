@@ -249,7 +249,7 @@ export function AIInterventionMap({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-xs uppercase tracking-[0.3em] text-drift-text/70 mb-2"
+          className="font-serif text-2xl sm:text-3xl text-drift-accent/90 tracking-[-0.01em] mb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -304,10 +304,10 @@ export function AIInterventionMap({
           transition={{ delay: 1.2 + catIndex * 0.3, duration: 0.6 }}
         >
           <div className="mb-3">
-            <h4 className="text-sm uppercase tracking-[0.2em] text-drift-accent/90 mb-1">
+            <h4 className="font-serif text-xl sm:text-2xl text-drift-accent tracking-[-0.01em] mb-1.5">
               {category.label}
             </h4>
-            <p className="text-xs text-drift-text/60 italic">
+            <p className="text-sm text-drift-text/65 italic leading-relaxed">
               {category.description}
             </p>
           </div>
@@ -360,7 +360,7 @@ export function AIInterventionMapPage2({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-xs uppercase tracking-[0.3em] text-drift-text/70 mb-2"
+          className="font-serif text-2xl sm:text-3xl text-drift-accent/90 tracking-[-0.01em] mb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -385,10 +385,10 @@ export function AIInterventionMapPage2({
           transition={{ delay: 0.6 + catIndex * 0.3, duration: 0.6 }}
         >
           <div className="mb-3">
-            <h4 className="text-sm uppercase tracking-[0.2em] text-drift-accent/90 mb-1">
+            <h4 className="font-serif text-xl sm:text-2xl text-drift-accent tracking-[-0.01em] mb-1.5">
               {category.label}
             </h4>
-            <p className="text-xs text-drift-text/60 italic">
+            <p className="text-sm text-drift-text/65 italic leading-relaxed">
               {category.description}
             </p>
           </div>
