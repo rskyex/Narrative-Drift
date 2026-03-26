@@ -91,11 +91,11 @@ export default function BaselinePage() {
       {/* Fixed header */}
       <div className="fixed top-0 left-0 right-0 z-30 px-6 py-4">
         <div className="flex items-center justify-between max-w-5xl mx-auto">
-          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-muted/50">
+          <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-accent/70">
             <LogoMark size={48} />
             Baseline Self
           </span>
-          <span className="text-[10px] font-mono text-drift-accent/50">
+          <span className="text-[10px] font-mono text-drift-accent/70">
             Pre-drift state
           </span>
         </div>
