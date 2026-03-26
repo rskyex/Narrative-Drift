@@ -81,8 +81,8 @@ export default function DiagnosticPage() {
       <GrainOverlay />
 
       {/* Fixed logo */}
-      <div className="fixed top-4 left-6 z-50">
-        <LogoMark size={36} className="text-drift-accent/50" />
+      <div className="fixed top-6 left-6 z-50">
+        <LogoMark size={56} />
       </div>
 
       {/* Intro stages — full width, centered */}
@@ -116,60 +116,62 @@ export default function DiagnosticPage() {
 
       {/* Post-intro stages — two column layout */}
       {!isIntroStage && (
-        <div className="relative z-10 max-w-6xl mx-auto flex flex-col lg:flex-row lg:gap-12">
-          {/* Left sidebar — portrait + classification + displacement (persistent) */}
-          <motion.aside
-            className="lg:w-72 flex-shrink-0 lg:sticky lg:top-28 lg:self-start mb-10 lg:mb-0"
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="space-y-6">
-              {/* Portrait */}
-              <div className="flex justify-center lg:justify-start">
-                <Image
-                  src="/Final Diagnostic.png"
-                  alt="Final state"
-                  width={200}
-                  height={200}
-                  className="rounded-sm object-cover"
-                />
-              </div>
+        <div className={`relative z-10 mx-auto ${stage === "closing" || stage === "credits" ? "max-w-6xl" : "max-w-6xl flex flex-col lg:flex-row lg:gap-12"}`}>
+          {/* Left sidebar — portrait + classification + displacement (hidden on closing/credits) */}
+          {stage !== "closing" && stage !== "credits" && (
+            <motion.aside
+              className="lg:w-72 flex-shrink-0 lg:sticky lg:top-28 lg:self-start mb-10 lg:mb-0"
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="space-y-6">
+                {/* Portrait */}
+                <div className="flex justify-center lg:justify-start">
+                  <Image
+                    src="/Final Diagnostic.png"
+                    alt="Final state"
+                    width={200}
+                    height={200}
+                    className="rounded-sm object-cover"
+                  />
+                </div>
 
-              {/* Subject Classification */}
-              <div className="space-y-3 text-center lg:text-left">
-                <p className="text-[10px] uppercase tracking-[0.3em] text-drift-text/65">
-                  Subject Classification
-                </p>
-                <h3 className="font-serif text-2xl sm:text-3xl text-drift-accent/90 tracking-[-0.01em]">
-                  {archetype.designation}
-                </h3>
-                <p className="text-[12px] text-drift-text/60 italic leading-relaxed">
-                  {archetype.description}
-                </p>
-                {userName && (
-                  <p className="text-[11px] text-drift-text/65 font-mono">
-                    Subject: {userName}
+                {/* Subject Classification */}
+                <div className="space-y-3 text-center lg:text-left">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-drift-text/65">
+                    Subject Classification
                   </p>
-                )}
-              </div>
+                  <h3 className="font-serif text-2xl sm:text-3xl text-drift-accent/90 tracking-[-0.01em]">
+                    {archetype.designation}
+                  </h3>
+                  <p className="text-[12px] text-drift-text/60 italic leading-relaxed">
+                    {archetype.description}
+                  </p>
+                  {userName && (
+                    <p className="text-[11px] text-drift-text/65 font-mono">
+                      Subject: {userName}
+                    </p>
+                  )}
+                </div>
 
-              {/* Total Displacement */}
-              <div className="space-y-2 text-center lg:text-left">
-                <div className="drift-divider" />
-                <p className="text-[10px] uppercase tracking-[0.3em] text-drift-text/65 pt-2">
-                  Total Displacement
-                </p>
-                <p className="font-serif text-4xl text-drift-accent/85 font-light tracking-tight">
-                  {driftPercentage}%
-                </p>
-                <p className="text-[10px] text-drift-text/60 leading-relaxed">
-                  from baseline across {choiceHistory.length} encounters in {zoneSummaries.length} zones
-                </p>
-                <div className="drift-divider mt-2" />
+                {/* Total Displacement */}
+                <div className="space-y-2 text-center lg:text-left">
+                  <div className="drift-divider" />
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-drift-text/65 pt-2">
+                    Total Displacement
+                  </p>
+                  <p className="font-serif text-5xl sm:text-6xl text-drift-accent font-light tracking-tight">
+                    {driftPercentage}%
+                  </p>
+                  <p className="text-[11px] text-drift-text/70 leading-relaxed">
+                    from where you started
+                  </p>
+                  <div className="drift-divider mt-2" />
+                </div>
               </div>
-            </div>
-          </motion.aside>
+            </motion.aside>
+          )}
 
           {/* Right content — changes per stage */}
           <div className="flex-1 min-w-0">

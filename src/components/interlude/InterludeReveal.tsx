@@ -11,7 +11,7 @@ import Image from "next/image";
 
 const INTERLUDE_BG_IMAGE: Record<number, string> = {
   1: "/transition-2.png",
-  2: "/transition-3.png",
+  2: "/transition-4.png",
   3: "/transition-4.png",
 };
 
@@ -158,31 +158,29 @@ export function InterludeReveal({
       {/* Solid dark base — always present so text is never unreadable */}
       <div className="absolute inset-0 bg-drift-bg" />
 
-      {/* Full-screen background image — only shown during narrative stage */}
-      {stage === "narrative" && (
-        <motion.div
+      {/* Full-screen background image */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0, scale: 1.03 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+      >
+        <Image
+          src={stage === "narrative" ? bgImage : "/hero.png"}
+          alt=""
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-drift-bg/70" />
+        <div
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.03 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-        >
-          <Image
-            src={bgImage}
-            alt=""
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-drift-bg/70" />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.6) 100%)",
-            }}
-          />
-        </motion.div>
-      )}
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.6) 100%)",
+          }}
+        />
+      </motion.div>
 
       {/* Content — centered over full screen */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
@@ -364,8 +362,8 @@ export function InterludeReveal({
                           {axis}
                         </span>
                         <span
-                          className={`text-sm font-mono ${
-                            delta > 0 ? "text-drift-accent/80" : "text-drift-alert/80"
+                          className={`text-lg font-mono font-semibold ${
+                            delta > 0 ? "text-drift-accent" : "text-drift-alert"
                           }`}
                         >
                           {delta > 0 ? "+" : ""}{(delta * 100).toFixed(0)}

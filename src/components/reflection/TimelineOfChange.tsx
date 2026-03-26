@@ -68,7 +68,7 @@ export function TimelineOfChange({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-xs uppercase tracking-[0.3em] text-drift-text/70 mb-2"
+          className="font-serif text-2xl sm:text-3xl text-drift-accent/90 tracking-[-0.01em] mb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
