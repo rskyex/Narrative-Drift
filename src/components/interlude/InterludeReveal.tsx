@@ -188,7 +188,7 @@ export function InterludeReveal({
           {stage === "narrative" && (
             <FadeIn key="narrative" className="text-center max-w-lg">
               <p className="text-sm uppercase tracking-[0.4em] text-drift-accent/80 mb-10">
-                Interval — Observation {interludeNumber}
+                <span className="hidden md:inline">Interval — </span>Observation {interludeNumber}
               </p>
               <p className="text-xl text-drift-text/90 leading-[1.8] font-serif">
                 <TypeWriter

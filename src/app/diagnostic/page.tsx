@@ -57,6 +57,9 @@ export default function DiagnosticPage() {
 
   const advance = useCallback((to: RevealStage) => {
     setStage(to);
+    if ((to === "closing" || to === "credits") && window.innerWidth < 768) {
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   const handleRestart = () => {

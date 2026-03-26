@@ -108,7 +108,7 @@ export default function CalibrationPage() {
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-accent/70">
             <span className="hidden md:block"><LogoMark size={48} /></span>
-            Subject Calibration
+            <span className="hidden md:inline">Subject Calibration</span>
           </span>
           <span className="text-[10px] font-mono text-drift-accent/70">
             {calibrationIndex + 1} / {calibrationPrompts.length}
