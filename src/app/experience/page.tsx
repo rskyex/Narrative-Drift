@@ -160,7 +160,7 @@ export default function ExperiencePage() {
 
       {/* Fixed logo */}
       <div className="fixed top-4 left-6 z-50">
-        <LogoMark size={52} />
+        <LogoMark size={104} />
       </div>
 
       {/* Progress thread */}

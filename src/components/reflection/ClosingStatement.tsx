@@ -80,7 +80,7 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
     >
       <div className="w-16 mx-auto drift-divider" />
 
-      <p className="text-base uppercase tracking-[0.3em] text-drift-text/90 text-center font-serif">
+      <p className="text-2xl uppercase tracking-[0.3em] text-drift-accent text-center font-serif font-semibold">
         Continue exploring
       </p>
 
@@ -104,20 +104,11 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
           {/* Thumbnail with OG image + logo overlay */}
           <div className="aspect-[16/9] bg-drift-surface/60 relative overflow-hidden">
             <Image
-              src="/narrative drift-hp.png"
+              src="/govern the human og.png"
               alt="Govern the Human"
               fill
               className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
             />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Image
-                src="/govern the human logo.png"
-                alt="Govern the Human logo"
-                width={120}
-                height={120}
-                className="object-contain drop-shadow-lg"
-              />
-            </div>
           </div>
           <div className="p-5 space-y-2">
             <h3 className="font-serif text-xl text-drift-text group-hover:text-drift-accent transition-colors">
@@ -140,24 +131,15 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
           {/* Thumbnail with OG image + logo overlay */}
           <div className="aspect-[16/9] bg-drift-surface/60 relative overflow-hidden">
             <Image
-              src="/narrative drift-hp.png"
+              src="/risa koyanagi og.png"
               alt="Risa Koyanagi"
               fill
               className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
             />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Image
-                src="/risa_koyanagi logo.png"
-                alt="Risa Koyanagi logo"
-                width={120}
-                height={120}
-                className="object-contain drop-shadow-lg"
-              />
-            </div>
           </div>
           <div className="p-5 space-y-2">
             <h3 className="font-serif text-xl text-drift-text group-hover:text-drift-accent transition-colors">
-              Creator
+              Creator: Risa Koyanagi
             </h3>
             <p className="text-sm text-drift-text/75 leading-relaxed">
               Risa Koyanagi is a Cambridge Future Scholar working at the intersection
