@@ -10,6 +10,13 @@ export const metadata: Metadata = {
     description:
       "An interactive exploration of how ordinary AI-mediated choices gradually alter the self.",
     type: "website",
+    siteName: "Narrative Drift",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Narrative Drift",
+    description:
+      "An interactive exploration of how ordinary AI-mediated choices gradually alter the self.",
   },
 };
 
