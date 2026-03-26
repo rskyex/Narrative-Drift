@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://narrative-drift.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://narrative-drift.vercel.app"
-  ),
+  metadataBase: new URL(siteUrl),
   title: "Narrative Drift",
   description:
     "An interactive exploration of how ordinary AI-mediated choices gradually alter the self.",
@@ -12,12 +13,12 @@ export const metadata: Metadata = {
     title: "Narrative Drift",
     description:
       "An interactive exploration of how ordinary AI-mediated choices gradually alter the self.",
-    url: "/",
+    url: siteUrl,
     type: "website",
     siteName: "Narrative Drift",
     images: [
       {
-        url: "/narrative-drift-hp.png",
+        url: `${siteUrl}/narrative-drift-hp.png`,
         width: 1372,
         height: 768,
         type: "image/png",
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
       "An interactive exploration of how ordinary AI-mediated choices gradually alter the self.",
     images: [
       {
-        url: "/narrative-drift-hp.png",
+        url: `${siteUrl}/narrative-drift-hp.png`,
         width: 1372,
         height: 768,
         alt: "Narrative Drift — An interactive exploration of algorithmic influence",
