@@ -81,7 +81,7 @@ export default function DiagnosticPage() {
       <GrainOverlay />
 
       {/* Fixed logo */}
-      <div className="fixed top-6 left-6 z-50">
+      <div className="fixed top-6 left-6 z-50 hidden md:block">
         <LogoMark size={72} />
       </div>
 

@@ -43,14 +43,19 @@ export default function LandingPage() {
       {!exiting && (
         <FadeIn className="relative z-10 text-center max-w-2xl mx-auto">
           <div className="flex justify-center mb-10">
-            <LogoMark size="20vw" className="text-drift-accent/60" />
+            <div className="hidden md:block">
+              <LogoMark size="20vw" className="text-drift-accent/60" />
+            </div>
+            <div className="block md:hidden">
+              <LogoMark size="60vw" className="text-drift-accent/60" />
+            </div>
           </div>
 
-          <h1 className="wordmark text-5xl sm:text-7xl md:text-8xl mb-14">
+          <h1 className="wordmark text-4xl sm:text-7xl md:text-8xl mb-14">
             Narrative Drift
           </h1>
 
-          <div className="text-lg sm:text-xl leading-[1.7] text-drift-text/80 mb-20 max-w-prose mx-auto">
+          <div className="text-sm sm:text-xl leading-[1.7] text-drift-text/80 mb-20 max-w-prose mx-auto">
             <TypeWriter
               text="Three zones. Three AI systems. Each will reshape your choices in ways you won't notice — until it's too late."
               speed={30}

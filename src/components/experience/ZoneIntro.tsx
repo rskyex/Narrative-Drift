@@ -66,7 +66,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
         {/* Transition copy */}
         {transitionCopy && (
           <motion.p
-            className="text-xs uppercase tracking-[0.35em] text-drift-accent/85 mb-6"
+            className="text-xs uppercase tracking-[0.35em] text-drift-accent/85 mb-6 max-md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.05 }}
