@@ -18,10 +18,10 @@ export const metadata: Metadata = {
     siteName: "Narrative Drift",
     images: [
       {
-        url: `${siteUrl}/narrative-drift-hp.png`,
-        width: 1372,
-        height: 768,
-        type: "image/png",
+        url: `${siteUrl}/narrative-drift-og.jpg`,
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
         alt: "Narrative Drift — An interactive exploration of algorithmic influence",
       },
     ],
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
       "An interactive exploration of how ordinary AI-mediated choices gradually alter the self.",
     images: [
       {
-        url: `${siteUrl}/narrative-drift-hp.png`,
-        width: 1372,
-        height: 768,
+        url: `${siteUrl}/narrative-drift-og.jpg`,
+        width: 1200,
+        height: 630,
         alt: "Narrative Drift — An interactive exploration of algorithmic influence",
       },
     ],
