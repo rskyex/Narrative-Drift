@@ -24,12 +24,9 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
   };
 
   return (
-    <motion.div
-      className="w-full max-w-5xl mx-auto px-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.6 }}
+    <div
+      className="w-full max-w-5xl mx-auto px-6 fade-in-up"
+      style={{ animationDuration: "0.6s" }}
     >
       {/* Encounter header */}
       <motion.div
@@ -100,6 +97,6 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

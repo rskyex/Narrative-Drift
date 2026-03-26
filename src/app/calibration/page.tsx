@@ -116,16 +116,10 @@ export default function CalibrationPage() {
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        {stage === "intro" ? (
+      {stage === "intro" ? (
           <FadeIn key="intro" className="min-h-screen flex items-center justify-center px-6">
             <div className="text-center max-w-lg">
-              <motion.div
-                className="w-8 h-[1px] bg-drift-accent/30 mx-auto mb-8"
-                initial={{ width: 0 }}
-                animate={{ width: 32 }}
-                transition={{ duration: 1, delay: 0.3 }}
-              />
+              <div className="w-8 h-[1px] bg-drift-accent/30 mx-auto mb-8" />
               <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/55 mb-10">
                 Baseline Calibration
               </p>
@@ -139,12 +133,9 @@ export default function CalibrationPage() {
             </div>
           </FadeIn>
         ) : (
-          <motion.div
+          <FadeIn
             key="active"
             className="min-h-screen pt-16 pb-12 px-4 sm:px-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
           >
             <div className="max-w-6xl mx-auto h-full flex flex-col lg:flex-row lg:items-center lg:gap-12 xl:gap-20 min-h-[calc(100vh-7rem)]">
               {/* ─── LEFT: Subject Preview ─── */}
@@ -322,9 +313,8 @@ export default function CalibrationPage() {
                 </AnimatePresence>
               </div>
             </div>
-          </motion.div>
+          </FadeIn>
         )}
-      </AnimatePresence>
     </main>
   );
 }

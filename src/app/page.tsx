@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence } from "framer-motion";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
@@ -41,52 +40,48 @@ export default function LandingPage() {
       <HeroBackground />
       <GrainOverlay />
 
-      <AnimatePresence mode="wait">
-        {!exiting && (
-          <FadeIn key="landing" className="relative z-10 text-center max-w-2xl mx-auto">
-            <div className="flex justify-center mb-10">
-              <LogoMark size="20vw" className="text-drift-accent/60" />
-            </div>
+      {!exiting && (
+        <FadeIn className="relative z-10 text-center max-w-2xl mx-auto">
+          <div className="flex justify-center mb-10">
+            <LogoMark size="20vw" className="text-drift-accent/60" />
+          </div>
 
-            <h1 className="wordmark text-5xl sm:text-7xl md:text-8xl mb-14">
-              Narrative Drift
-            </h1>
+          <h1 className="wordmark text-5xl sm:text-7xl md:text-8xl mb-14">
+            Narrative Drift
+          </h1>
 
-            <div className="text-lg sm:text-xl leading-[1.7] text-drift-text/80 mb-20 max-w-prose mx-auto">
-              <TypeWriter
-                text="Three zones. Three AI systems. Each will reshape your choices in ways you won't notice — until it's too late."
-                speed={30}
-                onComplete={handlePremiseComplete}
-              />
-            </div>
+          <div className="text-lg sm:text-xl leading-[1.7] text-drift-text/80 mb-20 max-w-prose mx-auto">
+            <TypeWriter
+              text="Three zones. Three AI systems. Each will reshape your choices in ways you won't notice — until it's too late."
+              speed={30}
+              onComplete={handlePremiseComplete}
+            />
+          </div>
 
-            <AnimatePresence>
-              {showInput && (
-                <FadeIn key="input-section" delay={0.3} className="space-y-8">
-                  <div className="flex flex-col items-center gap-6">
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleBegin()}
-                      placeholder="What should I call you?"
-                      className="w-full max-w-xs bg-transparent border-b border-drift-border text-drift-text text-center text-lg py-3 placeholder:text-drift-muted/70 focus:outline-none focus:border-drift-accent/50 transition-colors"
-                      autoFocus
-                    />
+          {showInput && (
+            <FadeIn delay={0.3} className="space-y-8">
+              <div className="flex flex-col items-center gap-6">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleBegin()}
+                  placeholder="What should I call you?"
+                  className="w-full max-w-xs bg-transparent border-b border-drift-border text-drift-text text-center text-lg py-3 placeholder:text-drift-muted/70 focus:outline-none focus:border-drift-accent/50 transition-colors"
+                  autoFocus
+                />
 
-                    <button
-                      onClick={handleBegin}
-                      className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
-                    >
-                      Let&apos;s begin
-                    </button>
-                  </div>
-                </FadeIn>
-              )}
-            </AnimatePresence>
-          </FadeIn>
-        )}
-      </AnimatePresence>
+                <button
+                  onClick={handleBegin}
+                  className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
+                >
+                  Let&apos;s begin
+                </button>
+              </div>
+            </FadeIn>
+          )}
+        </FadeIn>
+      )}
 
       {exiting && (
         <div className="fixed inset-0 bg-drift-bg transition-opacity duration-700" />

@@ -178,7 +178,6 @@ export function InterludeReveal({
 
       {/* Content — centered over full screen */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
-        <AnimatePresence mode="wait">
           {/* Stage 1: Reflective narrative — full screen, text + background only */}
           {stage === "narrative" && (
             <FadeIn key="narrative" className="text-center max-w-lg">
@@ -385,7 +384,6 @@ export function InterludeReveal({
               </div>
             </FadeIn>
           )}
-        </AnimatePresence>
       </div>
     </div>
   );
