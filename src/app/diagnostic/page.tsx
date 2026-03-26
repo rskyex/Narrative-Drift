@@ -129,7 +129,7 @@ export default function DiagnosticPage() {
                 {/* Portrait */}
                 <div className="flex justify-center lg:justify-start">
                   <Image
-                    src="/Final Diagnostic.png"
+                    src="/final-diagnostic.png"
                     alt="Final state"
                     width={200}
                     height={200}
@@ -306,21 +306,7 @@ export default function DiagnosticPage() {
               {stage === "closing" && (
                 <FadeIn key="closing">
                   <div className="space-y-16 py-16">
-                    <ClosingStatement userName={userName} />
-
-                    <motion.div
-                      className="text-center"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 3 }}
-                    >
-                      <button
-                        onClick={() => advance("credits")}
-                        className={btnClass}
-                      >
-                        Continue
-                      </button>
-                    </motion.div>
+                    <ClosingStatement userName={userName} onContinue={() => advance("credits")} />
                   </div>
                 </FadeIn>
               )}

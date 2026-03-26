@@ -18,7 +18,7 @@ const AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"
 const ZONE_AVATAR: Record<number, string> = {
   1: "/baseline.png",
   2: "/interlude.png",
-  3: "/Final Diagnostic.png",
+  3: "/final-diagnostic.png",
 };
 
 const axisDescriptors: Record<DriftAxis, (v: number) => string> = {
