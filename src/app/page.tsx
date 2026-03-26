@@ -52,7 +52,7 @@ export default function LandingPage() {
               Narrative Drift
             </h1>
 
-            <div className="text-lg sm:text-xl leading-[1.7] text-drift-muted/80 mb-20 max-w-prose mx-auto">
+            <div className="text-lg sm:text-xl leading-[1.7] text-drift-text/80 mb-20 max-w-prose mx-auto">
               <TypeWriter
                 text="Three zones. Three AI systems. Each will reshape your choices in ways you won't notice — until it's too late."
                 speed={30}

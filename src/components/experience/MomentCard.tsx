@@ -25,7 +25,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
 
   return (
     <motion.div
-      className="w-full max-w-6xl mx-auto px-6"
+      className="w-full max-w-5xl mx-auto px-6"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, y: -12 }}
@@ -45,11 +45,11 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
         <div className="flex-1 h-[1px] bg-drift-border/30" />
       </motion.div>
 
-      {/* Side-by-side layout: Scene left, Choices right */}
+      {/* Layout: Left = Scene + context (questions + AI images), Right = Choices */}
       <div className="flex flex-col lg:flex-row lg:gap-10 lg:items-start">
-        {/* Left: Scene panel + context */}
+        {/* Left: Scene panel + context narrative */}
         <motion.div
-          className="lg:w-1/2 flex-shrink-0 mb-8 lg:mb-0"
+          className="lg:w-[45%] flex-shrink-0 mb-8 lg:mb-0"
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -71,10 +71,11 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
           )}
         </motion.div>
 
-        {/* Right: System framing + choices */}
-        <div className="lg:w-1/2">
+        {/* Center/Right: System framing + choices */}
+        <div className="lg:flex-1 flex items-start justify-center">
           {showChoices && (
             <motion.div
+              className="w-full max-w-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
