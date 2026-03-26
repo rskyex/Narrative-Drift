@@ -93,7 +93,7 @@ export default function BaselinePage() {
         <div className="flex items-center justify-between max-w-5xl mx-auto">
           <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-drift-accent/70">
             <span className="hidden md:block"><LogoMark size={48} /></span>
-            Baseline Self
+            <span className="hidden md:inline">Baseline Self</span>
           </span>
           <span className="text-[10px] font-mono text-drift-accent/70">
             Pre-drift state
