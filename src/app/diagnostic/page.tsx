@@ -9,12 +9,15 @@ import { HeroBackground } from "@/components/shared/HeroBackground";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { LogoMark } from "@/components/shared/LogoMark";
-import { FinalDiagnostic } from "@/components/rpg/FinalDiagnostic";
+import { FinalDiagnostic, deriveArchetype } from "@/components/rpg/FinalDiagnostic";
 import { PathLog } from "@/components/rpg/PathLog";
 import { DriftReveal } from "@/components/reflection/DriftReveal";
 import { TimelineOfChange } from "@/components/reflection/TimelineOfChange";
 import { AIInterventionMap } from "@/components/reflection/AIInterventionMap";
 import { ClosingStatement } from "@/components/reflection/ClosingStatement";
+import { computeCumulativeDrift } from "@/engine/drift-model";
+import { zones } from "@/engine/zones";
+import Image from "next/image";
 
 type RevealStage =
   | "intro-1"
@@ -24,6 +27,10 @@ type RevealStage =
   | "pathlog"
   | "intervention"
   | "closing";
+
+/** Shared button style for all diagnostic navigation */
+const btnClass =
+  "block mx-auto text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded";
 
 export default function DiagnosticPage() {
   const router = useRouter();
@@ -57,6 +64,15 @@ export default function DiagnosticPage() {
 
   if (!hasHydrated || phase !== "diagnostic") return null;
 
+  const archetype = deriveArchetype(currentProfile);
+  const cumulativeDrift = computeCumulativeDrift(baselineProfile, currentProfile);
+  const driftPercentage = Math.round(cumulativeDrift * 100);
+  const zoneSummaries = zones.filter((z) =>
+    choiceHistory.some((c) => c.zoneId === z.id)
+  );
+
+  const isIntroStage = stage === "intro-1" || stage === "intro-2";
+
   return (
     <main className="relative min-h-screen py-28 px-6">
       <HeroBackground />
@@ -67,162 +83,226 @@ export default function DiagnosticPage() {
         <LogoMark size={36} className="text-drift-accent/50" />
       </div>
 
-      <div className="relative z-10 max-w-2xl mx-auto">
-        <AnimatePresence mode="wait">
-          {/* Stage: Intro line 1 */}
-          {stage === "intro-1" && (
-            <FadeIn key="intro-1" className="min-h-[40vh] flex items-center justify-center">
-              <p className="text-xl sm:text-2xl text-drift-text/75 text-center font-serif leading-[1.6]">
-                <TypeWriter
-                  text="Nine encounters. Three zones. A transformation assembled from choices so small they barely registered."
-                  speed={40}
-                  onComplete={() => setTimeout(() => advance("intro-2"), 1400)}
-                />
-              </p>
-            </FadeIn>
-          )}
-
-          {/* Stage: Intro line 2 */}
-          {stage === "intro-2" && (
-            <FadeIn key="intro-2" className="min-h-[40vh] flex items-center justify-center">
-              <p className="text-xl sm:text-2xl text-drift-text/75 text-center font-serif leading-[1.6]">
-                <TypeWriter
-                  text="What follows is the record — what shifted, by how much, and the system's role in each departure from who you were."
-                  speed={40}
-                  onComplete={() => setTimeout(() => advance("diagnostic"), 1600)}
-                />
-              </p>
-            </FadeIn>
-          )}
-
-          {/* Stage: Final Diagnostic — portraits, archetype, axes, summary */}
-          {stage === "diagnostic" && (
-            <FadeIn key="diagnostic">
-              <div className="space-y-14">
-                <FinalDiagnostic
-                  userName={userName}
-                  initialProfile={baselineProfile}
-                  currentProfile={currentProfile}
-                  choices={choiceHistory}
-                  snapshots={profileSnapshots}
-                />
-
-                <motion.button
-                  className="block mx-auto text-drift-muted/60 hover:text-drift-muted/85 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 5 }}
-                  onClick={() => advance("timeline")}
-                >
-                  Trace the timeline
-                </motion.button>
-              </div>
-            </FadeIn>
-          )}
-
-          {/* Stage: Timeline of Change */}
-          {stage === "timeline" && (
-            <FadeIn key="timeline">
-              <div className="space-y-8">
-                <TimelineOfChange
-                  choices={choiceHistory}
-                  baselineProfile={baselineProfile}
-                />
-
-                <motion.button
-                  className="block mx-auto text-drift-muted/65 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2 }}
-                  onClick={() => advance("pathlog")}
-                >
-                  Examine the record
-                </motion.button>
-              </div>
-            </FadeIn>
-          )}
-
-          {/* Stage: Path log + drift visualization */}
-          {stage === "pathlog" && (
-            <FadeIn key="pathlog">
-              <div className="space-y-10">
-                <div className="text-center">
-                  <p className="text-[10px] uppercase tracking-[0.4em] text-drift-muted/50 mb-3">
-                    Full Decision Record
-                  </p>
-                  <div className="w-16 mx-auto drift-divider" />
-                </div>
-
-                <PathLog choices={choiceHistory} />
-
-                {/* Drift visualization */}
-                <div className="pt-10">
-                  <DriftReveal
-                    initialProfile={baselineProfile}
-                    currentProfile={currentProfile}
+      {/* Intro stages — full width, centered */}
+      {isIntroStage && (
+        <div className="relative z-10 max-w-2xl mx-auto">
+          <AnimatePresence mode="wait">
+            {stage === "intro-1" && (
+              <FadeIn key="intro-1" className="min-h-[40vh] flex items-center justify-center">
+                <p className="text-xl sm:text-2xl text-drift-text/85 text-center font-serif leading-[1.6]">
+                  <TypeWriter
+                    text="Nine encounters. Three zones. A transformation assembled from choices so small they barely registered."
+                    speed={40}
+                    onComplete={() => setTimeout(() => advance("intro-2"), 1400)}
                   />
-                </div>
+                </p>
+              </FadeIn>
+            )}
 
-                <motion.button
-                  className="block mx-auto text-drift-muted/60 hover:text-drift-muted/85 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                  onClick={() => advance("intervention")}
-                >
-                  Map the system&apos;s influence
-                </motion.button>
-              </div>
-            </FadeIn>
-          )}
+            {stage === "intro-2" && (
+              <FadeIn key="intro-2" className="min-h-[40vh] flex items-center justify-center">
+                <p className="text-xl sm:text-2xl text-drift-text/85 text-center font-serif leading-[1.6]">
+                  <TypeWriter
+                    text="What follows is the record — what shifted, by how much, and the system's role in each departure from who you were."
+                    speed={40}
+                    onComplete={() => setTimeout(() => advance("diagnostic"), 1600)}
+                  />
+                </p>
+              </FadeIn>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
 
-          {/* Stage: AI Intervention Map */}
-          {stage === "intervention" && (
-            <FadeIn key="intervention">
-              <div className="space-y-8">
-                <AIInterventionMap
-                  choices={choiceHistory}
-                  baselineProfile={baselineProfile}
-                  currentProfile={currentProfile}
+      {/* Post-intro stages — two column layout */}
+      {!isIntroStage && (
+        <div className="relative z-10 max-w-6xl mx-auto flex flex-col lg:flex-row lg:gap-12">
+          {/* Left sidebar — portrait + classification + displacement (persistent) */}
+          <motion.aside
+            className="lg:w-72 flex-shrink-0 lg:sticky lg:top-28 lg:self-start mb-10 lg:mb-0"
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="space-y-6">
+              {/* Portrait */}
+              <div className="flex justify-center lg:justify-start">
+                <Image
+                  src="/Final Diagnostic.png"
+                  alt="Final state"
+                  width={200}
+                  height={200}
+                  className="rounded-sm object-cover"
                 />
-
-                <motion.button
-                  className="block mx-auto text-drift-muted/65 hover:text-drift-muted text-sm tracking-widest uppercase transition-colors"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 4 }}
-                  onClick={() => advance("closing")}
-                >
-                  Continue
-                </motion.button>
               </div>
-            </FadeIn>
-          )}
 
-          {/* Stage: Closing statement */}
-          {stage === "closing" && (
-            <FadeIn key="closing">
-              <div className="space-y-20 py-16">
-                <ClosingStatement userName={userName} />
-
-                <motion.div
-                  className="text-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 3 }}
-                >
-                  <button
-                    onClick={handleRestart}
-                    className="text-drift-muted/50 hover:text-drift-muted/70 text-[11px] tracking-[0.25em] uppercase transition-colors duration-500"
-                  >
-                    Return to origin
-                  </button>
-                </motion.div>
+              {/* Subject Classification */}
+              <div className="space-y-3 text-center lg:text-left">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-drift-text/65">
+                  Subject Classification
+                </p>
+                <h3 className="font-serif text-2xl sm:text-3xl text-drift-accent/90 tracking-[-0.01em]">
+                  {archetype.designation}
+                </h3>
+                <p className="text-[12px] text-drift-text/60 italic leading-relaxed">
+                  {archetype.description}
+                </p>
+                {userName && (
+                  <p className="text-[11px] text-drift-text/65 font-mono">
+                    Subject: {userName}
+                  </p>
+                )}
               </div>
-            </FadeIn>
-          )}
-        </AnimatePresence>
-      </div>
+
+              {/* Total Displacement */}
+              <div className="space-y-2 text-center lg:text-left">
+                <div className="drift-divider" />
+                <p className="text-[10px] uppercase tracking-[0.3em] text-drift-text/65 pt-2">
+                  Total Displacement
+                </p>
+                <p className="font-serif text-4xl text-drift-accent/85 font-light tracking-tight">
+                  {driftPercentage}%
+                </p>
+                <p className="text-[10px] text-drift-text/60 leading-relaxed">
+                  from baseline across {choiceHistory.length} encounters in {zoneSummaries.length} zones
+                </p>
+                <div className="drift-divider mt-2" />
+              </div>
+            </div>
+          </motion.aside>
+
+          {/* Right content — changes per stage */}
+          <div className="flex-1 min-w-0">
+            <AnimatePresence mode="wait">
+              {/* Stage: Final Diagnostic — axis readings, interpretation, summary */}
+              {stage === "diagnostic" && (
+                <FadeIn key="diagnostic">
+                  <div className="space-y-14">
+                    <FinalDiagnostic
+                      userName={userName}
+                      initialProfile={baselineProfile}
+                      currentProfile={currentProfile}
+                      choices={choiceHistory}
+                      snapshots={profileSnapshots}
+                    />
+
+                    <motion.button
+                      className={btnClass}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 3.5 }}
+                      onClick={() => advance("timeline")}
+                    >
+                      Trace the timeline
+                    </motion.button>
+                  </div>
+                </FadeIn>
+              )}
+
+              {/* Stage: Timeline of Change */}
+              {stage === "timeline" && (
+                <FadeIn key="timeline">
+                  <div className="space-y-8">
+                    <TimelineOfChange
+                      choices={choiceHistory}
+                      baselineProfile={baselineProfile}
+                    />
+
+                    <motion.button
+                      className={btnClass}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 2 }}
+                      onClick={() => advance("pathlog")}
+                    >
+                      Examine the record
+                    </motion.button>
+                  </div>
+                </FadeIn>
+              )}
+
+              {/* Stage: Path log + drift visualization */}
+              {stage === "pathlog" && (
+                <FadeIn key="pathlog">
+                  <div className="space-y-10">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.4em] text-drift-text/70 mb-3">
+                        Full Decision Record
+                      </p>
+                      <div className="w-16 drift-divider" />
+                    </div>
+
+                    <PathLog choices={choiceHistory} />
+
+                    {/* Drift visualization */}
+                    <div className="pt-10">
+                      <DriftReveal
+                        initialProfile={baselineProfile}
+                        currentProfile={currentProfile}
+                      />
+                    </div>
+
+                    <motion.button
+                      className={btnClass}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1 }}
+                      onClick={() => advance("intervention")}
+                    >
+                      Map the system&apos;s influence
+                    </motion.button>
+                  </div>
+                </FadeIn>
+              )}
+
+              {/* Stage: AI Intervention Map */}
+              {stage === "intervention" && (
+                <FadeIn key="intervention">
+                  <div className="space-y-8">
+                    <AIInterventionMap
+                      choices={choiceHistory}
+                      baselineProfile={baselineProfile}
+                      currentProfile={currentProfile}
+                    />
+
+                    <motion.button
+                      className={btnClass}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 4 }}
+                      onClick={() => advance("closing")}
+                    >
+                      Continue
+                    </motion.button>
+                  </div>
+                </FadeIn>
+              )}
+
+              {/* Stage: Closing statement */}
+              {stage === "closing" && (
+                <FadeIn key="closing">
+                  <div className="space-y-20 py-16">
+                    <ClosingStatement userName={userName} />
+
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 3 }}
+                    >
+                      <button
+                        onClick={handleRestart}
+                        className={btnClass}
+                      >
+                        Return to origin
+                      </button>
+                    </motion.div>
+                  </div>
+                </FadeIn>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

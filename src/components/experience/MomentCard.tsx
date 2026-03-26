@@ -39,7 +39,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
         transition={{ duration: 0.5 }}
       >
         <div className="w-8 h-[1px] bg-drift-border" />
-        <span className="text-sm uppercase tracking-[0.2em] text-drift-muted/70">
+        <span className="text-sm uppercase tracking-[0.2em] text-drift-text/70">
           Encounter {globalIndex} of {totalEncounters}
         </span>
         <div className="flex-1 h-[1px] bg-drift-border/30" />
@@ -80,7 +80,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <p className="text-xs text-drift-muted/80 mb-5 tracking-[0.15em] uppercase">
+              <p className="text-sm text-drift-text/70 mb-5 tracking-[0.15em] uppercase">
                 {encounter.systemFraming}
               </p>
 

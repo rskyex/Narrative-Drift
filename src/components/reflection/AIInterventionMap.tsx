@@ -243,7 +243,7 @@ export function AIInterventionMap({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/60 mb-2"
+          className="text-[10px] uppercase tracking-[0.3em] text-drift-text/70 mb-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -257,7 +257,7 @@ export function AIInterventionMap({
           transition={{ delay: 0.4, duration: 0.6 }}
         />
         <motion.p
-          className="text-sm text-drift-muted/65 max-w-md mx-auto leading-relaxed"
+          className="text-sm text-drift-text/70 max-w-md mx-auto leading-relaxed"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
@@ -277,10 +277,10 @@ export function AIInterventionMap({
           transition={{ delay: 0.8 + catIndex * 0.3, duration: 0.6 }}
         >
           <div className="mb-3">
-            <h4 className="text-[11px] uppercase tracking-[0.2em] text-drift-accent/70 mb-1">
+            <h4 className="text-[11px] uppercase tracking-[0.2em] text-drift-accent/90 mb-1">
               {category.label}
             </h4>
-            <p className="text-[10px] text-drift-muted/60 italic">
+            <p className="text-[10px] text-drift-text/60 italic">
               {category.description}
             </p>
           </div>
@@ -289,7 +289,7 @@ export function AIInterventionMap({
             {category.findings.map((finding, fIndex) => (
               <motion.p
                 key={fIndex}
-                className="text-xs text-drift-text/70 leading-relaxed"
+                className="text-xs text-drift-text/85 leading-relaxed"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{
@@ -311,10 +311,10 @@ export function AIInterventionMap({
         animate={{ opacity: 1 }}
         transition={{ delay: 3.5, duration: 0.8 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-muted/60 mb-3">
+        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-text/70 mb-3">
           System Summary
         </p>
-        <p className="text-xs text-drift-text/70 leading-relaxed">
+        <p className="text-xs text-drift-text/85 leading-relaxed">
           Across {choices.length} encounters, the AI operated through five
           concurrent channels: shaping what you were exposed to, reinforcing
           patterns through repetition, mediating your relationship to memory,

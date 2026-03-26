@@ -9,10 +9,12 @@ import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
 import Image from "next/image";
 
-const INTERLUDE_TRANSITION_IMAGE: Record<number, string> = {
-  1: "/transition-2.png",
-  2: "/transition-4.png",
-  3: "/transition-4.png",
+const INTERLUDE_BG_IMAGE = "/hero.png";
+
+const INTERLUDE_PORTRAIT_IMAGE: Record<number, string> = {
+  1: "/interlude.png",
+  2: "/interlude.png",
+  3: "/Final Diagnostic.png",
 };
 
 interface InterludeRevealProps {
@@ -143,38 +145,36 @@ export function InterludeReveal({
     setNarrativeComplete(true);
   }, []);
 
-  const transitionImage = INTERLUDE_TRANSITION_IMAGE[interludeNumber];
+  const portraitImage = INTERLUDE_PORTRAIT_IMAGE[interludeNumber] ?? "/interlude.png";
 
   return (
     <div className="fixed inset-0 z-30">
       {/* Solid dark base — always present so text is never unreadable */}
       <div className="absolute inset-0 bg-drift-bg" />
 
-      {/* Full-screen background image (fades in over 2s) */}
-      {transitionImage && (
-        <motion.div
+      {/* Full-screen background image (hero) */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ opacity: 0, scale: 1.03 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 2, ease: "easeOut" }}
+      >
+        <Image
+          src={INTERLUDE_BG_IMAGE}
+          alt=""
+          fill
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-drift-bg/70" />
+        <div
           className="absolute inset-0"
-          initial={{ opacity: 0, scale: 1.03 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-        >
-          <Image
-            src={transitionImage}
-            alt=""
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-drift-bg/70" />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.6) 100%)",
-            }}
-          />
-        </motion.div>
-      )}
+          style={{
+            background:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.6) 100%)",
+          }}
+        />
+      </motion.div>
 
       {/* Content — centered over full screen */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
@@ -194,7 +194,7 @@ export function InterludeReveal({
               </p>
               {narrativeComplete && (
                 <motion.button
-                  className="mt-12 text-drift-muted/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-8 border border-drift-border/30 hover:border-drift-accent/40 rounded"
+                  className="mt-12 text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8 }}
@@ -211,7 +211,7 @@ export function InterludeReveal({
             <FadeIn key="portrait-drift">
               <div className="flex flex-col items-center justify-center space-y-8">
                 <motion.p
-                  className="text-sm uppercase tracking-[0.3em] text-drift-muted/80"
+                  className="text-sm uppercase tracking-[0.3em] text-drift-text/75"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
@@ -226,7 +226,7 @@ export function InterludeReveal({
                   transition={{ delay: 0.6, duration: 1.2, ease: "easeOut" }}
                 >
                   <Image
-                    src="/interlude.png"
+                    src={portraitImage}
                     alt="Subject under observation"
                     width={180}
                     height={180}
@@ -276,7 +276,7 @@ export function InterludeReveal({
 
                 {/* Continue to comparison */}
                 <motion.button
-                  className="text-drift-muted/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-colors duration-500 mt-6 py-3 px-8 border border-drift-border/30 hover:border-drift-accent/40 rounded"
+                  className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 mt-6 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 4.0 }}
@@ -292,7 +292,7 @@ export function InterludeReveal({
           {stage === "comparison" && (
             <FadeIn key="comparison">
               <div className="space-y-12">
-                <p className="text-sm uppercase tracking-[0.4em] text-drift-muted/80 text-center">
+                <p className="text-sm uppercase tracking-[0.4em] text-drift-text/75 text-center">
                   Drift Comparison — Before &amp; After
                 </p>
 
@@ -306,7 +306,7 @@ export function InterludeReveal({
                       height={140}
                       className="rounded-sm object-cover"
                     />
-                    <p className="text-sm text-drift-muted/80 mt-3 uppercase tracking-wider">
+                    <p className="text-sm text-drift-text/70 mt-3 uppercase tracking-wider">
                       Baseline
                     </p>
                   </div>
@@ -320,13 +320,13 @@ export function InterludeReveal({
                   </motion.div>
                   <div className="text-center">
                     <Image
-                      src="/interlude.png"
+                      src={portraitImage}
                       alt="Current self"
                       width={140}
                       height={140}
                       className="rounded-sm object-cover"
                     />
-                    <p className="text-sm text-drift-muted/80 mt-3 uppercase tracking-wider">
+                    <p className="text-sm text-drift-text/70 mt-3 uppercase tracking-wider">
                       Current
                     </p>
                   </div>
@@ -353,7 +353,7 @@ export function InterludeReveal({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 1 + i * 0.1 }}
                       >
-                        <span className="text-sm uppercase tracking-wider text-drift-muted/80">
+                        <span className="text-sm uppercase tracking-wider text-drift-text/75">
                           {axis}
                         </span>
                         <span
@@ -377,7 +377,7 @@ export function InterludeReveal({
                 >
                   <button
                     onClick={onContinue}
-                    className="text-drift-muted/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-8 border border-drift-border/30 hover:border-drift-accent/40 rounded"
+                    className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
                   >
                     Continue
                   </button>
