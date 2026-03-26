@@ -147,7 +147,10 @@ export function InterludeReveal({
 
   return (
     <div className="fixed inset-0 z-30">
-      {/* Full-screen background image */}
+      {/* Solid dark base — always present so text is never unreadable */}
+      <div className="absolute inset-0 bg-drift-bg" />
+
+      {/* Full-screen background image (fades in over 2s) */}
       {transitionImage && (
         <motion.div
           className="absolute inset-0"
@@ -171,11 +174,6 @@ export function InterludeReveal({
             }}
           />
         </motion.div>
-      )}
-
-      {/* If no transition image, solid dark background */}
-      {!transitionImage && (
-        <div className="absolute inset-0 bg-drift-bg" />
       )}
 
       {/* Content — centered over full screen */}

@@ -30,13 +30,16 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 flex items-center justify-center z-30"
+      className="fixed inset-0 flex items-center justify-center z-30 bg-drift-bg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.6 }}
     >
-      {/* Transition image — atmospheric backdrop */}
+      {/* Solid dark base — always present so text is never unreadable */}
+      <div className="absolute inset-0 bg-drift-bg" />
+
+      {/* Transition image — atmospheric backdrop (fades in over 2s) */}
       {transitionImage && (
         <motion.div
           className="absolute inset-0 pointer-events-none"
