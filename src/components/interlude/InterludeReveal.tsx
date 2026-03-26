@@ -17,8 +17,8 @@ const INTERLUDE_BG_IMAGE: Record<number, string> = {
 
 const INTERLUDE_PORTRAIT_IMAGE: Record<number, string> = {
   1: "/interlude.png",
-  2: "/Final Diagnostic.png",
-  3: "/Final Diagnostic.png",
+  2: "/final-diagnostic.png",
+  3: "/final-diagnostic.png",
 };
 
 interface InterludeRevealProps {

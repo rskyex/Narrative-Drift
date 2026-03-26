@@ -6,9 +6,10 @@ import { LogoMark } from "@/components/shared/LogoMark";
 
 interface ClosingStatementProps {
   userName: string | null;
+  onContinue?: () => void;
 }
 
-export function ClosingStatement({ userName }: ClosingStatementProps) {
+export function ClosingStatement({ userName, onContinue }: ClosingStatementProps) {
   return (
     <motion.div
       className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start"
@@ -64,6 +65,22 @@ export function ClosingStatement({ userName }: ClosingStatementProps) {
           Each micro-concession to convenience is a micro-transfer of self.
           The drift was never dramatic. It did not need to be.
         </p>
+
+        {onContinue && (
+          <motion.div
+            className="mt-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 3 }}
+          >
+            <button
+              onClick={onContinue}
+              className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
+            >
+              Continue
+            </button>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   );
@@ -104,7 +121,7 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
           {/* Thumbnail with OG image + logo overlay */}
           <div className="aspect-[16/9] bg-drift-surface/60 relative overflow-hidden">
             <Image
-              src="/govern the human og.png"
+              src="/govern-the-human-og.png"
               alt="Govern the Human"
               fill
               className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
@@ -131,7 +148,7 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
           {/* Thumbnail with OG image + logo overlay */}
           <div className="aspect-[16/9] bg-drift-surface/60 relative overflow-hidden">
             <Image
-              src="/risa koyanagi og.png"
+              src="/risa-koyanagi-og.png"
               alt="Risa Koyanagi"
               fill
               className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
