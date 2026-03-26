@@ -96,23 +96,15 @@ export default function ExperiencePage() {
 
   if (!hasHydrated || !zone) return null;
 
+  // Hide sidebar during zone-intro and interlude (full-screen overlays)
+  const showSidebar = viewState === "encounter" && phase === "zone";
+
   return (
     <main className="relative min-h-screen">
       <HeroBackground />
       <GrainOverlay />
 
       <div className="relative z-10 flex min-h-screen">
-        {/* Left sidebar — Status Sheet & Path Log */}
-        <aside className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0 p-4 pt-8 overflow-y-auto max-h-screen sticky top-0">
-          <StatusSheet
-            profile={currentProfile}
-            userName={userName}
-            currentZone={currentZone}
-            totalZones={3}
-          />
-          <PathLog choices={choiceHistory} compact />
-        </aside>
-
         {/* Main content area */}
         <div className="flex-1 flex items-center justify-center py-20">
           <AnimatePresence mode="wait">
@@ -152,12 +144,18 @@ export default function ExperiencePage() {
           </AnimatePresence>
         </div>
 
-        {/* Right gutter — zone indicator */}
-        <aside className="hidden lg:flex flex-col items-center justify-center w-16 flex-shrink-0">
-          <div className="writing-mode-vertical text-[10px] uppercase tracking-[0.3em] text-drift-muted/40 select-none">
-            {zone.subtitle}
-          </div>
-        </aside>
+        {/* Right sidebar — Subject Dossier & Path Log (timeline) */}
+        {showSidebar && (
+          <aside className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0 p-4 pt-8 overflow-y-auto max-h-screen sticky top-0">
+            <StatusSheet
+              profile={currentProfile}
+              userName={userName}
+              currentZone={currentZone}
+              totalZones={3}
+            />
+            <PathLog choices={choiceHistory} compact />
+          </aside>
+        )}
       </div>
 
       {/* Fixed logo */}
