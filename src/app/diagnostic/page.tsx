@@ -86,7 +86,6 @@ export default function DiagnosticPage() {
       {/* Intro stages — full width, centered */}
       {isIntroStage && (
         <div className="relative z-10 max-w-2xl mx-auto">
-          <AnimatePresence mode="wait">
             {stage === "intro-1" && (
               <FadeIn key="intro-1" className="min-h-[40vh] flex items-center justify-center">
                 <p className="text-xl sm:text-2xl text-drift-text/85 text-center font-serif leading-[1.6]">
@@ -110,7 +109,6 @@ export default function DiagnosticPage() {
                 </p>
               </FadeIn>
             )}
-          </AnimatePresence>
         </div>
       )}
 
@@ -173,7 +171,6 @@ export default function DiagnosticPage() {
 
           {/* Right content — changes per stage */}
           <div className="flex-1 min-w-0">
-            <AnimatePresence mode="wait">
               {/* Stage: Final Diagnostic — axis readings, interpretation, summary */}
               {stage === "diagnostic" && (
                 <FadeIn key="diagnostic">
@@ -299,7 +296,6 @@ export default function DiagnosticPage() {
                   </div>
                 </FadeIn>
               )}
-            </AnimatePresence>
           </div>
         </div>
       )}

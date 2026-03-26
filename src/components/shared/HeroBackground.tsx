@@ -1,21 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 
 /**
  * Landing page hero background using the approved face-free visual board.
- * Restrained placement with dark overlay to preserve text readability.
+ * CSS-only animation to avoid framer-motion SSR hydration flash.
  */
 export function HeroBackground() {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden>
-      <motion.div
-        className="absolute inset-0"
-        initial={{ opacity: 0, scale: 1.05 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 2.5, ease: "easeOut" }}
-      >
+      <div className="absolute inset-0 fade-in-up" style={{ animationDuration: "2.5s" }}>
         <Image
           src="/hero.png"
           alt=""
@@ -24,7 +18,7 @@ export function HeroBackground() {
           className="object-cover object-center"
           sizes="100vw"
         />
-      </motion.div>
+      </div>
 
       {/* Dark overlay for readability */}
       <div className="absolute inset-0 bg-drift-bg/70" />

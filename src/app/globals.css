@@ -116,3 +116,19 @@ body {
 .cursor-blink {
   animation: cursorBlink 0.8s step-end infinite;
 }
+
+/* CSS-only fade-in — no JS dependency, no hydration flash */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out both;
+}

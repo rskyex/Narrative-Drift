@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
 interface FadeInProps {
@@ -11,22 +10,26 @@ interface FadeInProps {
   className?: string;
 }
 
+/**
+ * CSS-only fade-in to avoid framer-motion SSR hydration flash.
+ * Text is immediately in the DOM and visible after the CSS animation runs,
+ * even if JS is slow to load.
+ */
 export function FadeIn({
   children,
   delay = 0,
   duration = 0.6,
-  y = 12,
   className,
 }: FadeInProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
-      className={className}
+    <div
+      className={`fade-in-up ${className ?? ""}`}
+      style={{
+        animationDelay: `${delay}s`,
+        animationDuration: `${duration}s`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

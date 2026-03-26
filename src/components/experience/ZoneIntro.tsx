@@ -29,12 +29,9 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
   const transitionCopy = ZONE_TRANSITION_COPY[zone.id];
 
   return (
-    <motion.div
-      className="fixed inset-0 flex items-center justify-center z-30 bg-drift-bg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.6 }}
+    <div
+      className="fixed inset-0 flex items-center justify-center z-30 bg-drift-bg fade-in-up"
+      style={{ animationDuration: "0.6s" }}
     >
       {/* Solid dark base — always present so text is never unreadable */}
       <div className="absolute inset-0 bg-drift-bg" />
@@ -147,7 +144,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
           Enter Zone
         </motion.button>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

@@ -101,8 +101,7 @@ export default function BaselinePage() {
         </div>
       </div>
 
-      <AnimatePresence mode="wait">
-        {/* ─── Stage 1: Intro text ─── */}
+      {/* ─── Stage 1: Intro text ─── */}
         {stage === "intro" && (
           <FadeIn key="intro" className="min-h-screen flex items-center justify-center px-6">
             <div className="text-center max-w-md">
@@ -122,13 +121,9 @@ export default function BaselinePage() {
 
         {/* ─── Stage 2: Portrait reveal ─── */}
         {stage === "portrait" && (
-          <motion.div
+          <FadeIn
             key="portrait"
             className="min-h-screen flex items-center justify-center px-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
           >
             <div className="flex flex-col items-center">
               {/* Portrait with scan frame */}
@@ -143,56 +138,39 @@ export default function BaselinePage() {
                   </svg>
                 </div>
 
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 1.2, ease: "easeOut" }}
-                >
                   <Image
-                    src="/baseline.png"
-                    alt="Baseline self"
-                    width={260}
-                    height={260}
-                    className="rounded-sm object-cover"
-                  />
-                </motion.div>
+                  src="/baseline.png"
+                  alt="Baseline self"
+                  width={260}
+                  height={260}
+                  className="rounded-sm object-cover"
+                />
               </div>
 
               {/* Label beneath portrait */}
-              <motion.div
-                className="mt-6 text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.0, duration: 0.8 }}
-              >
+              <div className="mt-6 text-center fade-in-up" style={{ animationDelay: "1s" }}>
                 <p className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/60">
                   Origin State Recorded
                 </p>
-              </motion.div>
+              </div>
 
               {/* Continue to sheet */}
-              <motion.button
-                className="mt-10 text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 2.0, duration: 0.8 }}
+              <button
+                className="mt-10 text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded fade-in-up"
+                style={{ animationDelay: "2s" }}
                 onClick={() => setStage("sheet")}
               >
                 Examine the profile
-              </motion.button>
+              </button>
             </div>
-          </motion.div>
+          </FadeIn>
         )}
 
         {/* ─── Stage 3: Full subject sheet ─── */}
         {stage === "sheet" && (
-          <motion.div
+          <FadeIn
             key="sheet"
             className="min-h-screen pt-20 pb-16 px-4 sm:px-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
           >
             <div className="max-w-4xl mx-auto">
               <div className="flex flex-col lg:flex-row lg:gap-16 xl:gap-20 items-start">
@@ -229,17 +207,15 @@ export default function BaselinePage() {
                 {/* ─── Right column: Subject sheet ─── */}
                 <div className="flex-1 w-full">
                   {/* Sheet header */}
-                  <motion.div
-                    className="pb-5 mb-10"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
+                  <div
+                    className="pb-5 mb-10 fade-in-up"
+                    style={{ animationDelay: "0.2s" }}
                   >
                     <h1 className="text-[11px] uppercase tracking-[0.3em] text-drift-muted/65 mb-3">
                       Subject Profile — Pre-Drift State
                     </h1>
                     <div className="drift-divider" />
-                  </motion.div>
+                  </div>
 
                   {/* Axis readings */}
                   <div className="space-y-7">
@@ -251,11 +227,10 @@ export default function BaselinePage() {
                       const reading = getReading(axis, value);
 
                       return (
-                        <motion.div
+                        <div
                           key={axis}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.3 + i * 0.12, duration: 0.5 }}
+                          className="fade-in-up"
+                          style={{ animationDelay: `${0.3 + i * 0.12}s` }}
                         >
                           <div className="flex items-baseline justify-between mb-2">
                             <div className="flex items-center gap-3">
@@ -292,17 +267,15 @@ export default function BaselinePage() {
                           <p className="text-sm text-drift-text/70 leading-[1.7]">
                             {reading}
                           </p>
-                        </motion.div>
+                        </div>
                       );
                     })}
                   </div>
 
                   {/* Divider */}
-                  <motion.div
-                    className="mt-12 pt-8"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.4, duration: 0.6 }}
+                  <div
+                    className="mt-12 pt-8 fade-in-up"
+                    style={{ animationDelay: "1.4s" }}
                   >
                     <div className="drift-divider mb-8" />
                     <p className="text-xs text-drift-muted/55 leading-[1.8] mb-10 max-w-md">
@@ -311,22 +284,19 @@ export default function BaselinePage() {
                       of choice itself. How you respond will determine how far you drift.
                     </p>
 
-                    <motion.button
+                    <button
                       onClick={handleProceed}
-                      className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 2.0, duration: 0.8 }}
+                      className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded fade-in-up"
+                      style={{ animationDelay: "2s" }}
                     >
                       Enter the first zone
-                    </motion.button>
-                  </motion.div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </FadeIn>
         )}
-      </AnimatePresence>
     </main>
   );
 }
