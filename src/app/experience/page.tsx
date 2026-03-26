@@ -159,7 +159,7 @@ export default function ExperiencePage() {
       </div>
 
       {/* Fixed logo */}
-      <div className="fixed top-4 left-6 z-50">
+      <div className="fixed top-4 left-6 z-50 hidden md:block">
         <LogoMark size={104} />
       </div>
 
