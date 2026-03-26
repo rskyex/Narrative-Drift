@@ -13,8 +13,8 @@ import { FinalDiagnostic, deriveArchetype } from "@/components/rpg/FinalDiagnost
 import { PathLog } from "@/components/rpg/PathLog";
 import { DriftReveal } from "@/components/reflection/DriftReveal";
 import { TimelineOfChange } from "@/components/reflection/TimelineOfChange";
-import { AIInterventionMap } from "@/components/reflection/AIInterventionMap";
-import { ClosingStatement } from "@/components/reflection/ClosingStatement";
+import { AIInterventionMap, AIInterventionMapPage2 } from "@/components/reflection/AIInterventionMap";
+import { ClosingStatement, ClosingCredits } from "@/components/reflection/ClosingStatement";
 import { computeCumulativeDrift } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
 import Image from "next/image";
@@ -26,7 +26,9 @@ type RevealStage =
   | "timeline"
   | "pathlog"
   | "intervention"
-  | "closing";
+  | "intervention-2"
+  | "closing"
+  | "credits";
 
 /** Shared button style for all diagnostic navigation */
 const btnClass =
@@ -252,7 +254,7 @@ export default function DiagnosticPage() {
                 </FadeIn>
               )}
 
-              {/* Stage: AI Intervention Map */}
+              {/* Stage: AI Intervention Map — Page 1 (System Summary + Exposure + Reinforcement) */}
               {stage === "intervention" && (
                 <FadeIn key="intervention">
                   <div className="space-y-8">
@@ -266,7 +268,30 @@ export default function DiagnosticPage() {
                       className={btnClass}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ delay: 4 }}
+                      transition={{ delay: 3 }}
+                      onClick={() => advance("intervention-2")}
+                    >
+                      Continue
+                    </motion.button>
+                  </div>
+                </FadeIn>
+              )}
+
+              {/* Stage: AI Intervention Map — Page 2 (Memory + Preference + Judgment) */}
+              {stage === "intervention-2" && (
+                <FadeIn key="intervention-2">
+                  <div className="space-y-8">
+                    <AIInterventionMapPage2
+                      choices={choiceHistory}
+                      baselineProfile={baselineProfile}
+                      currentProfile={currentProfile}
+                    />
+
+                    <motion.button
+                      className={btnClass}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 3 }}
                       onClick={() => advance("closing")}
                     >
                       Continue
@@ -275,24 +300,34 @@ export default function DiagnosticPage() {
                 </FadeIn>
               )}
 
-              {/* Stage: Closing statement */}
+              {/* Stage: Closing statement — left: logo+title, right: text */}
               {stage === "closing" && (
                 <FadeIn key="closing">
-                  <div className="space-y-20 py-16">
+                  <div className="space-y-16 py-16">
                     <ClosingStatement userName={userName} />
 
                     <motion.div
+                      className="text-center"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 3 }}
                     >
                       <button
-                        onClick={handleRestart}
+                        onClick={() => advance("credits")}
                         className={btnClass}
                       >
-                        Return to origin
+                        Continue
                       </button>
                     </motion.div>
+                  </div>
+                </FadeIn>
+              )}
+
+              {/* Stage: Credits — links to project LP and creator HP */}
+              {stage === "credits" && (
+                <FadeIn key="credits">
+                  <div className="py-16">
+                    <ClosingCredits onRestart={handleRestart} />
                   </div>
                 </FadeIn>
               )}

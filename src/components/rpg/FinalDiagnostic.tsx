@@ -243,7 +243,7 @@ export function FinalDiagnostic({
       {/* Header */}
       <div>
         <motion.p
-          className="text-sm uppercase tracking-[0.4em] text-drift-text/70 mb-3"
+          className="text-base uppercase tracking-[0.4em] text-drift-text/70 mb-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
@@ -258,14 +258,29 @@ export function FinalDiagnostic({
         />
       </div>
 
+      {/* Subject Diagnostic Summary — first */}
+      <motion.div
+        className="bg-drift-surface/30 border border-drift-border/15 rounded-lg p-7"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8, duration: 1 }}
+      >
+        <p className="text-xs uppercase tracking-[0.2em] text-drift-text/70 mb-4">
+          Subject Diagnostic Summary
+        </p>
+        <p className="text-sm text-drift-text/85 leading-[1.8]">
+          {diagnosticSummary}
+        </p>
+      </motion.div>
+
       {/* Axis readings — baseline vs final */}
       <motion.div
         className="space-y-7"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.8 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.3em] text-drift-text/70 mb-2">
+        <p className="text-xs uppercase tracking-[0.3em] text-drift-text/70 mb-2">
           Axis Readings — Origin vs. Terminal State
         </p>
         {AXES.map((axis, i) => (
@@ -274,22 +289,22 @@ export function FinalDiagnostic({
             className="border-l border-drift-border/25 pl-5"
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1 + i * 0.15, duration: 0.5 }}
+            transition={{ delay: 1.4 + i * 0.15, duration: 0.5 }}
           >
             <div className="flex items-baseline justify-between mb-1.5">
-              <span className="text-[10px] uppercase tracking-[0.15em] text-drift-text/70">
+              <span className="text-xs uppercase tracking-[0.15em] text-drift-text/70">
                 {axis}
               </span>
               <div className="flex items-baseline gap-2.5">
-                <span className="text-[9px] font-mono text-drift-text/60">
+                <span className="text-xs font-mono text-drift-text/60">
                   {initialProfile[axis] > 0 ? "+" : ""}{(initialProfile[axis] * 100).toFixed(0)}
                 </span>
-                <span className="text-drift-text/30 text-xs">→</span>
-                <span className="text-[11px] font-mono text-drift-accent/80">
+                <span className="text-drift-text/30 text-sm">→</span>
+                <span className="text-sm font-mono text-drift-accent/80">
                   {currentProfile[axis] > 0 ? "+" : ""}{(currentProfile[axis] * 100).toFixed(0)}
                 </span>
                 <span
-                  className={`text-[9px] font-mono ${
+                  className={`text-xs font-mono ${
                     currentProfile[axis] - initialProfile[axis] >= 0
                       ? "text-drift-accent/70"
                       : "text-drift-alert/70"
@@ -300,7 +315,7 @@ export function FinalDiagnostic({
                 </span>
               </div>
             </div>
-            <p className="text-xs text-drift-text/80 leading-[1.7]">
+            <p className="text-sm text-drift-text/80 leading-[1.7]">
               {generateAxisReading(axis, currentProfile[axis])}
             </p>
           </motion.div>
@@ -312,28 +327,13 @@ export function FinalDiagnostic({
         className="bg-drift-surface/30 border border-drift-border/15 rounded-lg p-7 backdrop-blur-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 1.2 }}
+        transition={{ delay: 2.8, duration: 1.2 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.25em] text-drift-text/65 mb-5">
+        <p className="text-xs uppercase tracking-[0.25em] text-drift-text/65 mb-5">
           Diagnostic Interpretation
         </p>
-        <p className="text-sm text-drift-text/85 leading-[1.8]">
+        <p className="text-base text-drift-text/85 leading-[1.8]">
           {archetype.analysis}
-        </p>
-      </motion.div>
-
-      {/* Subject Diagnostic Summary */}
-      <motion.div
-        className="bg-drift-surface/30 border border-drift-border/15 rounded-lg p-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3, duration: 1 }}
-      >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-text/70 mb-4">
-          Subject Diagnostic Summary
-        </p>
-        <p className="text-xs text-drift-text/85 leading-relaxed">
-          {diagnosticSummary}
         </p>
       </motion.div>
     </motion.div>
