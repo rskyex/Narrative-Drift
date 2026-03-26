@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { LogoMark } from "@/components/shared/LogoMark";
 
 interface ClosingStatementProps {
@@ -17,12 +18,12 @@ export function ClosingStatement({ userName }: ClosingStatementProps) {
     >
       {/* Left side — Logo and title, as large as possible */}
       <div className="lg:w-1/2 flex flex-col items-center lg:items-center justify-center lg:sticky lg:top-28 space-y-8">
-        <LogoMark size="14vw" />
+        <LogoMark size="30vw" />
         <div className="text-center space-y-3">
-          <h2 className="wordmark text-4xl sm:text-5xl md:text-6xl text-drift-text/95">
+          <h2 className="wordmark text-5xl sm:text-6xl md:text-7xl text-drift-text">
             Narrative Drift
           </h2>
-          <p className="text-base text-drift-muted/80 italic">
+          <p className="text-lg text-drift-muted italic">
             An interactive exploration of algorithmic influence
           </p>
         </div>
@@ -79,14 +80,14 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
     >
       <div className="w-16 mx-auto drift-divider" />
 
-      <p className="text-sm uppercase tracking-[0.3em] text-drift-text/60 text-center">
+      <p className="text-base uppercase tracking-[0.3em] text-drift-text/90 text-center font-serif">
         Continue exploring
       </p>
 
       {/* Project context */}
       <div className="text-center max-w-xl mx-auto">
-        <p className="text-sm text-drift-text/75 leading-[1.8]">
-          Narrative Drift is part of the <span className="text-drift-accent">Govern the Human</span> project
+        <p className="text-base text-drift-text/90 leading-[1.8]">
+          Narrative Drift is part of the <span className="text-drift-accent font-semibold">Govern the Human</span> project
           — an initiative exploring how emerging technologies reshape human agency, identity, and governance.
         </p>
       </div>
@@ -100,22 +101,29 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
           rel="noopener noreferrer"
           className="group block border border-drift-border/30 rounded-lg overflow-hidden hover:border-drift-accent/50 transition-all duration-300"
         >
-          {/* Thumbnail */}
-          <div className="aspect-[16/9] bg-drift-surface/60 flex items-center justify-center overflow-hidden">
-            <div className="text-center p-6">
-              <p className="wordmark text-3xl sm:text-4xl text-drift-accent/90 group-hover:text-drift-accent transition-colors">
-                Govern the Human
-              </p>
-              <p className="text-xs text-drift-text/50 mt-2 uppercase tracking-[0.2em]">
-                govern-the-human.vercel.app
-              </p>
+          {/* Thumbnail with OG image + logo overlay */}
+          <div className="aspect-[16/9] bg-drift-surface/60 relative overflow-hidden">
+            <Image
+              src="/narrative drift-hp.png"
+              alt="Govern the Human"
+              fill
+              className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Image
+                src="/govern the human logo.png"
+                alt="Govern the Human logo"
+                width={120}
+                height={120}
+                className="object-contain drop-shadow-lg"
+              />
             </div>
           </div>
           <div className="p-5 space-y-2">
-            <h3 className="font-serif text-xl text-drift-text/90 group-hover:text-drift-accent transition-colors">
+            <h3 className="font-serif text-xl text-drift-text group-hover:text-drift-accent transition-colors">
               Govern the Human
             </h3>
-            <p className="text-sm text-drift-text/65 leading-relaxed">
+            <p className="text-sm text-drift-text/75 leading-relaxed">
               An exploration of how emerging technologies reshape governance,
               agency, and the boundaries of the human self.
             </p>
@@ -129,22 +137,29 @@ export function ClosingCredits({ onRestart }: { onRestart: () => void }) {
           rel="noopener noreferrer"
           className="group block border border-drift-border/30 rounded-lg overflow-hidden hover:border-drift-accent/50 transition-all duration-300"
         >
-          {/* Thumbnail */}
-          <div className="aspect-[16/9] bg-drift-surface/60 flex items-center justify-center overflow-hidden">
-            <div className="text-center p-6">
-              <p className="wordmark text-3xl sm:text-4xl text-drift-accent/90 group-hover:text-drift-accent transition-colors">
-                Risa Koyanagi
-              </p>
-              <p className="text-xs text-drift-text/50 mt-2 uppercase tracking-[0.2em]">
-                risakoyanagi.com
-              </p>
+          {/* Thumbnail with OG image + logo overlay */}
+          <div className="aspect-[16/9] bg-drift-surface/60 relative overflow-hidden">
+            <Image
+              src="/narrative drift-hp.png"
+              alt="Risa Koyanagi"
+              fill
+              className="object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Image
+                src="/risa_koyanagi logo.png"
+                alt="Risa Koyanagi logo"
+                width={120}
+                height={120}
+                className="object-contain drop-shadow-lg"
+              />
             </div>
           </div>
           <div className="p-5 space-y-2">
-            <h3 className="font-serif text-xl text-drift-text/90 group-hover:text-drift-accent transition-colors">
+            <h3 className="font-serif text-xl text-drift-text group-hover:text-drift-accent transition-colors">
               Creator
             </h3>
-            <p className="text-sm text-drift-text/65 leading-relaxed">
+            <p className="text-sm text-drift-text/75 leading-relaxed">
               Risa Koyanagi is a Cambridge Future Scholar working at the intersection
               of space, nuclear, cyber and emerging technology governance.
             </p>
