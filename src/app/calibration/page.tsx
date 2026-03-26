@@ -160,15 +160,15 @@ export default function CalibrationPage() {
                     <Image
                       src="/baseline.png"
                       alt="Subject portrait"
-                      width={220}
-                      height={220}
+                      width={280}
+                      height={280}
                       className="rounded-sm object-cover"
                     />
                   </motion.div>
                 </div>
 
                 {/* Live axis readout */}
-                <div className="mt-6 w-full max-w-[260px] space-y-2">
+                <div className="mt-6 w-full max-w-[300px] space-y-3">
                   {ALL_AXES.map((axis) => {
                     const isCalibrated = calibratedAxes.includes(axis);
                     const isActive = currentPrompt.axis === axis;
@@ -188,8 +188,8 @@ export default function CalibrationPage() {
                         <div className="flex items-baseline justify-between mb-1">
                           <span
                             className={cn(
-                              "text-xs uppercase tracking-wider font-medium",
-                              isActive ? "text-drift-accent" : "text-drift-muted/80"
+                              "text-sm uppercase tracking-wider font-medium",
+                              isActive ? "text-drift-accent" : "text-drift-text/70"
                             )}
                           >
                             {axis}
@@ -222,8 +222,8 @@ export default function CalibrationPage() {
                           )}
                         </div>
                         <div className="flex justify-between mt-1">
-                          <span className="text-[11px] text-drift-muted/70">{leftLabel}</span>
-                          <span className="text-[11px] text-drift-muted/70">{rightLabel}</span>
+                          <span className="text-xs text-drift-text/60">{leftLabel}</span>
+                          <span className="text-xs text-drift-text/60">{rightLabel}</span>
                         </div>
                       </motion.div>
                     );
@@ -245,13 +245,13 @@ export default function CalibrationPage() {
                     {/* Axis being calibrated */}
                     <div className="flex items-center gap-3 mb-10">
                       <div className="w-8 h-[1px] bg-drift-accent/25" />
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-drift-accent/65">
+                      <span className="text-xs uppercase tracking-[0.25em] text-drift-accent/80">
                         Calibrating: {currentPrompt.axis}
                       </span>
                     </div>
 
                     {/* Context */}
-                    <p className="text-sm text-drift-muted/60 leading-[1.7] mb-5 max-w-md">
+                    <p className="text-base text-drift-text/65 leading-[1.7] mb-5 max-w-md">
                       {currentPrompt.context}
                     </p>
 
@@ -299,7 +299,7 @@ export default function CalibrationPage() {
                                   {choice.label}
                                 </p>
                                 {choice.subtext && (
-                                  <p className="text-drift-muted/60 text-xs mt-1 leading-relaxed">
+                                  <p className="text-drift-text/55 text-sm mt-1 leading-relaxed">
                                     {choice.subtext}
                                   </p>
                                 )}

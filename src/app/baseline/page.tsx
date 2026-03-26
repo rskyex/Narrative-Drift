@@ -141,8 +141,8 @@ export default function BaselinePage() {
                   <Image
                   src="/baseline.png"
                   alt="Baseline self"
-                  width={260}
-                  height={260}
+                  width={320}
+                  height={320}
                   className="rounded-sm object-cover"
                 />
               </div>
@@ -188,8 +188,8 @@ export default function BaselinePage() {
                     <Image
                       src="/baseline.png"
                       alt="Baseline self"
-                      width={200}
-                      height={200}
+                      width={260}
+                      height={260}
                       className="rounded-sm object-cover"
                     />
                   </div>
@@ -259,8 +259,8 @@ export default function BaselinePage() {
                           </div>
 
                           <div className="flex justify-between mb-2">
-                            <span className="text-[11px] text-drift-muted/70">{leftLabel}</span>
-                            <span className="text-[11px] text-drift-muted/70">{rightLabel}</span>
+                            <span className="text-xs text-drift-text/60">{leftLabel}</span>
+                            <span className="text-xs text-drift-text/60">{rightLabel}</span>
                           </div>
 
                           {/* Reading description */}
