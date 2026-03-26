@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: "Narrative Drift",
     images: [
       {
-        url: "/narrative drift-hp.png",
+        url: "/narrative-drift-hp.png",
         width: 1200,
         height: 630,
         alt: "Narrative Drift",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "Narrative Drift",
     description:
       "An interactive exploration of how ordinary AI-mediated choices gradually alter the self.",
-    images: ["/narrative drift-hp.png"],
+    images: ["/narrative-drift-hp.png"],
   },
 };
 
