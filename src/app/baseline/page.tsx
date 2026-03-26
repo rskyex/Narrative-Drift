@@ -172,7 +172,7 @@ export default function BaselinePage() {
 
               {/* Continue to sheet */}
               <motion.button
-                className="mt-10 text-drift-muted/60 hover:text-drift-text/80 text-xs tracking-[0.2em] uppercase transition-colors duration-300"
+                className="mt-10 text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 2.0, duration: 0.8 }}
@@ -313,7 +313,7 @@ export default function BaselinePage() {
 
                     <motion.button
                       onClick={handleProceed}
-                      className="text-drift-muted/65 hover:text-drift-text/85 text-xs tracking-[0.2em] uppercase transition-colors duration-300 py-2"
+                      className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 2.0, duration: 0.8 }}

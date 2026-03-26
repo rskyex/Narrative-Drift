@@ -138,7 +138,7 @@ export function ZoneIntro({ zone, onComplete }: ZoneIntroProps) {
 
         {/* Continue button — replaces auto-advance */}
         <motion.button
-          className="text-drift-muted/80 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-colors duration-500 py-3 px-10 border border-drift-border/40 hover:border-drift-accent/40 rounded"
+          className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.8, duration: 0.8 }}

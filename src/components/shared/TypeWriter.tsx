@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 
 interface TypeWriterProps {
   text: string;
@@ -40,15 +39,11 @@ export function TypeWriter({
   }, [displayedText, started, text, speed, onComplete]);
 
   return (
-    <motion.span
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className={className}
-    >
+    <span className={className}>
       {displayedText}
       {started && displayedText.length < text.length && (
-        <span className="inline-block w-[2px] h-[1em] bg-drift-accent/60 ml-[1px] animate-pulse align-text-bottom" />
+        <span className="inline-block w-[2px] h-[1em] bg-drift-accent/60 ml-[1px] cursor-blink align-text-bottom" />
       )}
-    </motion.span>
+    </span>
   );
 }

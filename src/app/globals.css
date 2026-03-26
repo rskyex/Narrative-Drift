@@ -106,3 +106,13 @@ body {
 .gentle-pulse {
   animation: gentlePulse 3s ease-in-out infinite;
 }
+
+/* Cursor blink for typewriter — simple on/off, no smooth fade */
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: cursorBlink 0.8s step-end infinite;
+}

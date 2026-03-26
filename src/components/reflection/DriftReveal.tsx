@@ -36,13 +36,13 @@ export function DriftReveal({ initialProfile, currentProfile }: DriftRevealProps
         transition={{ delay: 1.5, duration: 1.2 }}
       >
         <div className="drift-divider mb-8" />
-        <p className="text-drift-muted/65 text-[10px] tracking-[0.3em] uppercase mb-3">
+        <p className="text-drift-text/70 text-[10px] tracking-[0.3em] uppercase mb-3">
           Cumulative drift
         </p>
-        <p className="font-serif text-5xl text-drift-accent/80 tracking-tight">
+        <p className="font-serif text-5xl text-drift-accent/90 tracking-tight">
           {driftPercentage}%
         </p>
-        <p className="text-drift-muted/60 text-[11px] mt-2">
+        <p className="text-drift-text/65 text-[11px] mt-2">
           from where you started
         </p>
       </motion.div>

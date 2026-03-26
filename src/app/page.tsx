@@ -76,7 +76,7 @@ export default function LandingPage() {
 
                     <button
                       onClick={handleBegin}
-                      className="text-drift-muted/80 hover:text-drift-text text-[11px] tracking-[0.25em] uppercase transition-all duration-500 py-3 px-8 border border-drift-border/0 hover:border-drift-border/30 rounded"
+                      className="text-drift-text/70 hover:text-drift-text text-sm tracking-[0.25em] uppercase transition-all duration-300 py-3 px-10 border border-drift-border/50 hover:border-drift-accent/60 hover:bg-drift-surface/40 rounded"
                     >
                       Let&apos;s begin
                     </button>
