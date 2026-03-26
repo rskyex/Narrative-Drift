@@ -222,6 +222,7 @@ function buildInterventionCategories(
   ];
 }
 
+/** Page 1: System Summary + Exposure Shaping + Reinforcement Loops */
 export function AIInterventionMap({
   choices,
   baselineProfile,
@@ -231,6 +232,11 @@ export function AIInterventionMap({
     choices,
     baselineProfile,
     currentProfile
+  );
+
+  // Page 1: System Summary first, then Exposure Shaping and Reinforcement Loops
+  const page1Categories = categories.filter(
+    (c) => c.id === "exposure" || c.id === "reinforcement"
   );
 
   return (
@@ -243,7 +249,7 @@ export function AIInterventionMap({
       {/* Header */}
       <div className="text-center">
         <motion.p
-          className="text-[10px] uppercase tracking-[0.3em] text-drift-text/70 mb-2"
+          className="text-xs uppercase tracking-[0.3em] text-drift-text/70 mb-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -267,54 +273,17 @@ export function AIInterventionMap({
         </motion.p>
       </div>
 
-      {/* Intervention categories */}
-      {categories.map((category, catIndex) => (
-        <motion.div
-          key={category.id}
-          className="border-l border-drift-border/30 pl-5"
-          initial={{ opacity: 0, x: -12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.8 + catIndex * 0.3, duration: 0.6 }}
-        >
-          <div className="mb-3">
-            <h4 className="text-[11px] uppercase tracking-[0.2em] text-drift-accent/90 mb-1">
-              {category.label}
-            </h4>
-            <p className="text-[10px] text-drift-text/60 italic">
-              {category.description}
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {category.findings.map((finding, fIndex) => (
-              <motion.p
-                key={fIndex}
-                className="text-xs text-drift-text/85 leading-relaxed"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  delay: 1.0 + catIndex * 0.3 + fIndex * 0.15,
-                  duration: 0.5,
-                }}
-              >
-                {finding}
-              </motion.p>
-            ))}
-          </div>
-        </motion.div>
-      ))}
-
-      {/* Summary */}
+      {/* System Summary — first */}
       <motion.div
-        className="bg-drift-surface/40 border border-drift-border/20 rounded-lg p-6 mt-8"
+        className="bg-drift-surface/40 border border-drift-border/20 rounded-lg p-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3.5, duration: 0.8 }}
+        transition={{ delay: 0.8, duration: 0.8 }}
       >
-        <p className="text-[10px] uppercase tracking-[0.2em] text-drift-text/70 mb-3">
+        <p className="text-xs uppercase tracking-[0.2em] text-drift-text/70 mb-3">
           System Summary
         </p>
-        <p className="text-xs text-drift-text/85 leading-relaxed">
+        <p className="text-sm text-drift-text/85 leading-[1.8]">
           Across {choices.length} encounters, the AI operated through five
           concurrent channels: shaping what you were exposed to, reinforcing
           patterns through repetition, mediating your relationship to memory,
@@ -324,6 +293,124 @@ export function AIInterventionMap({
           was experienced as convenience.
         </p>
       </motion.div>
+
+      {/* Exposure Shaping + Reinforcement Loops */}
+      {page1Categories.map((category, catIndex) => (
+        <motion.div
+          key={category.id}
+          className="border-l border-drift-border/30 pl-5"
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.2 + catIndex * 0.3, duration: 0.6 }}
+        >
+          <div className="mb-3">
+            <h4 className="text-sm uppercase tracking-[0.2em] text-drift-accent/90 mb-1">
+              {category.label}
+            </h4>
+            <p className="text-xs text-drift-text/60 italic">
+              {category.description}
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {category.findings.map((finding, fIndex) => (
+              <motion.p
+                key={fIndex}
+                className="text-sm text-drift-text/85 leading-[1.7]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 1.4 + catIndex * 0.3 + fIndex * 0.15,
+                  duration: 0.5,
+                }}
+              >
+                {finding}
+              </motion.p>
+            ))}
+          </div>
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+}
+
+/** Page 2: Memory Mediation + Preference Construction + Judgment Acceleration */
+export function AIInterventionMapPage2({
+  choices,
+  baselineProfile,
+  currentProfile,
+}: AIInterventionMapProps) {
+  const categories = buildInterventionCategories(
+    choices,
+    baselineProfile,
+    currentProfile
+  );
+
+  const page2Categories = categories.filter(
+    (c) => c.id === "memory" || c.id === "preference" || c.id === "judgment"
+  );
+
+  return (
+    <motion.div
+      className="space-y-10"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+    >
+      {/* Header */}
+      <div className="text-center">
+        <motion.p
+          className="text-xs uppercase tracking-[0.3em] text-drift-text/70 mb-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          AI Intervention Map — Continued
+        </motion.p>
+        <motion.div
+          className="w-12 h-[1px] bg-drift-border mx-auto mb-4"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        />
+      </div>
+
+      {/* Memory Mediation, Preference Construction, Judgment Acceleration */}
+      {page2Categories.map((category, catIndex) => (
+        <motion.div
+          key={category.id}
+          className="border-l border-drift-border/30 pl-5"
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6 + catIndex * 0.3, duration: 0.6 }}
+        >
+          <div className="mb-3">
+            <h4 className="text-sm uppercase tracking-[0.2em] text-drift-accent/90 mb-1">
+              {category.label}
+            </h4>
+            <p className="text-xs text-drift-text/60 italic">
+              {category.description}
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {category.findings.map((finding, fIndex) => (
+              <motion.p
+                key={fIndex}
+                className="text-sm text-drift-text/85 leading-[1.7]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.8 + catIndex * 0.3 + fIndex * 0.15,
+                  duration: 0.5,
+                }}
+              >
+                {finding}
+              </motion.p>
+            ))}
+          </div>
+        </motion.div>
+      ))}
     </motion.div>
   );
 }

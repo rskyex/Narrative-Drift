@@ -9,11 +9,15 @@ import { TypeWriter } from "@/components/shared/TypeWriter";
 import { FadeIn } from "@/components/shared/FadeIn";
 import Image from "next/image";
 
-const INTERLUDE_BG_IMAGE = "/hero.png";
+const INTERLUDE_BG_IMAGE: Record<number, string> = {
+  1: "/transition-2.png",
+  2: "/transition-3.png",
+  3: "/transition-4.png",
+};
 
 const INTERLUDE_PORTRAIT_IMAGE: Record<number, string> = {
   1: "/interlude.png",
-  2: "/interlude.png",
+  2: "/Final Diagnostic.png",
   3: "/Final Diagnostic.png",
 };
 
@@ -147,34 +151,38 @@ export function InterludeReveal({
 
   const portraitImage = INTERLUDE_PORTRAIT_IMAGE[interludeNumber] ?? "/interlude.png";
 
+  const bgImage = INTERLUDE_BG_IMAGE[interludeNumber] ?? "/hero.png";
+
   return (
     <div className="fixed inset-0 z-30">
       {/* Solid dark base — always present so text is never unreadable */}
       <div className="absolute inset-0 bg-drift-bg" />
 
-      {/* Full-screen background image (hero) */}
-      <motion.div
-        className="absolute inset-0"
-        initial={{ opacity: 0, scale: 1.03 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 2, ease: "easeOut" }}
-      >
-        <Image
-          src={INTERLUDE_BG_IMAGE}
-          alt=""
-          fill
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-drift-bg/70" />
-        <div
+      {/* Full-screen background image — only shown during narrative stage */}
+      {stage === "narrative" && (
+        <motion.div
           className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.6) 100%)",
-          }}
-        />
-      </motion.div>
+          initial={{ opacity: 0, scale: 1.03 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 2, ease: "easeOut" }}
+        >
+          <Image
+            src={bgImage}
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-drift-bg/70" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 70% 60% at 50% 50%, transparent 0%, rgba(10, 10, 10, 0.6) 100%)",
+            }}
+          />
+        </motion.div>
+      )}
 
       {/* Content — centered over full screen */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6">

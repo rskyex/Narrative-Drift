@@ -18,7 +18,7 @@ const AXES: DriftAxis[] = ["autonomy", "novelty", "sociality", "tempo", "affect"
 const ZONE_AVATAR: Record<number, string> = {
   1: "/baseline.png",
   2: "/interlude.png",
-  3: "/interlude.png",
+  3: "/Final Diagnostic.png",
 };
 
 const axisDescriptors: Record<DriftAxis, (v: number) => string> = {
@@ -64,8 +64,8 @@ function AxisBar({ axis, value, index }: { axis: DriftAxis; value: number; index
         />
       </div>
       <div className="flex justify-between">
-        <span className="text-[11px] text-drift-muted/70">{leftLabel}</span>
-        <span className="text-[11px] text-drift-muted/70">{rightLabel}</span>
+        <span className="text-xs text-drift-text/60">{leftLabel}</span>
+        <span className="text-xs text-drift-text/60">{rightLabel}</span>
       </div>
     </motion.div>
   );
