@@ -61,7 +61,7 @@ export default function RootLayout({
         {/* Persistent title */}
         <header className="fixed top-0 left-0 right-0 z-[60] pointer-events-none">
           <div className="flex justify-center pt-4">
-            <span className="text-[9px] uppercase tracking-[0.4em] text-drift-muted/30 font-sans">
+            <span className="text-[9px] uppercase tracking-[0.4em] text-drift-accent/60 font-sans">
               Narrative Drift
             </span>
           </div>
@@ -72,7 +72,7 @@ export default function RootLayout({
         {/* Persistent copyright */}
         <footer className="fixed bottom-0 left-0 right-0 z-[60] pointer-events-none">
           <div className="flex justify-center pb-4">
-            <span className="text-[9px] uppercase tracking-[0.3em] text-drift-muted/30 font-sans">
+            <span className="text-[9px] uppercase tracking-[0.3em] text-drift-accent/60 font-sans">
               &copy; Risa Koyanagi
             </span>
           </div>
