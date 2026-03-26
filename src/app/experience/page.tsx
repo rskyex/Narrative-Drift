@@ -86,6 +86,9 @@ export default function ExperiencePage() {
   useEffect(() => {
     if (phase === "zone" && viewState !== "zone-intro") {
       setViewState("encounter");
+      if (window.innerWidth < 768) {
+        window.scrollTo(0, 0);
+      }
     }
   }, [currentEncounterPosition, phase]);
 
