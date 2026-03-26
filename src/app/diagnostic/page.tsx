@@ -82,7 +82,7 @@ export default function DiagnosticPage() {
 
       {/* Fixed logo */}
       <div className="fixed top-6 left-6 z-50">
-        <LogoMark size={56} />
+        <LogoMark size={72} />
       </div>
 
       {/* Intro stages — full width, centered */}
