@@ -24,6 +24,7 @@ interface TrackingEvent {
 // ─── Supabase client (singleton) ─────────────────────────────────
 
 let supabase: SupabaseClient | null = null;
+let envWarned = false;
 
 function getClient(): SupabaseClient | null {
   if (supabase) return supabase;
@@ -31,7 +32,15 @@ function getClient(): SupabaseClient | null {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-  if (!url || !key) return null;
+  if (!url || !key) {
+    if (!envWarned) {
+      console.warn(
+        "[analytics] NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is missing. Tracking disabled."
+      );
+      envWarned = true;
+    }
+    return null;
+  }
 
   supabase = createClient(url, key);
   return supabase;
@@ -76,41 +85,62 @@ export function resetSequence(): void {
   sessionStorage.setItem(SEQ_KEY, "0");
 }
 
+// ─── Session creation tracking ───────────────────────────────────
+// Track which session IDs have been successfully created in the DB
+// to avoid FK violations when inserting events.
+
+let createdSessionId: string | null = null;
+
+async function ensureSession(
+  client: SupabaseClient,
+  sessionId: string
+): Promise<boolean> {
+  if (createdSessionId === sessionId) return true;
+
+  const { error } = await client.from("sessions").upsert(
+    {
+      id: sessionId,
+      started_at: new Date().toISOString(),
+      completed: false,
+    },
+    { onConflict: "id" }
+  );
+
+  if (error) {
+    console.warn("[analytics] Failed to create session:", error.message);
+    return false;
+  }
+
+  createdSessionId = sessionId;
+  return true;
+}
+
 // ─── Core tracking functions ─────────────────────────────────────
 
 async function trackEvent(event: TrackingEvent): Promise<void> {
   const client = getClient();
   if (!client) return;
 
-  try {
-    await client.from("events").insert({
-      session_id: event.session_id,
-      event_type: event.event_type,
-      step_id: event.step_id ?? null,
-      option_id: event.option_id ?? null,
-      result_id: event.result_id ?? null,
-      sequence: event.sequence,
-    });
-  } catch {
-    // Analytics failure must never break the user experience
+  // Ensure the session row exists before inserting an event (FK constraint)
+  const sessionReady = await ensureSession(client, event.session_id);
+  if (!sessionReady) return;
+
+  const { error } = await client.from("events").insert({
+    session_id: event.session_id,
+    event_type: event.event_type,
+    step_id: event.step_id ?? null,
+    option_id: event.option_id ?? null,
+    result_id: event.result_id ?? null,
+    sequence: event.sequence,
+  });
+
+  if (error) {
+    console.warn("[analytics] Failed to insert event:", error.message);
   }
 }
 
 export async function trackSessionStart(): Promise<void> {
-  const client = getClient();
-  if (!client) return;
-
   const sessionId = getOrCreateSessionId();
-
-  try {
-    await client.from("sessions").insert({
-      id: sessionId,
-      started_at: new Date().toISOString(),
-      completed: false,
-    });
-  } catch {
-    // Silently fail
-  }
 
   await trackEvent({
     session_id: sessionId,
@@ -196,16 +226,16 @@ export async function trackSessionComplete(
     sequence: nextSequence(),
   });
 
-  try {
-    await client
-      .from("sessions")
-      .update({
-        completed: true,
-        completed_at: new Date().toISOString(),
-        final_result: finalResult,
-      })
-      .eq("id", sessionId);
-  } catch {
-    // Silently fail
+  const { error } = await client
+    .from("sessions")
+    .update({
+      completed: true,
+      completed_at: new Date().toISOString(),
+      final_result: finalResult,
+    })
+    .eq("id", sessionId);
+
+  if (error) {
+    console.warn("[analytics] Failed to update session:", error.message);
   }
 }
