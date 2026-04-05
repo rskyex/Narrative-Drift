@@ -14,6 +14,17 @@ import {
 import { createInitialProfile, applyDrift } from "@/engine/drift-model";
 import { calibrationPrompts } from "@/engine/calibration";
 import { getTotalZones, getZoneEncounterCount } from "@/engine/narrative-engine";
+import {
+  trackSessionStart,
+  trackCalibrationChoice,
+  trackCalibrationComplete,
+  trackZoneEnter,
+  trackEncounterChoice,
+  trackInterludeView,
+  trackDiagnosticReached,
+  resetSessionId,
+  resetSequence,
+} from "@/lib/analytics";
 
 interface SessionState {
   userName: string | null;
@@ -67,12 +78,19 @@ export const useSessionStore = create<SessionState>()(
 
       setUserName: (name: string) => set({ userName: name }),
 
-      startCalibration: () => set({ phase: "calibration", calibrationIndex: 0 }),
+      startCalibration: () => {
+        set({ phase: "calibration", calibrationIndex: 0 });
+        trackSessionStart();
+      },
 
       makeCalibrationChoice: (choice: Choice) =>
         set((state) => {
           const newProfile = applyDrift(state.currentProfile, choice.driftVectors);
           const nextIndex = state.calibrationIndex + 1;
+          const prompt = calibrationPrompts[state.calibrationIndex];
+          if (prompt) {
+            trackCalibrationChoice(prompt.id, choice.id);
+          }
           return {
             currentProfile: newProfile,
             calibrationIndex: nextIndex,
@@ -80,28 +98,34 @@ export const useSessionStore = create<SessionState>()(
         }),
 
       completeCalibration: () =>
-        set((state) => ({
-          phase: "baseline",
-          baselineProfile: { ...state.currentProfile },
-          profileSnapshots: [
-            {
-              profile: { ...state.currentProfile },
-              label: "Baseline Self",
-              zoneId: 0,
-            },
-          ],
-        })),
+        set((state) => {
+          trackCalibrationComplete();
+          return {
+            phase: "baseline",
+            baselineProfile: { ...state.currentProfile },
+            profileSnapshots: [
+              {
+                profile: { ...state.currentProfile },
+                label: "Baseline Self",
+                zoneId: 0,
+              },
+            ],
+          };
+        }),
 
-      enterZone: (zoneId: number) =>
-        set({
+      enterZone: (zoneId: number) => {
+        trackZoneEnter(zoneId);
+        return set({
           phase: "zone",
           currentZone: zoneId,
           currentEncounterPosition: 1,
-        }),
+        });
+      },
 
       makeEncounterChoice: (encounter: Encounter, choice: Choice) =>
         set((state) => {
           const newProfile = applyDrift(state.currentProfile, choice.driftVectors);
+          trackEncounterChoice(encounter.id, choice.id);
           return {
             currentProfile: newProfile,
             choiceHistory: [
@@ -134,12 +158,14 @@ export const useSessionStore = create<SessionState>()(
 
             if (state.currentZone >= totalZones) {
               // All zones complete — go to diagnostic
+              trackDiagnosticReached();
               return {
                 profileSnapshots: [...state.profileSnapshots, snapshot],
                 phase: "diagnostic",
               };
             } else {
               // Go to interlude
+              trackInterludeView(state.currentZone);
               return {
                 profileSnapshots: [...state.profileSnapshots, snapshot],
                 phase: "interlude",
@@ -151,16 +177,23 @@ export const useSessionStore = create<SessionState>()(
           return { currentEncounterPosition: nextPosition };
         }),
 
-      enterInterlude: (interludeNumber: number) =>
-        set({
+      enterInterlude: (interludeNumber: number) => {
+        trackInterludeView(interludeNumber);
+        return set({
           phase: "interlude",
           currentInterlude: interludeNumber,
-        }),
+        });
+      },
 
-      advanceToDiagnostic: () => set({ phase: "diagnostic" }),
+      advanceToDiagnostic: () => {
+        trackDiagnosticReached();
+        return set({ phase: "diagnostic" });
+      },
 
-      reset: () =>
-        set({
+      reset: () => {
+        resetSessionId();
+        resetSequence();
+        return set({
           userName: null,
           baselineProfile: createInitialProfile(),
           currentProfile: createInitialProfile(),
@@ -171,7 +204,8 @@ export const useSessionStore = create<SessionState>()(
           currentZone: 1,
           currentEncounterPosition: 1,
           currentInterlude: 1,
-        }),
+        });
+      },
     }),
     {
       name: "narrative-drift-session",

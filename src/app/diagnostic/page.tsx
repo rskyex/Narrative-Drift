@@ -17,6 +17,7 @@ import { AIInterventionMap, AIInterventionMapPage2 } from "@/components/reflecti
 import { ClosingStatement, ClosingCredits } from "@/components/reflection/ClosingStatement";
 import { computeCumulativeDrift } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
+import { trackSessionComplete } from "@/lib/analytics";
 import Image from "next/image";
 
 type RevealStage =
@@ -57,10 +58,14 @@ export default function DiagnosticPage() {
 
   const advance = useCallback((to: RevealStage) => {
     setStage(to);
+    if (to === "credits") {
+      const arch = deriveArchetype(currentProfile);
+      trackSessionComplete(arch.designation);
+    }
     if ((to === "closing" || to === "credits") && window.innerWidth < 768) {
       window.scrollTo(0, 0);
     }
-  }, []);
+  }, [currentProfile]);
 
   const handleRestart = () => {
     reset();
