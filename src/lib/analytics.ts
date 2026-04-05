@@ -18,7 +18,7 @@ interface TrackingEvent {
   step_id?: string;
   option_id?: string;
   result_id?: string;
-  sequence: number;
+  sequence_index: number;
 }
 
 // ─── Supabase client (singleton) ─────────────────────────────────
@@ -131,7 +131,7 @@ async function trackEvent(event: TrackingEvent): Promise<void> {
     step_id: event.step_id ?? null,
     option_id: event.option_id ?? null,
     result_id: event.result_id ?? null,
-    sequence: event.sequence,
+    sequence_index: event.sequence_index,
   });
 
   if (error) {
@@ -145,7 +145,7 @@ export async function trackSessionStart(): Promise<void> {
   await trackEvent({
     session_id: sessionId,
     event_type: "session_start",
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 }
 
@@ -158,7 +158,7 @@ export async function trackCalibrationChoice(
     event_type: "calibration_choice",
     step_id: promptId,
     option_id: choiceId,
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 }
 
@@ -166,7 +166,7 @@ export async function trackCalibrationComplete(): Promise<void> {
   await trackEvent({
     session_id: getOrCreateSessionId(),
     event_type: "calibration_complete",
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 }
 
@@ -175,7 +175,7 @@ export async function trackZoneEnter(zoneId: number): Promise<void> {
     session_id: getOrCreateSessionId(),
     event_type: "zone_enter",
     step_id: `zone-${zoneId}`,
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 }
 
@@ -188,7 +188,7 @@ export async function trackEncounterChoice(
     event_type: "encounter_choice",
     step_id: encounterId,
     option_id: choiceId,
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 }
 
@@ -199,7 +199,7 @@ export async function trackInterludeView(
     session_id: getOrCreateSessionId(),
     event_type: "interlude_view",
     step_id: `interlude-${interludeNumber}`,
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 }
 
@@ -207,7 +207,7 @@ export async function trackDiagnosticReached(): Promise<void> {
   await trackEvent({
     session_id: getOrCreateSessionId(),
     event_type: "diagnostic_reached",
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 }
 
@@ -223,7 +223,7 @@ export async function trackSessionComplete(
     session_id: sessionId,
     event_type: "session_complete",
     result_id: finalResult,
-    sequence: nextSequence(),
+    sequence_index: nextSequence(),
   });
 
   const { error } = await client
