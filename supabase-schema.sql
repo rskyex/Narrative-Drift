@@ -18,7 +18,7 @@ create table if not exists events (
   step_id text,
   option_id text,
   result_id text,
-  sequence integer not null default 0,
+  sequence_index integer not null default 0,
   created_at timestamptz not null default now()
 );
 
