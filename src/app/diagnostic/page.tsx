@@ -20,6 +20,7 @@ import { ChoiceReplay } from "@/components/reflection/ChoiceReplay";
 import { computeCumulativeDrift } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
 import { trackSessionComplete } from "@/lib/analytics";
+import { downloadDiagnosticPdf } from "@/lib/generate-pdf";
 import Image from "next/image";
 
 type RevealStage =
@@ -328,6 +329,24 @@ export default function DiagnosticPage() {
               {stage === "credits" && (
                 <FadeIn key="credits">
                   <div className="py-16">
+                    {/* PDF download */}
+                    <div className="text-center mb-16">
+                      <button
+                        onClick={() =>
+                          downloadDiagnosticPdf({
+                            userName,
+                            archetype,
+                            baselineProfile,
+                            currentProfile,
+                            choices: choiceHistory,
+                          })
+                        }
+                        className={btnClass}
+                      >
+                        Download your results
+                      </button>
+                    </div>
+
                     <div className="mt-16 mb-16">
                       <p className="text-xs uppercase tracking-widest text-drift-text/50 text-center mb-8">
                         What if you had chosen differently?
