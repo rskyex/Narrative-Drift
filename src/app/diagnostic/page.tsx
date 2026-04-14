@@ -16,6 +16,7 @@ import { TimelineOfChange } from "@/components/reflection/TimelineOfChange";
 import { AIInterventionMap, AIInterventionMapPage2 } from "@/components/reflection/AIInterventionMap";
 import { ClosingStatement, ClosingCredits } from "@/components/reflection/ClosingStatement";
 import { CollectiveContext } from "@/components/reflection/CollectiveContext";
+import { ChoiceReplay } from "@/components/reflection/ChoiceReplay";
 import { computeCumulativeDrift } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
 import { trackSessionComplete } from "@/lib/analytics";
@@ -46,6 +47,7 @@ export default function DiagnosticPage() {
     userName,
     phase,
     reset,
+    startReplay,
   } = useSessionStore();
   const hasHydrated = useHasHydrated();
   const [stage, setStage] = useState<RevealStage>("intro-1");
@@ -326,6 +328,18 @@ export default function DiagnosticPage() {
               {stage === "credits" && (
                 <FadeIn key="credits">
                   <div className="py-16">
+                    <div className="mt-16 mb-16">
+                      <p className="text-xs uppercase tracking-widest text-drift-text/50 text-center mb-8">
+                        What if you had chosen differently?
+                      </p>
+                      <ChoiceReplay
+                        choices={choiceHistory}
+                        onSelectDivergence={(encounterId) => {
+                          startReplay(encounterId);
+                          router.push("/replay");
+                        }}
+                      />
+                    </div>
                     <ClosingCredits onRestart={handleRestart} />
                   </div>
                 </FadeIn>
