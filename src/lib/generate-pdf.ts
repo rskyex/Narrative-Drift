@@ -15,10 +15,25 @@ const COLORS = {
   border: "#1f1f1f",
 };
 
+async function loadImageAsDataUrl(src: string): Promise<string | null> {
+  try {
+    const res = await fetch(src);
+    const blob = await res.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Generate and download a PDF report of the user's Narrative Drift results.
  */
-export function downloadDiagnosticPdf({
+export async function downloadDiagnosticPdf({
   userName,
   archetype,
   baselineProfile,
@@ -60,9 +75,17 @@ export function downloadDiagnosticPdf({
     y += 8;
   }
 
-  // --- Page 1: Header + Archetype + Axes ---
+  // --- Page 1: Logo + Header + Archetype + Axes ---
   drawPageBg();
   y = margin;
+
+  // Logo
+  const logoDataUrl = await loadImageAsDataUrl("/logo.png");
+  if (logoDataUrl) {
+    const logoSize = 18;
+    doc.addImage(logoDataUrl, "PNG", margin, y, logoSize, logoSize);
+    y += logoSize + 6;
+  }
 
   // Title
   doc.setFont("helvetica", "normal");

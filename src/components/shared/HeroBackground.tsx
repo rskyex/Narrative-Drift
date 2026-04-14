@@ -19,17 +19,6 @@ export function HeroBackground() {
           sizes="100vw"
         />
       </div>
-
-      {/* Radial + vertical gradient for readability without flat overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: [
-            "radial-gradient(ellipse 80% 70% at 50% 40%, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.3) 60%, transparent 100%)",
-            "linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.75) 70%, rgba(10,10,10,0.95) 100%)",
-          ].join(", "),
-        }}
-      />
     </div>
   );
 }
