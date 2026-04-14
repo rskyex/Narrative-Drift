@@ -15,6 +15,7 @@ import { DriftReveal } from "@/components/reflection/DriftReveal";
 import { TimelineOfChange } from "@/components/reflection/TimelineOfChange";
 import { AIInterventionMap, AIInterventionMapPage2 } from "@/components/reflection/AIInterventionMap";
 import { ClosingStatement, ClosingCredits } from "@/components/reflection/ClosingStatement";
+import { CollectiveContext } from "@/components/reflection/CollectiveContext";
 import { computeCumulativeDrift } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
 import { trackSessionComplete } from "@/lib/analytics";
@@ -194,6 +195,8 @@ export default function DiagnosticPage() {
                       choices={choiceHistory}
                       snapshots={profileSnapshots}
                     />
+
+                    <CollectiveContext currentArchetype={archetype.designation} />
 
                     <motion.button
                       className={btnClass}

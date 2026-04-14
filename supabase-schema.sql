@@ -43,5 +43,20 @@ create policy "Allow anonymous insert" on events
   for insert with check (true);
 
 -- Read access (optional — enable if you want to query from a dashboard)
--- create policy "Allow read" on sessions for select using (true);
--- create policy "Allow read" on events for select using (true);
+create policy "Allow read" on sessions for select using (true);
+create policy "Allow read" on events for select using (true);
+
+-- Archetype distribution view (used by the collective context panel)
+create or replace view archetype_distribution as
+select
+  final_result,
+  count(*) as n,
+  round(100.0 * count(*) / sum(count(*)) over (), 1) as pct
+from sessions
+where completed = true
+  and final_result is not null
+group by final_result
+order by n desc;
+
+-- Allow anonymous reads on the view
+grant select on archetype_distribution to anon;
