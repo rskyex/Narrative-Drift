@@ -31,25 +31,25 @@ export function deriveArchetype(profile: DriftProfile): ArchetypeResult {
   const archetypeMap: Record<string, Record<string, ArchetypeResult>> = {
     autonomy: {
       positive: {
-        designation: "The Unmediated",
-        description: "One who resists the algorithmic frame",
+        designation: "The Self-Authored",
+        description: "One who navigates without intermediation",
         analysis: "You consistently chose to act without intermediation. Where convenience was offered, you chose friction. This is not stubbornness — it is a kind of insistence on remaining the author of your own experience. The question is whether this insistence can sustain itself against the gradual normalization of delegation.",
       },
       negative: {
-        designation: "The Delegated",
-        description: "One who yields to the curated path",
+        designation: "The Collaborative",
+        description: "One who moves with the curated current",
         analysis: "You found it natural to accept what was offered. This is not weakness — it is the reasonable response to systems designed to be accepted. But each acceptance is a small transfer of authorship. The self that emerges is not less real, but it is less distinctly yours.",
       },
     },
     novelty: {
       positive: {
-        designation: "The Divergent",
-        description: "One who seeks beyond the profile",
+        designation: "The Lateral",
+        description: "One who moves outside established patterns",
         analysis: "You were drawn to what lay outside your established patterns. The algorithm offered you a mirror; you chose the window. This tendency toward the unfamiliar suggests a self that resists the comfort of being known — even by a system that knows you well.",
       },
       negative: {
-        designation: "The Convergent",
-        description: "One who gravitates toward the known",
+        designation: "The Deep",
+        description: "One who returns to familiar territory",
         analysis: "You preferred the territory you recognize. There is depth in this — a willingness to inhabit a smaller world more fully. But the risk is that the boundary between preference and confinement becomes invisible when the walls are built from your own history.",
       },
     },
