@@ -118,7 +118,7 @@ export default function CalibrationPage() {
 
       {stage === "intro" ? (
           <FadeIn key="intro" className="min-h-screen flex items-center justify-center px-6">
-            <div className="text-center max-w-lg">
+            <div className="text-center max-w-lg content-panel">
               <div className="w-8 h-[1px] bg-drift-accent/30 mx-auto mb-8" />
               <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/55 mb-10">
                 Baseline Calibration
@@ -139,7 +139,7 @@ export default function CalibrationPage() {
           >
             <div className="max-w-6xl mx-auto h-full flex flex-col lg:flex-row lg:items-center lg:gap-12 xl:gap-20 min-h-[calc(100vh-7rem)]">
               {/* ─── LEFT: Subject Preview ─── */}
-              <div className="lg:w-[340px] xl:w-[380px] flex-shrink-0 flex flex-col items-center lg:items-center py-6 lg:py-0">
+              <div className="lg:w-[340px] xl:w-[380px] flex-shrink-0 flex flex-col items-center lg:items-center py-6 lg:py-0 content-panel">
                 {/* Portrait with scan frame */}
                 <div className="relative">
                   {/* Corner brackets */}
@@ -232,7 +232,7 @@ export default function CalibrationPage() {
               </div>
 
               {/* ─── RIGHT: Calibration Prompt ─── */}
-              <div className="flex-1 flex items-center min-h-0 py-6 lg:py-0">
+              <div className="flex-1 flex items-center min-h-0 py-6 lg:py-0 content-panel lg:ml-4">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentPrompt.id}

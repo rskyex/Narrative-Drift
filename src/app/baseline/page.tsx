@@ -104,7 +104,7 @@ export default function BaselinePage() {
       {/* ─── Stage 1: Intro text ─── */}
         {stage === "intro" && (
           <FadeIn key="intro" className="min-h-screen flex items-center justify-center px-6">
-            <div className="text-center max-w-md">
+            <div className="text-center max-w-md content-panel">
               <p className="text-[10px] uppercase tracking-[0.3em] text-drift-muted/55 mb-10">
                 Calibration Complete
               </p>
@@ -205,7 +205,7 @@ export default function BaselinePage() {
                 </div>
 
                 {/* ─── Right column: Subject sheet ─── */}
-                <div className="flex-1 w-full">
+                <div className="flex-1 w-full content-panel">
                   {/* Sheet header */}
                   <div
                     className="pb-5 mb-10 fade-in-up"

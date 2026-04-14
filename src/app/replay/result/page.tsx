@@ -61,7 +61,7 @@ export default function ReplayResultPage() {
         <LogoMark size={72} />
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto">
+      <div className="relative z-10 max-w-5xl mx-auto content-panel">
         {/* Header */}
         <motion.div
           className="text-center mb-16"
