@@ -132,3 +132,12 @@ body {
 .fade-in-up {
   animation: fadeInUp 0.6s ease-out both;
 }
+
+/* Readable content panel — backdrop blur + subtle bg for text over images */
+.content-panel {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(10, 10, 10, 0.45);
+  border-radius: 8px;
+  padding: 1.5rem;
+}

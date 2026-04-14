@@ -102,7 +102,7 @@ export default function DiagnosticPage() {
         <div className="relative z-10 max-w-2xl mx-auto">
             {stage === "intro-1" && (
               <FadeIn key="intro-1" className="min-h-[40vh] flex items-center justify-center">
-                <p className="text-xl sm:text-2xl text-drift-text/85 text-center font-serif leading-[1.6]">
+                <p className="text-xl sm:text-2xl text-drift-text/85 text-center font-serif leading-[1.6] content-panel">
                   <TypeWriter
                     text="Nine encounters. Three zones. A transformation assembled from choices so small they barely registered."
                     speed={40}
@@ -114,7 +114,7 @@ export default function DiagnosticPage() {
 
             {stage === "intro-2" && (
               <FadeIn key="intro-2" className="min-h-[40vh] flex items-center justify-center">
-                <p className="text-xl sm:text-2xl text-drift-text/85 text-center font-serif leading-[1.6]">
+                <p className="text-xl sm:text-2xl text-drift-text/85 text-center font-serif leading-[1.6] content-panel">
                   <TypeWriter
                     text="What follows is the record — what shifted, by how much, and the system's role in each departure from who you were."
                     speed={40}
@@ -132,7 +132,7 @@ export default function DiagnosticPage() {
           {/* Left sidebar — portrait + classification + displacement (hidden on closing/credits) */}
           {stage !== "closing" && stage !== "credits" && (
             <motion.aside
-              className="lg:w-72 flex-shrink-0 lg:sticky lg:top-28 lg:self-start mb-10 lg:mb-0"
+              className="lg:w-72 flex-shrink-0 lg:sticky lg:top-28 lg:self-start mb-10 lg:mb-0 content-panel"
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
@@ -186,7 +186,7 @@ export default function DiagnosticPage() {
           )}
 
           {/* Right content — changes per stage */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 content-panel">
               {/* Stage: Final Diagnostic — axis readings, interpretation, summary */}
               {stage === "diagnostic" && (
                 <FadeIn key="diagnostic">
@@ -329,6 +329,19 @@ export default function DiagnosticPage() {
               {stage === "credits" && (
                 <FadeIn key="credits">
                   <div className="py-16">
+                    <div className="mb-16">
+                      <p className="text-xs uppercase tracking-widest text-drift-text/50 text-center mb-8">
+                        What if you had chosen differently?
+                      </p>
+                      <ChoiceReplay
+                        choices={choiceHistory}
+                        onSelectDivergence={(encounterId) => {
+                          startReplay(encounterId);
+                          router.push("/replay");
+                        }}
+                      />
+                    </div>
+
                     {/* PDF download */}
                     <div className="text-center mb-16">
                       <button
@@ -347,18 +360,6 @@ export default function DiagnosticPage() {
                       </button>
                     </div>
 
-                    <div className="mt-16 mb-16">
-                      <p className="text-xs uppercase tracking-widest text-drift-text/50 text-center mb-8">
-                        What if you had chosen differently?
-                      </p>
-                      <ChoiceReplay
-                        choices={choiceHistory}
-                        onSelectDivergence={(encounterId) => {
-                          startReplay(encounterId);
-                          router.push("/replay");
-                        }}
-                      />
-                    </div>
                     <ClosingCredits onRestart={handleRestart} />
                   </div>
                 </FadeIn>

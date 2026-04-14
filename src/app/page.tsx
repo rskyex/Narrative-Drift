@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { TypeWriter } from "@/components/shared/TypeWriter";
 import { GrainOverlay } from "@/components/shared/GrainOverlay";
-import { HeroBackground } from "@/components/shared/HeroBackground";
-import { LogoMark } from "@/components/shared/LogoMark";
 import { useSessionStore } from "@/store/session-store";
+import Image from "next/image";
 
 export default function LandingPage() {
   const router = useRouter();
@@ -36,28 +35,38 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen flex items-center justify-center px-6">
-      <HeroBackground />
+    <main className="relative min-h-screen flex items-center justify-center px-6 pb-16">
+      {/* LP-specific background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none" aria-hidden>
+        <div className="absolute inset-0 fade-in-up" style={{ animationDuration: "2.5s" }}>
+          <Image
+            src="/LP.png"
+            alt=""
+            fill
+            priority
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+        </div>
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 30%, rgba(10, 10, 10, 0.6) 70%, rgba(10, 10, 10, 0.95) 100%)",
+          }}
+        />
+      </div>
       <GrainOverlay />
 
       {!exiting && (
         <FadeIn className="relative z-10 text-center max-w-2xl mx-auto">
-          <div className="flex justify-center mb-10">
-            <div className="hidden md:block">
-              <LogoMark size="20vw" className="text-drift-accent/60" />
-            </div>
-            <div className="block md:hidden">
-              <LogoMark size="60vw" className="text-drift-accent/60" />
-            </div>
-          </div>
-
-          <h1 className="wordmark text-4xl sm:text-7xl md:text-8xl mb-14">
+          <h1 className="wordmark text-4xl sm:text-7xl md:text-8xl mb-6">
             Narrative Drift
           </h1>
 
           <div className="text-sm sm:text-xl leading-[1.7] text-drift-text/80 mb-20 max-w-prose mx-auto">
             <TypeWriter
-              text="Three zones. Three AI systems. Each will reshape your choices in ways you won't notice — until it's too late."
+              text="AI algorithms will reshape your choices in ways you won't notice — until it's too late."
               speed={30}
               onComplete={handlePremiseComplete}
             />

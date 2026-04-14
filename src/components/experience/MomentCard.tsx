@@ -25,7 +25,7 @@ export function MomentCard({ encounter, globalIndex, totalEncounters, onChoice }
 
   return (
     <div
-      className="w-full max-w-5xl mx-auto px-6 fade-in-up"
+      className="w-full max-w-5xl mx-auto px-6 fade-in-up content-panel"
       style={{ animationDuration: "0.6s" }}
     >
       {/* Encounter header */}

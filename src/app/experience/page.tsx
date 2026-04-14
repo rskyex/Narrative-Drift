@@ -149,7 +149,7 @@ export default function ExperiencePage() {
 
         {/* Right sidebar — Subject Dossier & Path Log (timeline) */}
         {showSidebar && (
-          <aside className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0 p-4 pt-8 overflow-y-auto max-h-screen sticky top-0">
+          <aside className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0 p-4 pt-8 overflow-y-auto max-h-screen sticky top-0 content-panel">
             <StatusSheet
               profile={currentProfile}
               userName={userName}
