@@ -117,8 +117,8 @@ Based on the dominant axis of drift and its direction, users are classified into
 
 | Axis | Positive Direction | Negative Direction |
 |------|-------------------|-------------------|
-| Autonomy | The Unmediated | The Delegated |
-| Novelty | The Divergent | The Convergent |
+| Autonomy | The Self-Authored | The Collaborative |
+| Novelty | The Lateral | The Deep |
 | Sociality | The Networked | The Singular |
 | Tempo | The Optimized | The Unhurried |
 | Affect | The Resonant | The Contained |

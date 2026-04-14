@@ -11,7 +11,7 @@ import {
   Choice,
   Encounter,
 } from "@/engine/types";
-import { createInitialProfile, applyDrift } from "@/engine/drift-model";
+import { createInitialProfile, applyDrift, getProfileSnapshots } from "@/engine/drift-model";
 import { calibrationPrompts } from "@/engine/calibration";
 import { getTotalZones, getZoneEncounterCount } from "@/engine/narrative-engine";
 import {
@@ -49,6 +49,12 @@ interface SessionState {
   /** Which interlude we're on (1-3) */
   currentInterlude: number;
 
+  // Replay mode
+  isReplaying: boolean;
+  replayFromEncounterId: string | null;
+  replayProfile: DriftProfile | null;
+  replayChoiceHistory: ChoiceRecord[];
+
   // Actions
   setUserName: (name: string) => void;
   startCalibration: () => void;
@@ -59,6 +65,9 @@ interface SessionState {
   advanceEncounter: () => void;
   enterInterlude: (interludeNumber: number) => void;
   advanceToDiagnostic: () => void;
+  startReplay: (fromEncounterId: string) => void;
+  makeReplayChoice: (encounter: Encounter, choice: Choice) => void;
+  exitReplay: () => void;
   reset: () => void;
 }
 
@@ -75,6 +84,11 @@ export const useSessionStore = create<SessionState>()(
       currentZone: 1,
       currentEncounterPosition: 1,
       currentInterlude: 1,
+
+      isReplaying: false,
+      replayFromEncounterId: null,
+      replayProfile: null,
+      replayChoiceHistory: [],
 
       setUserName: (name: string) => set({ userName: name }),
 
@@ -190,6 +204,55 @@ export const useSessionStore = create<SessionState>()(
         return set({ phase: "diagnostic" });
       },
 
+      startReplay: (fromEncounterId: string) =>
+        set((state) => {
+          const divergeIndex = state.choiceHistory.findIndex(
+            (c) => c.encounterId === fromEncounterId
+          );
+          const choicesBefore = divergeIndex > 0
+            ? state.choiceHistory.slice(0, divergeIndex)
+            : [];
+          // Reconstruct profile at the divergence point
+          const snapshots = getProfileSnapshots(choicesBefore, state.baselineProfile);
+          const profileAtDivergence = snapshots.length > 0
+            ? { ...snapshots[snapshots.length - 1].profile }
+            : { ...state.baselineProfile };
+          return {
+            isReplaying: true,
+            replayFromEncounterId: fromEncounterId,
+            replayProfile: profileAtDivergence,
+            replayChoiceHistory: [...choicesBefore],
+          };
+        }),
+
+      makeReplayChoice: (encounter: Encounter, choice: Choice) =>
+        set((state) => {
+          if (!state.replayProfile) return {};
+          const newProfile = applyDrift(state.replayProfile, choice.driftVectors);
+          return {
+            replayProfile: newProfile,
+            replayChoiceHistory: [
+              ...state.replayChoiceHistory,
+              {
+                encounterId: encounter.id,
+                choiceId: choice.id,
+                choiceLabel: choice.label,
+                driftVectors: choice.driftVectors,
+                zoneId: encounter.zoneId,
+                zoneTitle: `Zone ${encounter.zoneId}`,
+              },
+            ],
+          };
+        }),
+
+      exitReplay: () =>
+        set({
+          isReplaying: false,
+          replayFromEncounterId: null,
+          replayProfile: null,
+          replayChoiceHistory: [],
+        }),
+
       reset: () => {
         resetSessionId();
         resetSequence();
@@ -204,6 +267,10 @@ export const useSessionStore = create<SessionState>()(
           currentZone: 1,
           currentEncounterPosition: 1,
           currentInterlude: 1,
+          isReplaying: false,
+          replayFromEncounterId: null,
+          replayProfile: null,
+          replayChoiceHistory: [],
         });
       },
     }),
