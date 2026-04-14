@@ -11,7 +11,7 @@ interface ChoiceReplayProps {
 
 export function ChoiceReplay({ choices, onSelectDivergence }: ChoiceReplayProps) {
   // Group choices by zone
-  const zoneIds = [...new Set(choices.map((c) => c.zoneId))];
+  const zoneIds = Array.from(new Set(choices.map((c) => c.zoneId)));
 
   return (
     <div className="space-y-8">

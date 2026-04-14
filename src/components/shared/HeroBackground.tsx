@@ -20,10 +20,7 @@ export function HeroBackground() {
         />
       </div>
 
-      {/* Dark overlay for readability */}
-      <div className="absolute inset-0 bg-drift-bg/70" />
-
-      {/* Bottom fade to solid */}
+      {/* Bottom fade to solid — ensures text readability near bottom */}
       <div
         className="absolute inset-0"
         style={{
