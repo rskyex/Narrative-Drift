@@ -31,8 +31,28 @@ Landing → Calibration (5 prompts) → Baseline Reveal
   → Zone 1: The Feed (3 encounters) → Interlude 1
   → Zone 2: The Companion (3 encounters) → Interlude 2
   → Zone 3: The Commons (3 encounters) → Interlude 3
-  → Final Diagnostic (archetype + timeline + intervention map + credits)
+  → Final Diagnostic → Closing & Credits
 ```
+
+## Key Features
+
+### Psychological Profiling
+5-axis personality model with baseline calibration, real-time drift tracking, and profile snapshots at zone boundaries. Hover previews during calibration show potential drift before committing to a choice.
+
+### Multi-Stage Diagnostic
+The final reveal unfolds across 9 stages: premise, plot twist, archetype classification, timeline visualization, path log of all choices, AI intervention map (2 pages analyzing 5 mechanisms of influence), closing statement, and credits.
+
+### Alternate Path Replay
+After completing the experience, users can replay from any encounter to explore a counterfactual path. A side-by-side comparison reveals how different choices produce a different archetype and divergence measurement.
+
+### PDF Export
+Download a styled PDF of your diagnostic results — archetype, axis readings, and drift analysis — directly from the closing stage.
+
+### Collective Context
+When analytics are enabled, the diagnostic shows how your archetype compares to all previous participants via an aggregate distribution panel.
+
+### AI Intervention Analysis
+Two-page breakdown of how AI systems shaped your decisions across 5 mechanisms: Exposure Shaping, Reinforcement Loops, Memory Mediation, Preference Construction, and Judgment Acceleration.
 
 ## Tech Stack
 
@@ -45,6 +65,7 @@ Landing → Calibration (5 prompts) → Baseline Reveal
 | [Framer Motion](https://www.framer.com/motion/) | Animations & transitions |
 | [Zustand](https://github.com/pmndrs/zustand) | State management (with localStorage persistence) |
 | [Recharts](https://recharts.org/) | Data visualizations |
+| [jsPDF](https://github.com/parallax/jsPDF) | Client-side PDF generation |
 | [Supabase](https://supabase.com/) | Optional anonymous analytics |
 
 ## Getting Started
@@ -86,7 +107,10 @@ src/
 │   ├── calibration/page.tsx    # 5-prompt calibration flow
 │   ├── baseline/page.tsx       # Pre-drift profile reveal
 │   ├── experience/page.tsx     # Zone/encounter/interlude loop
-│   └── diagnostic/page.tsx     # Final archetype reveal
+│   ├── diagnostic/page.tsx     # Final multi-stage archetype reveal
+│   ├── replay/page.tsx         # Alternate path encounter replay
+│   ├── replay/result/page.tsx  # Side-by-side counterfactual comparison
+│   └── api/collective/route.ts # Archetype distribution API endpoint
 │
 ├── engine/                     # Core narrative logic
 │   ├── types.ts                # TypeScript interfaces
@@ -99,15 +123,22 @@ src/
 │   ├── scenes/                 # Zone-specific UI mockups (Feed, Companion, Commons)
 │   ├── experience/             # Encounter cards, zone intros, progress indicators
 │   ├── rpg/                    # RPG-style diagnostic displays (portraits, status sheets)
-│   ├── reflection/             # Post-experience visualizations (drift timeline, intervention map)
+│   ├── reflection/             # Post-experience visualizations & analysis
+│   │   ├── AIInterventionMap   # 2-page intervention mechanism breakdown
+│   │   ├── CollectiveContext   # Aggregate archetype distribution
+│   │   ├── ChoiceReplay        # Timeline of choices with drift vectors
+│   │   ├── TimelineOfChange    # Zone-by-zone drift visualization
+│   │   ├── ClosingStatement    # Philosophical closing text
+│   │   └── ClosingCredits      # Credits & project links
 │   ├── interlude/              # Between-zone reveal components
-│   └── shared/                 # TypeWriter, FadeIn, GrainOverlay, etc.
+│   └── shared/                 # TypeWriter, FadeIn, GrainOverlay, HeroBackground, LogoMark
 │
 ├── store/
-│   └── session-store.ts        # Zustand store (profile, choices, phase management)
+│   └── session-store.ts        # Zustand store (profile, choices, phases, replay mode)
 │
 └── lib/
     ├── analytics.ts            # Optional Supabase tracking
+    ├── generate-pdf.ts         # PDF export generation
     └── utils.ts                # Utility functions
 ```
 
@@ -117,8 +148,8 @@ Based on the dominant axis of drift and its direction, users are classified into
 
 | Axis | Positive Direction | Negative Direction |
 |------|-------------------|-------------------|
-| Autonomy | The Self-Authored | The Collaborative |
-| Novelty | The Lateral | The Deep |
+| Autonomy | The Unmediated | The Delegated |
+| Novelty | The Divergent | The Convergent |
 | Sociality | The Networked | The Singular |
 | Tempo | The Optimized | The Unhurried |
 | Affect | The Resonant | The Contained |
@@ -127,12 +158,12 @@ Users with balanced drift across all axes are classified as **The Composite**.
 
 ## Analytics Setup (Optional)
 
-Narrative Drift includes optional anonymous session tracking via Supabase. The app works normally without it.
+Narrative Drift includes optional anonymous session tracking via Supabase. The app works normally without it. When enabled, it also powers the Collective Context panel in the diagnostic, showing how your archetype compares to all previous participants.
 
 ### Setup
 
 1. Create a free project at [supabase.com](https://supabase.com)
-2. Run [`supabase-schema.sql`](./supabase-schema.sql) in the Supabase SQL Editor
+2. Run [`supabase-schema.sql`](./supabase-schema.sql) in the Supabase SQL Editor — this creates the `sessions` and `events` tables plus an `archetype_distribution` view
 3. Copy `.env.example` to `.env.local` and add your credentials:
 
 ```
@@ -163,7 +194,7 @@ SELECT
   round(100.0 * count(*) FILTER (WHERE completed) / count(*), 1) AS pct
 FROM sessions;
 
--- Most common archetype
+-- Most common archetype (also available via the archetype_distribution view)
 SELECT final_result, count(*) AS n
 FROM sessions
 WHERE completed = true
@@ -174,7 +205,7 @@ ORDER BY n DESC;
 SELECT event_type, count(DISTINCT session_id) AS sessions
 FROM events
 GROUP BY event_type
-ORDER BY min(sequence);
+ORDER BY min(sequence_index);
 ```
 
 ### Privacy
