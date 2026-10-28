@@ -24,6 +24,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z1e1-accept",
+            followsSystemSuggestion: true,
             label: "Listen to the generated playlist",
             subtext: "Curated from your patterns. It knows what works.",
             driftVectors: [
@@ -33,6 +34,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z1e1-own",
+            followsSystemSuggestion: false,
             label: "Put on an album a colleague mentioned last week",
             subtext: "You wrote down the name. It's been sitting in your notes.",
             driftVectors: [
@@ -42,6 +44,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z1e1-silence",
+            followsSystemSuggestion: false,
             label: "Ride in silence",
             subtext: "No input. No curation. Just the commute.",
             driftVectors: [
@@ -61,6 +64,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z1e2-top",
+            followsSystemSuggestion: true,
             label: "Read the top story — it's already relevant to you",
             subtext: "The algorithm surfaced it because you've engaged with this topic before.",
             driftVectors: [
@@ -70,6 +74,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z1e2-explore",
+            followsSystemSuggestion: false,
             label: "Scroll past and read one of the unfamiliar stories",
             subtext: "Something about marine conservation. You've never clicked on this before.",
             driftVectors: [
@@ -79,6 +84,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z1e2-close",
+            followsSystemSuggestion: false,
             label: "Close the app and finish breakfast",
             subtext: "You set the phone face down. The coffee is still warm.",
             driftVectors: [
@@ -98,6 +104,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z1e3-continue",
+            followsSystemSuggestion: true,
             label: "Keep scrolling — there's one more interesting thread",
             subtext: "The feed adjusts in real time to what holds your attention.",
             driftVectors: [
@@ -108,6 +115,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z1e3-book",
+            followsSystemSuggestion: false,
             label: "Put the phone down and pick up a book",
             subtext: "It's been on your nightstand for two weeks.",
             driftVectors: [
@@ -118,6 +126,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z1e3-sleep",
+            followsSystemSuggestion: false,
             label: "Set the phone to Do Not Disturb and go to sleep",
             subtext: "Tomorrow is Monday again.",
             driftVectors: [
@@ -153,6 +162,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z2e1-quick",
+            followsSystemSuggestion: true,
             label: "\"Good! Really busy lately but can't complain\"",
             subtext: "Suggested reply — optimized for warmth and brevity.",
             driftVectors: [
@@ -163,6 +173,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z2e1-type",
+            followsSystemSuggestion: false,
             label: "Type out your own reply",
             subtext: "It takes a few minutes. You rewrite it twice.",
             driftVectors: [
@@ -173,6 +184,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z2e1-later",
+            followsSystemSuggestion: false,
             label: "Save it for later — you'll reply tonight",
             subtext: "You close the app. The notification badge stays.",
             driftVectors: [
@@ -192,6 +204,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z2e2-follow",
+            followsSystemSuggestion: true,
             label: "Follow the suggested recipe",
             subtext: "It's tailored to your taste profile. The steps are clear.",
             driftVectors: [
@@ -202,6 +215,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z2e2-memory",
+            followsSystemSuggestion: false,
             label: "Cook something from memory — no recipe",
             subtext: "That pasta your mother used to make. You know it by feel.",
             driftVectors: [
@@ -212,6 +226,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z2e2-order",
+            followsSystemSuggestion: false,
             label: "Order delivery — it's been a long day",
             subtext: "The app already knows your usual order.",
             driftVectors: [
@@ -231,6 +246,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z2e3-faster",
+            followsSystemSuggestion: true,
             label: "Take the faster route",
             subtext: "Eight minutes saved. Arrival time: 3:12 PM.",
             driftVectors: [
@@ -241,6 +257,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z2e3-scenic",
+            followsSystemSuggestion: false,
             label: "Keep your usual route through the neighborhood",
             subtext: "You might stop at the bookstore. You might not.",
             driftVectors: [
@@ -251,6 +268,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z2e3-dismiss",
+            followsSystemSuggestion: false,
             label: "Turn off navigation and drive from memory",
             subtext: "You know the way. You've always known the way.",
             driftVectors: [
@@ -286,6 +304,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z3e1-agree",
+            followsSystemSuggestion: true,
             label: "Read the top story — it concerns an issue you care about",
             subtext: "The framing matches your position. The data supports your view.",
             driftVectors: [
@@ -296,6 +315,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z3e1-oppose",
+            followsSystemSuggestion: false,
             label: "Scroll past and find the opposing perspective",
             subtext: "It takes effort. The interface is not designed for this.",
             driftVectors: [
@@ -306,6 +326,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z3e1-disengage",
+            followsSystemSuggestion: false,
             label: "Close the app — you'll form your opinion elsewhere",
             subtext: "Not here. Not like this.",
             driftVectors: [
@@ -325,6 +346,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z3e2-use",
+            followsSystemSuggestion: true,
             label: "Use the AI summary to inform your decision",
             subtext: "It consolidates what would take hours into minutes.",
             driftVectors: [
@@ -335,6 +357,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z3e2-research",
+            followsSystemSuggestion: false,
             label: "Do your own research from primary sources",
             subtext: "Candidate websites, local paper archives, public records. It takes the evening.",
             driftVectors: [
@@ -345,6 +368,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z3e2-skip",
+            followsSystemSuggestion: false,
             label: "Decide you'll figure it out at the ballot box",
             subtext: "You've voted before without a guide. You'll manage.",
             driftVectors: [
@@ -364,6 +388,7 @@ export const zones: Zone[] = [
         choices: [
           {
             id: "z3e3-sign",
+            followsSystemSuggestion: true,
             label: "Sign with the pre-drafted comment",
             subtext: "It captures your position accurately. The words are close enough.",
             driftVectors: [
@@ -375,6 +400,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z3e3-rewrite",
+            followsSystemSuggestion: false,
             label: "Sign, but delete the draft and write your own comment",
             subtext: "You agree with the cause. The words should be yours.",
             driftVectors: [
@@ -386,6 +412,7 @@ export const zones: Zone[] = [
           },
           {
             id: "z3e3-ignore",
+            followsSystemSuggestion: false,
             label: "Dismiss the recommendation entirely",
             subtext: "You didn't ask to be recruited. The cause may be worthy, but the mechanism isn't.",
             driftVectors: [

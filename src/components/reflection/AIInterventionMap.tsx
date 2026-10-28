@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ChoiceRecord, DriftAxis, DriftProfile } from "@/engine/types";
 import { zones } from "@/engine/zones";
+import { followsSystemSuggestion } from "@/engine/delegation";
 
 interface AIInterventionMapProps {
   choices: ChoiceRecord[];
@@ -55,14 +56,9 @@ function analyzeExposureShaping(choices: ChoiceRecord[]): string[] {
 function analyzeReinforcementLoops(choices: ChoiceRecord[]): string[] {
   const findings: string[] = [];
 
-  // Check for patterns where user repeatedly chose algorithm-aligned options
-  const delegatedCount = choices.filter((c) =>
-    c.driftVectors.some((v) => v.axis === "autonomy" && v.delta < 0)
-  ).length;
-
-  const autonomousCount = choices.filter((c) =>
-    c.driftVectors.some((v) => v.axis === "autonomy" && v.delta > 0)
-  ).length;
+  // Check for patterns where user repeatedly accepted the system's suggestion
+  const delegatedCount = choices.filter(followsSystemSuggestion).length;
+  const autonomousCount = choices.length - delegatedCount;
 
   if (delegatedCount >= autonomousCount) {
     findings.push(

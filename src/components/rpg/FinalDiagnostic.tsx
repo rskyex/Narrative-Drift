@@ -5,6 +5,7 @@ import { DriftProfile, DriftAxis, ChoiceRecord, ProfileSnapshot } from "@/engine
 import { computeCumulativeDrift, getAxisLabels } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
 import { displacementFigures } from "@/engine/displacement";
+import { systemAlignedRate } from "@/engine/delegation";
 
 interface FinalDiagnosticProps {
   userName: string | null;
@@ -190,10 +191,8 @@ function generateDiagnosticSummary(
 ): string {
   const subject = userName || "The subject";
 
-  // Count delegation vs autonomy choices
-  const delegatedCount = choices.filter((c) =>
-    c.driftVectors.some((v) => v.axis === "autonomy" && v.delta < 0)
-  ).length;
+  // Delegation: choices that accepted what the system proposed in the scene
+  const delegatedCount = systemAlignedRate(choices).count;
 
   // Find most stable and most shifted axes
   let minShift = Infinity;
@@ -235,7 +234,7 @@ function generateDiagnosticSummary(
   if (delegationRatio >= 60) {
     summary += `In ${delegationRatio}% of encounters, ${subject.toLowerCase() === "the subject" ? "the subject" : "they"} chose options that delegated decision-making to the system. This pattern — classified as "${archetype.designation}" — reflects not a failure of will but an environment designed to make delegation feel rational. `;
   } else if (delegationRatio <= 30) {
-    summary += `In only ${delegationRatio}% of encounters did ${subject.toLowerCase() === "the subject" ? "the subject" : "they"} delegate to the system. This resistance — classified as "${archetype.designation}" — came at a cost: more time, more effort, more friction. The question is whether that cost remains sustainable. `;
+    summary += `${delegatedCount === 0 ? "In none of the encounters" : `In only ${delegationRatio}% of encounters`} did ${subject.toLowerCase() === "the subject" ? "the subject" : "they"} delegate to the system. This resistance — classified as "${archetype.designation}" — came at a cost: more time, more effort, more friction. The question is whether that cost remains sustainable. `;
   } else {
     summary += `The delegation pattern was mixed (${delegationRatio}% system-aligned choices), suggesting a subject who navigated each encounter on its own terms rather than from a fixed stance. Classification as "${archetype.designation}" reflects the dominant tendency, not the whole picture. `;
   }

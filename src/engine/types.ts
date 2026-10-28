@@ -29,6 +29,17 @@ export interface Choice {
   driftVectors: DriftVector[];
 }
 
+/** An encounter option. */
+export interface EncounterChoice extends Choice {
+  /**
+   * True when the option accepts what the AI or interface proposed in the
+   * scene (the generated playlist, the suggested reply, the faster route).
+   * Tagged from the scene text, independent of the drift vectors; the
+   * system-aligned rate is computed from this field.
+   */
+  followsSystemSuggestion: boolean;
+}
+
 /** A calibration prompt — establishes baseline self */
 export interface CalibrationPrompt {
   id: string;
@@ -56,7 +67,7 @@ export interface Encounter {
   position: number;
   context: string;
   systemFraming: string;
-  choices: Choice[];
+  choices: EncounterChoice[];
 }
 
 /** A record of what the subject chose */

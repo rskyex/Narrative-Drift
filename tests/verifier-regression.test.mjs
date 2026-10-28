@@ -45,3 +45,15 @@ test("reachable maximum displacement for the reference baseline", async () => {
   // The reachable maximum can never exceed the theoretical scale.
   assert.ok(fa.reachableMax <= 1 && fa.theoretical <= fa.reachableMax);
 });
+
+test("every encounter option is tagged followsSystemSuggestion; reference rates", async () => {
+  const { zones } = await import("@/engine/zones");
+  const { systemAlignedRate } = await import("@/engine/delegation");
+  for (const z of zones) for (const e of z.encounters) for (const c of e.choices)
+    assert.equal(typeof c.followsSystemSuggestion, "boolean", `${c.id} is tagged`);
+  // Each scene has exactly one option that accepts the system's proposal.
+  for (const z of zones) for (const e of z.encounters)
+    assert.equal(e.choices.filter((c) => c.followsSystemSuggestion).length, 1, `${e.id} has one accepting option`);
+  assert.deepEqual(systemAlignedRate(simulateRun(REFERENCE_SCRIPTS.A.sequence).choiceHistory), { count: 9, pct: 100 });
+  assert.deepEqual(systemAlignedRate(simulateRun(REFERENCE_SCRIPTS.B.sequence).choiceHistory), { count: 0, pct: 0 });
+});

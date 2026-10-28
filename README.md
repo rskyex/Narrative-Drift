@@ -55,6 +55,9 @@ Total displacement is the straight-line distance between the baseline and the fi
 
 Reference runs: Script A moves 22% of the theoretical maximum, 90% of the reachable maximum; Script B moves 12% and 52%.
 
+### Delegation (system-aligned choices)
+Every encounter option carries `followsSystemSuggestion` in `src/engine/zones.ts`: true when the option accepts what the AI or interface proposed in that scene (the generated playlist, the suggested reply, the faster route, the AI summary), false otherwise. The tag is read from the scene text, not from the drift vectors, so the system-aligned rate is a separate measure from the autonomy axis. Each scene has exactly one accepting option. Script A: 100% system-aligned; Script B: 0%.
+
 ### PDF Export
 Download a styled PDF of your diagnostic results — archetype, axis readings, and drift analysis — directly from the closing stage.
 

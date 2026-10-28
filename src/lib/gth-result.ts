@@ -8,6 +8,7 @@
 import { ChoiceRecord, DriftAxis, DriftProfile } from "@/engine/types";
 import { computeCumulativeDrift, getAxisLabels } from "@/engine/drift-model";
 import { displacementFigures, maxReachableDrift } from "@/engine/displacement";
+import { followsSystemSuggestion, systemAlignedRate } from "@/engine/delegation";
 import { deriveArchetype } from "@/components/rpg/FinalDiagnostic";
 import { calibrationPrompts } from "@/engine/calibration";
 import {
@@ -46,11 +47,10 @@ export function buildGthResult({
     calibration.length === calibrationPrompts.length && calibration.every((i) => i >= 0);
 
   // Same definition as the diagnostic summary: a choice is system-aligned
-  // when it moves the autonomy axis toward external guidance.
-  const isAligned = (c: ChoiceRecord) =>
-    c.driftVectors.some((v) => v.axis === "autonomy" && v.delta < 0);
-  const alignedCount = choices.filter(isAligned).length;
-  const alignedPct = choices.length > 0 ? Math.round((alignedCount / choices.length) * 100) : 0;
+  // when it accepted what the AI or interface proposed in its scene
+  // (followsSystemSuggestion in zones.ts), not inferred from the axes.
+  const isAligned = (c: ChoiceRecord) => followsSystemSuggestion(c);
+  const { count: alignedCount, pct: alignedPct } = systemAlignedRate(choices);
 
   const displacement = displacementFigures(baselineProfile, currentProfile);
   const reachableMax = maxReachableDrift(baselineProfile);
