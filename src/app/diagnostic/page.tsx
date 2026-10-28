@@ -20,6 +20,8 @@ import { computeCumulativeDrift } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
 import { trackSessionComplete } from "@/lib/analytics";
 import { downloadDiagnosticPdf } from "@/lib/generate-pdf";
+import { downloadGthResult } from "@/lib/gth-result";
+import { RunRecord } from "@/components/reflection/RunRecord";
 import Image from "next/image";
 
 type RevealStage =
@@ -47,9 +49,12 @@ export default function DiagnosticPage() {
     userName,
     phase,
     reset,
+    calibrationChoiceIds,
+    verifierRun,
   } = useSessionStore();
   const hasHydrated = useHasHydrated();
-  const [stage, setStage] = useState<RevealStage>("intro-1");
+  // Verifier replays skip the typed intro and open on the readings.
+  const [stage, setStage] = useState<RevealStage>(verifierRun ? "diagnostic" : "intro-1");
 
   useEffect(() => {
     if (!hasHydrated) return;
@@ -60,14 +65,14 @@ export default function DiagnosticPage() {
 
   const advance = useCallback((to: RevealStage) => {
     setStage(to);
-    if (to === "credits") {
+    if (to === "credits" && !verifierRun) {
       const arch = deriveArchetype(currentProfile);
       trackSessionComplete(arch.designation);
     }
     if ((to === "closing" || to === "credits") && window.innerWidth < 768) {
       window.scrollTo(0, 0);
     }
-  }, [currentProfile]);
+  }, [currentProfile, verifierRun]);
 
   const handleRestart = () => {
     reset();
@@ -84,6 +89,15 @@ export default function DiagnosticPage() {
   );
 
   const isIntroStage = stage === "intro-1" || stage === "intro-2";
+
+  const downloadJson = () =>
+    downloadGthResult({
+      baselineProfile,
+      currentProfile,
+      choices: choiceHistory,
+      calibrationChoiceIds,
+      verifierRun,
+    });
 
   return (
     <main className="relative min-h-screen py-28 px-6">
@@ -179,6 +193,13 @@ export default function DiagnosticPage() {
                   </p>
                   <div className="drift-divider mt-2" />
                 </div>
+
+                <RunRecord
+                  calibrationChoiceIds={calibrationChoiceIds}
+                  choices={choiceHistory}
+                  verifierRun={verifierRun}
+                  onDownload={downloadJson}
+                />
               </div>
             </motion.aside>
           )}
@@ -335,6 +356,12 @@ export default function DiagnosticPage() {
                         className={btnClass}
                       >
                         Download your results
+                      </button>
+                      <button
+                        onClick={downloadJson}
+                        className="mt-4 text-xs text-drift-text/60 hover:text-drift-text underline underline-offset-4"
+                      >
+                        Download result (JSON)
                       </button>
                     </div>
 

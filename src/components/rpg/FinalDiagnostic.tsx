@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { DriftProfile, DriftAxis, ChoiceRecord, ProfileSnapshot } from "@/engine/types";
-import { computeCumulativeDrift } from "@/engine/drift-model";
+import { computeCumulativeDrift, getAxisLabels } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
 
 interface FinalDiagnosticProps {
@@ -101,7 +101,34 @@ export function deriveArchetype(profile: DriftProfile): ArchetypeResult {
   };
 }
 
-function generateAxisReading(axis: DriftAxis, value: number): string {
+/** Changes smaller than this (5 points on the -100..+100 scale) read as stable. */
+const STABLE_THRESHOLD = 0.05;
+
+function formatPoints(v: number): string {
+  const n = Number((v * 100).toFixed(0));
+  return `${n > 0 ? "+" : ""}${n}`;
+}
+
+/**
+ * Interpretive sentence for one axis. The level wording describes where the
+ * axis ended up; when the axis barely moved, it says so instead of implying
+ * a shift (e.g. novelty +20 to +20 is not "active divergence").
+ */
+export function generateAxisReading(axis: DriftAxis, value: number, origin?: number): string {
+  if (origin !== undefined && Math.abs(value - origin) < STABLE_THRESHOLD) {
+    const [lowLabel, highLabel] = getAxisLabels(axis);
+    const lean =
+      value > 0.1
+        ? `leaning ${highLabel.toLowerCase()}`
+        : value < -0.1
+          ? `leaning ${lowLabel.toLowerCase()}`
+          : "near the midpoint";
+    return `Stable. This axis stayed close to where calibration placed you (${formatPoints(origin)} to ${formatPoints(value)}), ${lean}. The encounters did not move it in either direction.`;
+  }
+  return generateLevelReading(axis, value);
+}
+
+function generateLevelReading(axis: DriftAxis, value: number): string {
   const readings: Record<DriftAxis, Record<string, string>> = {
     autonomy: {
       high: "Strong self-direction. You chose your own path more often than the curated one.",
@@ -316,7 +343,7 @@ export function FinalDiagnostic({
               </div>
             </div>
             <p className="text-sm text-drift-text/80 leading-[1.7]">
-              {generateAxisReading(axis, currentProfile[axis])}
+              {generateAxisReading(axis, currentProfile[axis], initialProfile[axis])}
             </p>
           </motion.div>
         ))}

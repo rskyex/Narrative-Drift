@@ -48,6 +48,12 @@ After completing the experience, users can replay from any encounter to explore 
 ### PDF Export
 Download a styled PDF of your diagnostic results — archetype, axis readings, and drift analysis — directly from the closing stage.
 
+### Result Export (gth-result/v1)
+The diagnostic sidebar has a "Download result (JSON)" button. It writes a `gth-result/v1` document (schema in the Govern the Human repository, `SCHEMA.md`) with the classification, total displacement, share of system-aligned choices, per-axis origin and end values, and the choice sequence as option indices. The name entered on the landing page is never included. The file can be loaded into the Govern the Human Observatory.
+
+### Verifier Mode
+`/verify` replays a fixed choice sequence through the same scoring engine and opens the diagnostic. `/verify?script=A` (first option everywhere) and `/verify?script=B` (first option in calibration, last option in every encounter) are reference runs; `/verify?seq=00000-000000000` replays any sequence (5 calibration digits, then 9 encounter digits, 0-based). Every diagnostic shows its own sequence under "Run record". Replays send no analytics events.
+
 ### Collective Context
 When analytics are enabled, the diagnostic shows how your archetype compares to all previous participants via an aggregate distribution panel.
 

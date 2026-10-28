@@ -14,6 +14,7 @@ import {
 import { createInitialProfile, applyDrift, getProfileSnapshots } from "@/engine/drift-model";
 import { calibrationPrompts } from "@/engine/calibration";
 import { getTotalZones, getZoneEncounterCount } from "@/engine/narrative-engine";
+import { ChoiceSequence, simulateRun } from "@/engine/verifier";
 import {
   trackSessionStart,
   trackCalibrationChoice,
@@ -41,6 +42,10 @@ interface SessionState {
 
   /** Calibration progress */
   calibrationIndex: number;
+  /** Choice id picked at each calibration prompt (for reproducible export) */
+  calibrationChoiceIds: string[];
+  /** Set when the run was loaded through verifier mode (e.g. "Script A") */
+  verifierRun: string | null;
 
   /** Current zone (1-3) */
   currentZone: number;
@@ -65,6 +70,7 @@ interface SessionState {
   advanceEncounter: () => void;
   enterInterlude: (interludeNumber: number) => void;
   advanceToDiagnostic: () => void;
+  loadVerifierRun: (seq: ChoiceSequence, label: string) => void;
   startReplay: (fromEncounterId: string) => void;
   makeReplayChoice: (encounter: Encounter, choice: Choice) => void;
   exitReplay: () => void;
@@ -81,6 +87,8 @@ export const useSessionStore = create<SessionState>()(
       choiceHistory: [],
       phase: "landing",
       calibrationIndex: 0,
+      calibrationChoiceIds: [],
+      verifierRun: null,
       currentZone: 1,
       currentEncounterPosition: 1,
       currentInterlude: 1,
@@ -93,7 +101,7 @@ export const useSessionStore = create<SessionState>()(
       setUserName: (name: string) => set({ userName: name }),
 
       startCalibration: () => {
-        set({ phase: "calibration", calibrationIndex: 0 });
+        set({ phase: "calibration", calibrationIndex: 0, calibrationChoiceIds: [], verifierRun: null });
         trackSessionStart();
       },
 
@@ -108,6 +116,7 @@ export const useSessionStore = create<SessionState>()(
           return {
             currentProfile: newProfile,
             calibrationIndex: nextIndex,
+            calibrationChoiceIds: [...state.calibrationChoiceIds, choice.id],
           };
         }),
 
@@ -204,6 +213,31 @@ export const useSessionStore = create<SessionState>()(
         return set({ phase: "diagnostic" });
       },
 
+      // Verifier mode: rebuild the full session from a fixed choice sequence.
+      // Uses the same applyDrift engine; sends no analytics events so that
+      // replays do not enter collective statistics.
+      loadVerifierRun: (seq: ChoiceSequence, label: string) => {
+        const run = simulateRun(seq);
+        return set({
+          userName: null,
+          baselineProfile: run.baselineProfile,
+          currentProfile: run.currentProfile,
+          profileSnapshots: run.profileSnapshots,
+          choiceHistory: run.choiceHistory,
+          calibrationChoiceIds: run.calibrationChoiceIds,
+          calibrationIndex: run.calibrationChoiceIds.length,
+          verifierRun: label,
+          phase: "diagnostic",
+          currentZone: getTotalZones(),
+          currentEncounterPosition: getZoneEncounterCount(getTotalZones()),
+          currentInterlude: 1,
+          isReplaying: false,
+          replayFromEncounterId: null,
+          replayProfile: null,
+          replayChoiceHistory: [],
+        });
+      },
+
       startReplay: (fromEncounterId: string) =>
         set((state) => {
           const divergeIndex = state.choiceHistory.findIndex(
@@ -264,6 +298,8 @@ export const useSessionStore = create<SessionState>()(
           choiceHistory: [],
           phase: "landing",
           calibrationIndex: 0,
+          calibrationChoiceIds: [],
+          verifierRun: null,
           currentZone: 1,
           currentEncounterPosition: 1,
           currentInterlude: 1,
