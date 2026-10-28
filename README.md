@@ -8,9 +8,11 @@ Narrative Drift guides users through a 10-phase journey where their decisions ar
 
 ### The Five Axes
 
-| Axis | Spectrum | Description |
+Each axis runs from −100 (left label) to +100 (right label); bars draw negative values to the left.
+
+| Axis | Spectrum (− ↔ +) | Description |
 |------|----------|-------------|
-| **Autonomy** | Self-directed ↔ Externally guided | Agency in decision-making |
+| **Autonomy** | Externally guided ↔ Self-directed | Agency in decision-making |
 | **Novelty** | Familiar-seeking ↔ Novelty-seeking | Comfort with the unknown |
 | **Sociality** | Independent ↔ Socially aligned | Connection to collective patterns |
 | **Tempo** | Deliberate ↔ Optimized | Relationship to speed and efficiency |
@@ -44,6 +46,14 @@ The final reveal unfolds across 9 stages: premise, plot twist, archetype classif
 
 ### Alternate Path Replay
 After completing the experience, users can replay from any encounter to explore a counterfactual path. A side-by-side comparison reveals how different choices produce a different archetype and divergence measurement.
+
+### Displacement: two figures
+Total displacement is the straight-line distance between the baseline and the final profile across the five axes. It is shown two ways:
+
+- **Share of the theoretical maximum** (the large figure, `displacement_theoretical_pct` and `total_displacement_pct` in the export): the distance divided by the largest distance the axis scale allows, every axis swinging from −100 to +100 (√20 units). The nine encounters cannot get anywhere near that, so this figure stays small for every run.
+- **Share of the reachable maximum** (`displacement_reachable_pct`): the distance divided by the furthest any combination of encounter choices can actually move this run's baseline. That maximum is found by trying all 3⁹ = 19,683 choice sequences through the same scoring engine (`src/engine/displacement.ts`) and is exported as `reachable_max_pct` with one sequence that reaches it (`reachable_max_sequence`). For the default calibration it is about 24% of the theoretical maximum; across all calibrations it ranges from 24.1% to 24.9%.
+
+Reference runs: Script A moves 22% of the theoretical maximum, 90% of the reachable maximum; Script B moves 12% and 52%.
 
 ### PDF Export
 Download a styled PDF of your diagnostic results — archetype, axis readings, and drift analysis — directly from the closing stage.

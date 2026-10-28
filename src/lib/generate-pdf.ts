@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import { DriftProfile, DriftAxis, ChoiceRecord } from "@/engine/types";
-import { computeCumulativeDrift } from "@/engine/drift-model";
+import { computeCumulativeDrift, getAxisLabels } from "@/engine/drift-model";
+import { displacementFigures } from "@/engine/displacement";
 import { ArchetypeResult } from "@/components/rpg/FinalDiagnostic";
 import { zones } from "@/engine/zones";
 
@@ -123,7 +124,19 @@ export async function downloadDiagnosticPdf({
   doc.setFontSize(36);
   doc.setTextColor(COLORS.accent);
   doc.text(`${driftPct}%`, margin, y);
-  y += 14;
+  y += 6;
+  const displacement = displacementFigures(baselineProfile, currentProfile);
+  doc.setFontSize(7);
+  doc.setTextColor(COLORS.muted);
+  doc.text(
+    doc.splitTextToSize(
+      `Share of the theoretical maximum. ${Math.round(displacement.reachable * 100)}% of the furthest the encounters could reach from this baseline (reachable maximum: ${Math.round(displacement.reachableMax * 100)}% of the theoretical).`,
+      contentW
+    ),
+    margin,
+    y
+  );
+  y += 12;
 
   drawDivider();
 
@@ -193,7 +206,14 @@ export async function downloadDiagnosticPdf({
     doc.setLineWidth(0.2);
     doc.line(centerX, barY - 0.5, centerX, barY + barH + 0.5);
 
-    y += barH + 8;
+    // End labels: negative values are drawn left, positive right
+    const [negLabel, posLabel] = getAxisLabels(axis);
+    doc.setFontSize(6);
+    doc.setTextColor(COLORS.muted);
+    doc.text(negLabel, barX, barY + barH + 3.5);
+    doc.text(posLabel, barX + barW, barY + barH + 3.5, { align: "right" });
+
+    y += barH + 10;
   }
 
   drawDivider();

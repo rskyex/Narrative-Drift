@@ -1,6 +1,6 @@
 /** The 5 psychological axes — each a spectrum from -1.0 to +1.0 */
 export interface DriftProfile {
-  /** self-directed ←→ externally-guided */
+  /** externally-guided (−) ←→ self-directed (+) */
   autonomy: number;
   /** familiar-seeking ←→ novelty-seeking */
   novelty: number;

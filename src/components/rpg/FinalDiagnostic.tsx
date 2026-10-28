@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { DriftProfile, DriftAxis, ChoiceRecord, ProfileSnapshot } from "@/engine/types";
 import { computeCumulativeDrift, getAxisLabels } from "@/engine/drift-model";
 import { zones } from "@/engine/zones";
+import { displacementFigures } from "@/engine/displacement";
 
 interface FinalDiagnosticProps {
   userName: string | null;
@@ -225,6 +226,9 @@ function generateDiagnosticSummary(
   } else {
     summary += `Over nine encounters, the profile shifted significantly (${driftPercentage}% total displacement). The magnitude of change indicates a subject who engaged deeply with each zone's framing — whether through acceptance or reaction, the system's influence registered. `;
   }
+
+  const displacement = displacementFigures(baseline, current);
+  summary += `That figure is measured against the theoretical maximum, where every axis swings end to end; the nine encounters cannot move anyone that far. From this starting point the furthest any sequence of choices could reach is ${Math.round(displacement.reachableMax * 100)}% of the theoretical maximum, so this run covered ${Math.round(displacement.reachable * 100)}% of the distance that was actually available. `;
 
   summary += `The ${shiftedAxis} axis showed the greatest movement, while ${stableAxis} remained most stable. `;
 

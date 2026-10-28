@@ -17,6 +17,7 @@ import { AIInterventionMap, AIInterventionMapPage2 } from "@/components/reflecti
 import { ClosingStatement, ClosingCredits } from "@/components/reflection/ClosingStatement";
 import { CollectiveContext } from "@/components/reflection/CollectiveContext";
 import { computeCumulativeDrift } from "@/engine/drift-model";
+import { displacementFigures } from "@/engine/displacement";
 import { zones } from "@/engine/zones";
 import { trackSessionComplete } from "@/lib/analytics";
 import { downloadDiagnosticPdf } from "@/lib/generate-pdf";
@@ -84,6 +85,7 @@ export default function DiagnosticPage() {
   const archetype = deriveArchetype(currentProfile);
   const cumulativeDrift = computeCumulativeDrift(baselineProfile, currentProfile);
   const driftPercentage = Math.round(cumulativeDrift * 100);
+  const displacement = displacementFigures(baselineProfile, currentProfile);
   const zoneSummaries = zones.filter((z) =>
     choiceHistory.some((c) => c.zoneId === z.id)
   );
@@ -189,7 +191,12 @@ export default function DiagnosticPage() {
                     {driftPercentage}%
                   </p>
                   <p className="text-[11px] text-drift-text/70 leading-relaxed">
-                    from where you started
+                    from where you started, as a share of the theoretical maximum
+                  </p>
+                  <p className="text-[11px] text-drift-text/80 leading-relaxed pt-1" data-testid="displacement-reachable">
+                    <span className="font-mono text-drift-accent">{Math.round(displacement.reachable * 100)}%</span>{" "}
+                    of the furthest the nine encounters could move you from this starting point
+                    (that reachable maximum is {Math.round(displacement.reachableMax * 100)}% of the theoretical maximum)
                   </p>
                   <div className="drift-divider mt-2" />
                 </div>

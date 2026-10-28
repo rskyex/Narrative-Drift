@@ -54,10 +54,14 @@ export function getProfileSnapshots(
   return snapshots;
 }
 
-/** Get human-readable label for each end of an axis */
+/**
+ * Human-readable label for each end of an axis: [negative end, positive end].
+ * Components draw negative values to the left and positive to the right, so
+ * the second label must describe what a positive delta means.
+ */
 export function getAxisLabels(axis: DriftAxis): [string, string] {
   const labels: Record<DriftAxis, [string, string]> = {
-    autonomy: ["Self-directed", "Externally guided"],
+    autonomy: ["Externally guided", "Self-directed"],
     novelty: ["Familiar-seeking", "Novelty-seeking"],
     sociality: ["Independent", "Socially aligned"],
     tempo: ["Deliberate", "Optimized"],

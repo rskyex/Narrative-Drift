@@ -6,7 +6,8 @@
  * never included. Inputs are recorded as option indices only.
  */
 import { ChoiceRecord, DriftAxis, DriftProfile } from "@/engine/types";
-import { computeCumulativeDrift } from "@/engine/drift-model";
+import { computeCumulativeDrift, getAxisLabels } from "@/engine/drift-model";
+import { displacementFigures, maxReachableDrift } from "@/engine/displacement";
 import { deriveArchetype } from "@/components/rpg/FinalDiagnostic";
 import { calibrationPrompts } from "@/engine/calibration";
 import {
@@ -51,6 +52,9 @@ export function buildGthResult({
   const alignedCount = choices.filter(isAligned).length;
   const alignedPct = choices.length > 0 ? Math.round((alignedCount / choices.length) * 100) : 0;
 
+  const displacement = displacementFigures(baselineProfile, currentProfile);
+  const reachableMax = maxReachableDrift(baselineProfile);
+
   const axisDelta = (c: ChoiceRecord, axis: DriftAxis) =>
     Math.round(c.driftVectors.filter((v) => v.axis === axis).reduce((s, v) => s + v.delta, 0) * 100);
 
@@ -63,6 +67,8 @@ export function buildGthResult({
         origin: pts(baselineProfile[axis]),
         end: pts(currentProfile[axis]),
         change: Math.round((currentProfile[axis] - baselineProfile[axis]) * 100),
+        negative_label: getAxisLabels(axis)[0],
+        positive_label: getAxisLabels(axis)[1],
       },
     ])
   );
@@ -88,6 +94,13 @@ export function buildGthResult({
     outputs: {
       classification: deriveArchetype(currentProfile).designation,
       total_displacement_pct: Math.round(computeCumulativeDrift(baselineProfile, currentProfile) * 100),
+      // Same value as total_displacement_pct (kept for existing readers).
+      displacement_theoretical_pct: Math.round(displacement.theoretical * 100),
+      displacement_reachable_pct: Math.round(displacement.reachable * 100),
+      reachable_max_pct: Number((displacement.reachableMax * 100).toFixed(2)),
+      reachable_max_sequence: reachableMax.encounters.join(""),
+      displacement_note:
+        "theoretical: share of the largest distance the axis scale allows (every axis -100 to +100). reachable: share of the largest distance any choice sequence can reach from this run's baseline (reachable_max_pct, found by trying every encounter combination; reachable_max_sequence is one that reaches it).",
       system_aligned_pct: alignedPct,
       system_aligned_count: alignedCount,
       encounter_count: choices.length,
